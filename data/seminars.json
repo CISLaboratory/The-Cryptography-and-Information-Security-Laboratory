@@ -1,7 +1,7 @@
 [
   {
     "slug": "new-general-mds-matrix-construction",
-    "title": "New General MDS Matrix Construction Method Towards Low Area",
+    "title": "New General MDS Matrix Construction Method Towards Low Area (ToSC2025) [Paper Reading]",
     "speaker": "Zhenyu Zhao",
     "datetime": "2025-12-24T20:00:00",
     "year": 2025,
@@ -15,7 +15,7 @@
   },
   {
     "slug": "rebound-attack-whirlpool-groestl",
-    "title": "The Rebound Attack: Cryptanalysis of Reduced Whirlpool and Grøstl",
+    "title": "The Rebound Attack: Cryptanalysis of Reduced Whirlpool and Grøstl (FSE2009) [Paper Reading]",
     "speaker": "Yuan Gao",
     "datetime": "2025-12-09T20:00:00",
     "year": 2025,
@@ -29,7 +29,7 @@
   },
   {
     "slug": "addendum-how-small-can-s-boxes-be",
-    "title": "Addendum to How Small Can S-boxes Be? / How Small Can S-boxes Be?",
+    "title": "Addendum to How Small Can S-boxes Be? / How Small Can S-boxes Be? (ToSC2025) [Paper Reading]",
     "speaker": "Zhenyu Zhao",
     "datetime": "2025-11-05T20:00:00",
     "year": 2025,
