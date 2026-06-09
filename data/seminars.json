@@ -44,5 +44,103 @@
         "url": "https://tosc.iacr.org/index.php/ToSC/article/view/12088"
       }
     ]
+  },
+  {
+    "slug": "finding-hash-collisions-quantum-computers-2025-01-20",
+    "title": "[Paper Reading] Finding Hash Collisions with Quantum Computers by Using Differential Trails with Smaller Probability than Birthday Bound (EUROCRYPT2020)",
+    "speaker": "Yuan Gao",
+    "datetime": "2025-01-20T20:00:00",
+    "year": 2025,
+    "description": "",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2020/213"
+      }
+    ]
+  },
+  {
+    "slug": "finding-hash-collisions-quantum-computers-2025-01-27",
+    "title": "[Paper Reading] Finding Hash Collisions with Quantum Computers by Using Differential Trails with Smaller Probability than Birthday Bound (EUROCRYPT2020)",
+    "speaker": "Yuan Gao",
+    "datetime": "2025-01-27T20:00:00",
+    "year": 2025,
+    "description": "",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2020/213"
+      }
+    ]
+  },
+  {
+    "slug": "permutation-based-hashing-stronger-preimage-resistance",
+    "title": "[Paper Reading] Permutation-Based Hashing With Stronger (Second) Preimage Resistance",
+    "speaker": "Anze Sun",
+    "datetime": "2026-02-12T20:00:00",
+    "year": 2026,
+    "description": "",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2025/963"
+      }
+    ]
+  },
+  {
+    "slug": "improved-resultant-attack-arithmetization-oriented-primitives",
+    "title": "[Paper Reading] Improved Resultant Attack against Arithmetization-Oriented Primitives (CRYPTO2025)",
+    "speaker": "Yuxing Yue",
+    "datetime": "2026-03-10T20:00:00",
+    "year": 2026,
+    "description": "",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2025/259"
+      }
+    ]
+  },
+  {
+    "slug": "new-general-mds-matrix-construction-2026-04-07",
+    "title": "[Paper Reading] New General MDS Matrix Construction Method Towards Low Area (ToSC2025)",
+    "speaker": "Zhenyu Zhao",
+    "datetime": "2026-04-07T20:00:00",
+    "year": 2026,
+    "description": "",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://tosc.iacr.org/index.php/ToSC/article/view/12488"
+      }
+    ]
+  },
+  {
+    "slug": "linear-cancellations-mitm-attacks-sponge-functions",
+    "title": "[Paper Reading] Linear Cancellations in the MitM Attacks on Sponge Functions (ToSC2025)",
+    "speaker": "Anze Sun",
+    "datetime": "2026-05-12T20:00:00",
+    "year": 2026,
+    "description": "",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://tosc.iacr.org/index.php/ToSC/article/view/12481"
+      }
+    ]
+  },
+  {
+    "slug": "poseidon-neptune-groebner-basis-cryptanalysis-subspace-trails",
+    "title": "[Paper Reading] Poseidon and Neptune: Gröbner Basis Cryptanalysis Exploiting Subspace Trails (ToSC2025)",
+    "speaker": "Yuxing Yue",
+    "datetime": "2026-06-09T20:00:00",
+    "year": 2026,
+    "description": "",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2025/954"
+      }
+    ]
   }
 ]
