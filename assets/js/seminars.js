@@ -8,13 +8,19 @@ function formatDateTime(value) {
   });
 }
 
+function getSeminarDataUrl() {
+  const url = new URL('data/seminars.json', window.location.href);
+  url.searchParams.set('v', Date.now());
+  return url;
+}
+
 async function loadSeminars() {
   const timeline = document.getElementById('seminar-timeline');
   const yearFilter = document.getElementById('seminar-year');
   if (!timeline || !yearFilter) return;
 
   try {
-    const response = await fetch('data/seminars.json');
+    const response = await fetch(getSeminarDataUrl(), { cache: 'no-store' });
     if (!response.ok) throw new Error(`Failed to load seminars: ${response.status}`);
     const seminars = await response.json();
 
@@ -49,7 +55,10 @@ async function loadSeminars() {
           const titleLink = document.createElement('a');
           titleLink.href = slug ? `seminar-detail.html?slug=${encodeURIComponent(slug)}` : '#';
           titleLink.className = 'timeline-title';
-          titleLink.innerHTML = `<h3>${item.title}</h3>`;
+
+          const title = document.createElement('h3');
+          title.textContent = item.title;
+          titleLink.appendChild(title);
 
           const speaker = document.createElement('p');
           speaker.textContent = item.speaker;
