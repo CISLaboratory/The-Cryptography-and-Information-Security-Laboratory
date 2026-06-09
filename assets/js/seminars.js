@@ -18,10 +18,16 @@ async function loadSeminars() {
     if (!response.ok) throw new Error(`Failed to load seminars: ${response.status}`);
     const seminars = await response.json();
 
+    const existingYearOptions = new Set(
+      Array.from(yearFilter.options).map((option) => option.value)
+    );
     const years = Array.from(new Set(seminars.map((item) => item.year))).sort((a, b) => b - a);
     years.forEach((year) => {
+      const yearValue = String(year);
+      if (existingYearOptions.has(yearValue)) return;
+
       const option = document.createElement('option');
-      option.value = String(year);
+      option.value = yearValue;
       option.textContent = year;
       yearFilter.appendChild(option);
     });
