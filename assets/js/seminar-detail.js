@@ -13,6 +13,12 @@ function formatDateTime(value) {
   });
 }
 
+function getSeminarDataUrl() {
+  const url = new URL('data/seminars.json', window.location.href);
+  url.searchParams.set('v', Date.now());
+  return url;
+}
+
 async function loadSeminarDetail() {
   const slug = getQueryParam('slug');
   const container = document.getElementById('seminar-detail');
@@ -27,7 +33,7 @@ async function loadSeminarDetail() {
   }
 
   try {
-    const response = await fetch('data/seminars.json');
+    const response = await fetch(getSeminarDataUrl(), { cache: 'no-store' });
     if (!response.ok) throw new Error(`Failed to load seminars: ${response.status}`);
     const seminars = await response.json();
 
