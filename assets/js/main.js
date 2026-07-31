@@ -97,13 +97,10 @@ async function loadHomePublications() {
       const article = document.createElement('article');
       article.className = 'card card--publication';
 
-      const parts = [];
-      if (item.year) parts.push(item.year);
-      if (item.venue) parts.push(item.venue);
-      if (parts.length) {
+      if (item.venue) {
         const meta = document.createElement('p');
         meta.className = 'card-meta';
-        meta.textContent = parts.join(' • ');
+        meta.textContent = item.venue;
         article.appendChild(meta);
       }
 
@@ -123,7 +120,12 @@ async function loadHomePublications() {
       if (item.authors) {
         const authors = document.createElement('p');
         authors.className = 'card-authors';
-        authors.textContent = item.authors;
+        authors.textContent = Array.isArray(item.authors)
+          ? item.authors
+              .map((author) => (typeof author === 'string' ? author : author?.name))
+              .filter(Boolean)
+              .join(', ')
+          : item.authors;
         article.appendChild(authors);
       }
 
