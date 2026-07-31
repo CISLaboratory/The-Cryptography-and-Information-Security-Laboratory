@@ -375,11 +375,40 @@ a:focus {
 
 .timeline-item {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 1rem;
-  padding: 1.5rem;
+  padding: 0;
   border-radius: 1rem;
   background: var(--card-bg);
   box-shadow: 0 16px 30px rgba(39, 70, 144, 0.08);
+  overflow: hidden;
+}
+
+.timeline-item--with-image {
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+}
+
+.timeline-image-link {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.timeline-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 230px;
+  object-fit: cover;
+  object-position: 38% center;
+}
+
+.timeline-body {
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1.5rem;
 }
 
 .timeline-item header {
@@ -430,6 +459,7 @@ a:focus {
 
 .timeline-title h3 {
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .inline-link {
@@ -457,6 +487,27 @@ a:focus {
 #news-detail p {
   margin: 0;
   line-height: 1.5;
+}
+
+.news-detail-figure {
+  margin: 0;
+  max-width: 100%;
+}
+
+.news-detail-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 760px);
+  object-fit: contain;
+  border-radius: 0.75rem;
+}
+
+.news-detail-figure figcaption {
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .publication-authors,
@@ -548,7 +599,17 @@ a:focus {
     margin: 0 auto;
   }
 
-  .timeline-item {
+  .timeline-item--with-image {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .timeline-image {
+    width: 100%;
+    height: clamp(200px, 55vw, 260px);
+    min-height: 0;
+  }
+
+  .timeline-body {
     padding: 1.25rem;
   }
 
