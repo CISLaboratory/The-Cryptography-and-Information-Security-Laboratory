@@ -63,7 +63,7 @@ async function loadNews() {
           const moreLink = document.createElement('a');
           moreLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
           moreLink.className = 'inline-link';
-          moreLink.textContent = 'Read announcement';
+          moreLink.textContent = 'Read more';
           article.appendChild(moreLink);
 
           fragment.appendChild(article);
