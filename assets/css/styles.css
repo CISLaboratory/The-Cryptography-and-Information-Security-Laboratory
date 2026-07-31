@@ -449,6 +449,11 @@ a:focus {
   font-size: clamp(1.3rem, 3vw, 1.6rem);
 }
 
+#news-detail p {
+  margin: 0;
+  line-height: 1.5;
+}
+
 .publication-authors,
 .publication-abstract {
   margin: 0;
