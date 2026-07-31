@@ -53,6 +53,18 @@ async function loadNewsDetail() {
     metaList.append(dateTerm, dateValue);
     fragment.appendChild(metaList);
 
+    if (Array.isArray(news.content) && news.content.length) {
+      news.content.forEach((paragraph) => {
+        const p = document.createElement('p');
+        p.textContent = paragraph;
+        fragment.appendChild(p);
+      });
+    } else if (news.description) {
+      const p = document.createElement('p');
+      p.textContent = news.description;
+      fragment.appendChild(p);
+    }
+
     if (news.image) {
       const figure = document.createElement('figure');
       figure.className = 'news-detail-figure';
@@ -70,18 +82,6 @@ async function loadNewsDetail() {
       }
 
       fragment.appendChild(figure);
-    }
-
-    if (Array.isArray(news.content) && news.content.length) {
-      news.content.forEach((paragraph) => {
-        const p = document.createElement('p');
-        p.textContent = paragraph;
-        fragment.appendChild(p);
-      });
-    } else if (news.description) {
-      const p = document.createElement('p');
-      p.textContent = news.description;
-      fragment.appendChild(p);
     }
 
     const backLink = document.createElement('a');

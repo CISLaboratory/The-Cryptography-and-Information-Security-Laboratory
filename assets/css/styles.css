@@ -491,7 +491,9 @@ a:focus {
 
 .news-detail-figure {
   margin: 0;
+  width: 70.71%;
   max-width: 100%;
+  justify-self: center;
 }
 
 .news-detail-image {
