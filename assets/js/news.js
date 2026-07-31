@@ -1,7 +1,7 @@
 import './main.js';
 
 function formatDate(value) {
-  return new Date(value).toLocaleDateString(undefined, {
+  return new Date(value).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'

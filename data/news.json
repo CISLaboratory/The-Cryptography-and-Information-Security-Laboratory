@@ -2,23 +2,13 @@
   {
     "slug": "anze-sun-presents-research-at-acisp-2026",
     "title": "Anze Sun Presents Research at ACISP 2026",
-    "date": "2026-07-09",
+    "date": "2026-07-31",
     "description": "Anze Sun presented the laboratory’s research on the cryptanalysis of SHA-3 at the 31st Australasian Conference on Information Security and Privacy in Perth, Australia.",
     "content": [
       "From 6 to 9 July, the 31st Australasian Conference on Information Security and Privacy (ACISP 2026) was held in Perth, Australia. ACISP is an important international conference in the field of information security and privacy in the Asia-Pacific region, covering frontier research in cryptography, system security, privacy protection, and cybersecurity.",
       "The paper entitled SoK: The Cryptanalysis of SHA-3 Standard, co-authored by Associate Professor Hailun Yan and graduate student Anze Sun from the laboratory in collaboration with Jiahao Wang and Zheng Li, was accepted by the conference.",
       "The paper provides a systematic overview of advances in the cryptanalysis of the SHA-3 standard and its underlying Keccak construction. It reviews and classifies existing results on collision attacks, preimage attacks, security analyses of keyed modes of Keccak, and distinguishers exploiting structural properties of the Keccak permutation. It also summarizes the development of major cryptanalytic techniques for reduced-round SHA-3 and Keccak, compares representative results, and discusses current technical bottlenecks and open problems for future research.",
       "During the conference, Anze Sun delivered an academic presentation on behalf of the research team. He introduced the motivation and main content of the paper and exchanged views with international researchers on the current state and future directions of SHA-3 cryptanalysis."
-    ]
-  },
-  {
-    "slug": "welcome-to-the-lab-website",
-    "title": "Welcome to the Lab Website",
-    "date": "2025-06-01",
-    "description": "Welcome to the lab website, your home for updates on our research, people, and events.",
-    "content": [
-      "Welcome to the lab website! Explore our research highlights, meet the team, and stay connected with upcoming events.",
-      "Check back often for announcements on new publications, seminars, and collaboration opportunities."
     ]
   }
 ]
