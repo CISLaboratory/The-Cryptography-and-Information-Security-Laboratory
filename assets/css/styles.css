@@ -444,6 +444,22 @@ a:focus {
   gap: 1.5rem;
 }
 
+.detail-card h2 {
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.3rem, 3vw, 1.6rem);
+}
+
+.publication-authors,
+.publication-abstract {
+  margin: 0;
+}
+
+.member-label {
+  color: var(--muted);
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
 .detail-meta {
   display: grid;
   gap: 0.35rem 1rem;
@@ -470,6 +486,23 @@ a:focus {
 
 .link-list a {
   font-weight: 600;
+}
+
+.keyword-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.keyword-list li {
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(39, 70, 144, 0.1);
+  color: var(--primary);
+  font-size: 0.9rem;
 }
 
 @media (max-width: 720px) {
@@ -507,5 +540,14 @@ a:focus {
 
   .timeline-item {
     padding: 1.25rem;
+  }
+
+  .detail-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-meta dd {
+    margin-bottom: 0.5rem;
+    overflow-wrap: anywhere;
   }
 }

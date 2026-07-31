@@ -1,5 +1,14 @@
 import './main.js';
 
+function formatAuthors(authors) {
+  if (typeof authors === 'string') return authors;
+  if (!Array.isArray(authors)) return '';
+  return authors
+    .map((author) => (typeof author === 'string' ? author : author?.name))
+    .filter(Boolean)
+    .join(', ');
+}
+
 async function loadPublications() {
   const publicationsList = document.getElementById('publications-list');
   if (!publicationsList) return;
@@ -70,7 +79,8 @@ async function loadPublications() {
           itemEl.appendChild(titleEl);
 
           const metaParts = [];
-          if (item.authors) metaParts.push(item.authors);
+          const authors = formatAuthors(item.authors);
+          if (authors) metaParts.push(authors);
           if (item.venue) metaParts.push(item.venue);
           if (item.note) metaParts.push(item.note);
 

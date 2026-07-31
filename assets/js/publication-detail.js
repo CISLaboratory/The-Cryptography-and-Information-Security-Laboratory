@@ -1,15 +1,52 @@
 import './main.js';
 
 function getQueryParam(name) {
-  const params = new URLSearchParams(window.location.search);
-  return params.get(name);
+  return new URLSearchParams(window.location.search).get(name);
 }
 
-function formatPublicationDate(item) {
-  if (!item.year) return null;
-  if (!item.month) return String(item.year);
-  const date = new Date(Number(item.year), Number(item.month) - 1);
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long' });
+function appendDefinition(list, label, value, linkUrl) {
+  if (value === undefined || value === null || value === '') return;
+  const term = document.createElement('dt');
+  term.textContent = label;
+  const description = document.createElement('dd');
+
+  if (linkUrl) {
+    const link = document.createElement('a');
+    link.href = linkUrl;
+    link.textContent = value;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    description.appendChild(link);
+  } else {
+    description.textContent = value;
+  }
+  list.append(term, description);
+}
+
+function createAuthors(authors) {
+  const wrapper = document.createElement('p');
+  wrapper.className = 'publication-authors';
+
+  if (typeof authors === 'string') {
+    wrapper.textContent = authors;
+    return wrapper;
+  }
+
+  (Array.isArray(authors) ? authors : []).forEach((author, index) => {
+    if (index) wrapper.append(', ');
+    const isMember = typeof author === 'object' && author?.laboratoryMember;
+    const name = document.createElement(isMember ? 'strong' : 'span');
+    name.textContent = typeof author === 'string' ? author : author?.name ?? '';
+    wrapper.appendChild(name);
+
+    if (isMember) {
+      const marker = document.createElement('span');
+      marker.className = 'member-label';
+      marker.textContent = ' (Laboratory Member)';
+      wrapper.appendChild(marker);
+    }
+  });
+  return wrapper;
 }
 
 async function loadPublicationDetail() {
@@ -19,7 +56,6 @@ async function loadPublicationDetail() {
   const subtitleEl = document.getElementById('publication-subtitle');
 
   if (!container) return;
-
   if (!slug) {
     container.innerHTML = '<p>Publication not found. Please return to the publications archive.</p>';
     return;
@@ -29,67 +65,71 @@ async function loadPublicationDetail() {
     const response = await fetch('data/publications.json');
     if (!response.ok) throw new Error(`Failed to load publications: ${response.status}`);
     const publications = await response.json();
-
     const publication = publications.find((item) => item.slug === slug);
+
     if (!publication) {
       container.innerHTML = '<p>Publication not found. Please return to the publications archive.</p>';
       return;
     }
 
     if (titleEl) titleEl.textContent = publication.title;
-    if (subtitleEl && publication.authors) subtitleEl.textContent = publication.authors;
+    if (subtitleEl) subtitleEl.hidden = true;
+    document.title = `${publication.title} | CIS-Lab`;
 
     const fragment = document.createDocumentFragment();
 
+    if (publication.authors) {
+      const authorsHeading = document.createElement('h2');
+      authorsHeading.textContent = 'Authors';
+      fragment.append(authorsHeading, createAuthors(publication.authors));
+    }
+
+    const detailsHeading = document.createElement('h2');
+    detailsHeading.textContent = 'Publication Details';
+    fragment.appendChild(detailsHeading);
+
     const metaList = document.createElement('dl');
     metaList.className = 'detail-meta';
-
-    if (publication.authors) {
-      const authorsTerm = document.createElement('dt');
-      authorsTerm.textContent = 'Authors';
-      const authorsValue = document.createElement('dd');
-      authorsValue.textContent = publication.authors;
-      metaList.append(authorsTerm, authorsValue);
-    }
-
-    if (publication.venue) {
-      const venueTerm = document.createElement('dt');
-      venueTerm.textContent = 'Venue';
-      const venueValue = document.createElement('dd');
-      venueValue.textContent = publication.venue;
-      metaList.append(venueTerm, venueValue);
-    }
-
-    const formattedDate = formatPublicationDate(publication);
-    if (formattedDate) {
-      const dateTerm = document.createElement('dt');
-      dateTerm.textContent = 'Published';
-      const dateValue = document.createElement('dd');
-      dateValue.textContent = formattedDate;
-      metaList.append(dateTerm, dateValue);
-    }
-
-    if (publication.note) {
-      const noteTerm = document.createElement('dt');
-      noteTerm.textContent = 'Notes';
-      const noteValue = document.createElement('dd');
-      noteValue.textContent = publication.note;
-      metaList.append(noteTerm, noteValue);
-    }
-
+    const details = publication.publicationDetails ?? {};
+    appendDefinition(metaList, 'Conference', details.conference ?? publication.venue);
+    appendDefinition(metaList, 'Proceedings', details.proceedings);
+    const series = details.series && details.volume
+      ? `${details.series}, Vol. ${details.volume}`
+      : details.series;
+    appendDefinition(metaList, 'Series', series);
+    appendDefinition(metaList, 'Pages', details.pages);
+    appendDefinition(metaList, 'Publisher', details.publisher);
+    appendDefinition(metaList, 'Year', publication.year);
+    appendDefinition(metaList, 'First Online', publication.firstOnline);
+    appendDefinition(metaList, 'DOI', publication.doi, publication.doiUrl);
     fragment.appendChild(metaList);
 
-    if (publication.summary) {
-      const summary = document.createElement('p');
-      summary.textContent = publication.summary;
-      fragment.appendChild(summary);
+    const abstractText = publication.abstract ?? publication.summary;
+    if (abstractText) {
+      const abstractHeading = document.createElement('h2');
+      abstractHeading.textContent = 'Abstract';
+      const abstract = document.createElement('p');
+      abstract.className = 'publication-abstract';
+      abstract.textContent = abstractText;
+      fragment.append(abstractHeading, abstract);
+    }
+
+    if (Array.isArray(publication.keywords) && publication.keywords.length) {
+      const keywordsHeading = document.createElement('h2');
+      keywordsHeading.textContent = 'Keywords';
+      const keywords = document.createElement('ul');
+      keywords.className = 'keyword-list';
+      publication.keywords.forEach((keyword) => {
+        const item = document.createElement('li');
+        item.textContent = keyword;
+        keywords.appendChild(item);
+      });
+      fragment.append(keywordsHeading, keywords);
     }
 
     if (Array.isArray(publication.links) && publication.links.length) {
       const linksHeading = document.createElement('h2');
       linksHeading.textContent = 'Resources';
-      fragment.appendChild(linksHeading);
-
       const linksList = document.createElement('ul');
       linksList.className = 'link-list';
 
@@ -104,8 +144,7 @@ async function loadPublicationDetail() {
         item.appendChild(anchor);
         linksList.appendChild(item);
       });
-
-      fragment.appendChild(linksList);
+      fragment.append(linksHeading, linksList);
     }
 
     const backLink = document.createElement('a');
