@@ -383,6 +383,11 @@ a:focus {
 }
 
 .timeline-item header {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.timeline-heading {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
