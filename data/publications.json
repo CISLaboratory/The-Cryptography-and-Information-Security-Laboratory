@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "slug": "sok-cryptanalysis-sha3-standard",
+    "title": "SoK: The Cryptanalysis of SHA-3 Standard",
+    "authors": [
+      { "name": "Hailun Yan", "laboratoryMember": true },
+      { "name": "Anze Sun", "laboratoryMember": true },
+      { "name": "Jiahao Wang", "laboratoryMember": false },
+      { "name": "Zheng Li", "laboratoryMember": false }
+    ],
+    "venue": "Australasian Conference on Information Security and Privacy 2026",
+    "year": 2026,
+    "month": 7,
+    "publicationDetails": {
+      "conference": "Australasian Conference on Information Security and Privacy 2026",
+      "proceedings": "Information Security and Privacy",
+      "series": "Lecture Notes in Computer Science",
+      "volume": "16794",
+      "pages": "123–141",
+      "publisher": "Springer, Singapore"
+    },
+    "firstOnline": "18 July 2026",
+    "doi": "10.1007/978-981-92-3018-1_5",
+    "doiUrl": "https://doi.org/10.1007/978-981-92-3018-1_5",
+    "abstract": "SHA-3, based on the sponge construction instantiated with the Keccak permutation, was standardized by NIST in 2015. Since its standardization, extensive research has been devoted to evaluating its security. This survey provides a comprehensive overview of the latest advances in the cryptanalysis of SHA-3 (Keccak). We systematically review collision attacks, preimage attacks, as well as security analyses on the keyed modes of Keccak, such as KMAC. In addition, we summarize related work on distinguishers that exploit structural properties of the Keccak permutation. By classifying and comparing these techniques, we highlight the current state of the art and discuss several open problems for future research.",
+    "keywords": ["SHA-3", "Keccak", "Hash function", "Collision attack", "Preimage attack"],
+    "links": [
+      {
+        "label": "Publisher / DOI",
+        "url": "https://doi.org/10.1007/978-981-92-3018-1_5"
+      }
+    ]
+  }
+]
