@@ -384,6 +384,10 @@ a:focus {
   overflow: hidden;
 }
 
+#seminar-timeline .timeline-item {
+  padding: 1.5rem;
+}
+
 .timeline-item--with-image {
   grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
 }
@@ -612,6 +616,10 @@ a:focus {
   }
 
   .timeline-body {
+    padding: 1.25rem;
+  }
+
+  #seminar-timeline .timeline-item {
     padding: 1.25rem;
   }
 
