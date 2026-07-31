@@ -138,5 +138,19 @@
         "url": "https://eprint.iacr.org/2025/954"
       }
     ]
+  },
+  {
+    "slug": "algorithmic-toolkit-linearization-s-boxes",
+    "title": "[Paper Reading] Algorithmic Toolkit for Linearization of S-boxes⋆",
+    "speaker": "Zhenyu Zhao",
+    "datetime": "2026-07-07",
+    "year": 2026,
+    "description": "",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2026/913"
+      }
+    ]
   }
 ]
