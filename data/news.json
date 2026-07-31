@@ -1,5 +1,17 @@
 [
   {
+    "slug": "anze-sun-acisp-2026",
+    "title": "Anze Sun Delivers an Academic Presentation at ACISP 2026",
+    "date": "2026-07-09",
+    "description": "The paper SoK: The Cryptanalysis of SHA-3 Standard was accepted by ACISP 2026, where Anze Sun presented the work at the conference.",
+    "image": "assets/images/news/acisp-2026-anze-sun.jpg",
+    "imageAlt": "Anze Sun presenting research on SHA-3 cryptanalysis at ACISP 2026",
+    "imageCaption": "Anze Sun presents SoK: The Cryptanalysis of SHA-3 Standard at ACISP 2026 in Perth, Australia.",
+    "content": [
+      "The paper SoK: The Cryptanalysis of SHA-3 Standard was accepted by ACISP 2026, where Anze Sun presented the work and exchanged views with international researchers on SHA-3 cryptanalysis."
+    ]
+  },
+  {
     "slug": "anze-sun-presents-research-at-acisp-2026",
     "title": "Anze Sun Presents \"SoK: The Cryptanalysis of SHA-3 Standard\" at ACISP 2026",
     "date": "2026-07-31",

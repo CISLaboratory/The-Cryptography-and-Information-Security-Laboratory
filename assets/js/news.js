@@ -38,13 +38,34 @@ async function loadNews() {
           const article = document.createElement('article');
           article.className = 'timeline-item';
 
+          if (item.image) {
+            article.classList.add('timeline-item--with-image');
+            const imageLink = document.createElement('a');
+            imageLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
+            imageLink.className = 'timeline-image-link';
+
+            const image = document.createElement('img');
+            image.src = item.image;
+            image.alt = item.imageAlt ?? '';
+            image.loading = 'lazy';
+            image.className = 'timeline-image';
+
+            imageLink.appendChild(image);
+            article.appendChild(imageLink);
+          }
+
+          const body = document.createElement('div');
+          body.className = 'timeline-body';
+
           const header = document.createElement('header');
           const titleWrap = document.createElement('div');
 
           const titleLink = document.createElement('a');
           titleLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
           titleLink.className = 'timeline-title';
-          titleLink.innerHTML = `<h3>${item.title}</h3>`;
+          const title = document.createElement('h3');
+          title.textContent = item.title;
+          titleLink.appendChild(title);
 
           const summary = document.createElement('p');
           summary.textContent = item.description;
@@ -58,13 +79,14 @@ async function loadNews() {
 
           header.appendChild(titleWrap);
           header.appendChild(time);
-          article.appendChild(header);
+          body.appendChild(header);
 
           const moreLink = document.createElement('a');
           moreLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
           moreLink.className = 'inline-link';
           moreLink.textContent = 'Read more';
-          article.appendChild(moreLink);
+          body.appendChild(moreLink);
+          article.appendChild(body);
 
           fragment.appendChild(article);
         });

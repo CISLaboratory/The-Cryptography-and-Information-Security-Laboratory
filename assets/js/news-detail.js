@@ -53,6 +53,25 @@ async function loadNewsDetail() {
     metaList.append(dateTerm, dateValue);
     fragment.appendChild(metaList);
 
+    if (news.image) {
+      const figure = document.createElement('figure');
+      figure.className = 'news-detail-figure';
+
+      const image = document.createElement('img');
+      image.src = news.image;
+      image.alt = news.imageAlt ?? '';
+      image.className = 'news-detail-image';
+      figure.appendChild(image);
+
+      if (news.imageCaption) {
+        const caption = document.createElement('figcaption');
+        caption.textContent = news.imageCaption;
+        figure.appendChild(caption);
+      }
+
+      fragment.appendChild(figure);
+    }
+
     if (Array.isArray(news.content) && news.content.length) {
       news.content.forEach((paragraph) => {
         const p = document.createElement('p');
