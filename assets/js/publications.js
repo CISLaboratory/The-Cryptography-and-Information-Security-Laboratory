@@ -1,22 +1,26 @@
 import './main.js';
-
-function formatAuthors(authors) {
-  if (typeof authors === 'string') return authors;
-  if (!Array.isArray(authors)) return '';
-  return authors
-    .map((author) => (typeof author === 'string' ? author : author?.name))
-    .filter(Boolean)
-    .join(', ');
-}
+import { appendAuthors, getCurrentStudentNames } from './author-utils.js';
 
 async function loadPublications() {
   const publicationsList = document.getElementById('publications-list');
   if (!publicationsList) return;
 
   try {
-    const response = await fetch('data/publications.json');
-    if (!response.ok) throw new Error(`Failed to load publications: ${response.status}`);
-    const publications = await response.json();
+    const [publicationsResponse, peopleResponse] = await Promise.all([
+      fetch('data/publications.json'),
+      fetch('data/people.json')
+    ]);
+
+    if (!publicationsResponse.ok) {
+      throw new Error(`Failed to load publications: ${publicationsResponse.status}`);
+    }
+    if (!peopleResponse.ok) {
+      throw new Error(`Failed to load people: ${peopleResponse.status}`);
+    }
+
+    const publications = await publicationsResponse.json();
+    const people = await peopleResponse.json();
+    const currentStudentNames = getCurrentStudentNames(people);
 
     if (!Array.isArray(publications) || publications.length === 0) {
       publicationsList.innerHTML = '<p>No publications available at this time.</p>';
@@ -78,16 +82,22 @@ async function loadPublications() {
           titleEl.appendChild(detailLink);
           itemEl.appendChild(titleEl);
 
-          const metaParts = [];
-          const authors = formatAuthors(item.authors);
-          if (authors) metaParts.push(authors);
-          if (item.venue) metaParts.push(item.venue);
-          if (item.note) metaParts.push(item.note);
-
-          if (metaParts.length) {
+          if (item.authors || item.venue || item.note) {
             const metaEl = document.createElement('p');
             metaEl.className = 'publication-meta';
-            metaEl.textContent = metaParts.join(' · ');
+
+            if (item.authors) {
+              appendAuthors(metaEl, item.authors, currentStudentNames);
+            }
+            if (item.venue) {
+              if (metaEl.childNodes.length) metaEl.append(' · ');
+              metaEl.append(item.venue);
+            }
+            if (item.note) {
+              if (metaEl.childNodes.length) metaEl.append(' · ');
+              metaEl.append(item.note);
+            }
+
             itemEl.appendChild(metaEl);
           }
 

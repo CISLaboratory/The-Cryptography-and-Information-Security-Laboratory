@@ -21,6 +21,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
       - name: Validate JSON content
         run: python scripts/validate_content.py
 
@@ -35,3 +40,11 @@ jobs:
           for file in assets/js/*.js; do
             node --check "$file"
           done
+
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-package-lock
+          npx playwright install --with-deps chromium
+
+      - name: Run desktop and mobile smoke tests
+        run: npm run test:smoke

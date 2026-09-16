@@ -1,5 +1,20 @@
 import './main.js';
 
+function getRoleCategory(person) {
+  const role = String(person?.role ?? person?.position ?? '').toLowerCase();
+
+  if (role.includes('professor')) {
+    return { key: 'faculty', label: 'Faculty', rank: 0 };
+  }
+  if (role.includes('ph.d')) {
+    return { key: 'phd', label: 'Ph.D. Students', rank: 1 };
+  }
+  if (role.includes('master')) {
+    return { key: 'master', label: 'Master Students', rank: 2 };
+  }
+  return { key: 'other', label: 'Other', rank: 3 };
+}
+
 async function loadPeople() {
   const tableBody = document.getElementById('people-table-body');
   const filter = document.getElementById('people-filter');
@@ -10,11 +25,19 @@ async function loadPeople() {
     if (!response.ok) throw new Error(`Failed to load people: ${response.status}`);
     const people = await response.json();
 
-    const roles = Array.from(new Set(people.map((person) => person.role))).sort();
-    roles.forEach((role) => {
+    const categories = Array.from(
+      new Map(
+        people
+          .map((person) => getRoleCategory(person))
+          .sort((a, b) => a.rank - b.rank)
+          .map((category) => [category.key, category])
+      ).values()
+    );
+
+    categories.forEach((category) => {
       const option = document.createElement('option');
-      option.value = role;
-      option.textContent = role;
+      option.value = category.key;
+      option.textContent = category.label;
       filter.appendChild(option);
     });
 
@@ -24,13 +47,13 @@ async function loadPeople() {
       if (value instanceof Node) {
         cell.appendChild(value);
       } else {
-        cell.textContent = value ?? '';
+        cell.textContent = value || '—';
       }
       return cell;
     };
 
     const createEmailLink = (email) => {
-      if (!email) return '';
+      if (!email) return '—';
       const link = document.createElement('a');
       link.href = `mailto:${email}`;
       link.textContent = email;
@@ -38,7 +61,7 @@ async function loadPeople() {
     };
 
     const createWebsiteLink = (website) => {
-      if (!website) return '';
+      if (!website) return '—';
       const link = document.createElement('a');
       link.href = website;
       link.target = '_blank';
@@ -47,19 +70,25 @@ async function loadPeople() {
       return link;
     };
 
+    const sortedPeople = [...people].sort(
+      (a, b) => getRoleCategory(a).rank - getRoleCategory(b).rank
+    );
+
     const renderRows = () => {
       const selectedRole = filter.value;
       const fragment = document.createDocumentFragment();
 
-      people
-        .filter((person) => selectedRole === 'all' || person.role === selectedRole)
+      sortedPeople
+        .filter(
+          (person) => selectedRole === 'all' || getRoleCategory(person).key === selectedRole
+        )
         .forEach((person) => {
           const row = document.createElement('tr');
           row.append(
             createCell('Name', person.name),
-            createCell('Job Position', person.position),
+            createCell('Position', person.position),
             createCell('Email', createEmailLink(person.email)),
-            createCell('Personal Website', createWebsiteLink(person.website))
+            createCell('Website', createWebsiteLink(person.website))
           );
           fragment.appendChild(row);
         });

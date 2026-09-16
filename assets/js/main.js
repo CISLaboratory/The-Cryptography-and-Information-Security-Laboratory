@@ -1,4 +1,5 @@
 import { compareDateDesc, formatDateOnly } from './date-utils.js';
+import { appendAuthors, getCurrentStudentNames } from './author-utils.js';
 
 const yearTarget = document.getElementById('year');
 if (yearTarget) {
@@ -94,9 +95,21 @@ async function loadHomePublications() {
   if (!publicationsList) return;
 
   try {
-    const response = await fetch('data/publications.json');
-    if (!response.ok) throw new Error(`Failed to load publications: ${response.status}`);
-    const publications = await response.json();
+    const [publicationsResponse, peopleResponse] = await Promise.all([
+      fetch('data/publications.json'),
+      fetch('data/people.json')
+    ]);
+
+    if (!publicationsResponse.ok) {
+      throw new Error(`Failed to load publications: ${publicationsResponse.status}`);
+    }
+    if (!peopleResponse.ok) {
+      throw new Error(`Failed to load people: ${peopleResponse.status}`);
+    }
+
+    const publications = await publicationsResponse.json();
+    const people = await peopleResponse.json();
+    const currentStudentNames = getCurrentStudentNames(people);
 
     const sorted = [...publications].sort((a, b) => {
       const yearDiff = (b.year ?? 0) - (a.year ?? 0);
@@ -142,12 +155,7 @@ async function loadHomePublications() {
       if (item.authors) {
         const authors = document.createElement('p');
         authors.className = 'card-authors';
-        authors.textContent = Array.isArray(item.authors)
-          ? item.authors
-              .map((author) => (typeof author === 'string' ? author : author?.name))
-              .filter(Boolean)
-              .join(', ')
-          : item.authors;
+        appendAuthors(authors, item.authors, currentStudentNames);
         article.appendChild(authors);
       }
 
