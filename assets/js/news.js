@@ -1,10 +1,13 @@
 import './main.js';
+import { ensureResultsSummary } from './polish.js';
 import { compareDateDesc, formatDateOnly, getYearFromDate } from './date-utils.js';
 
 async function loadNews() {
   const timeline = document.getElementById('news-timeline');
   const yearFilter = document.getElementById('news-year');
   if (!timeline || !yearFilter) return;
+
+  const summary = ensureResultsSummary(yearFilter.closest('.seminar-controls'), 'news-summary');
 
   try {
     const response = await fetch('data/news.json');
@@ -22,67 +25,74 @@ async function loadNews() {
     const renderNews = () => {
       const selected = yearFilter.value;
       const fragment = document.createDocumentFragment();
-
-      newsItems
+      const filteredNews = newsItems
         .filter((item) => selected === 'all' || String(getYearFromDate(item.date)) === selected)
-        .sort((a, b) => compareDateDesc(a.date, b.date))
-        .forEach((item) => {
-          const slug = item.slug ?? '';
-          const article = document.createElement('article');
-          article.className = 'timeline-item';
+        .sort((a, b) => compareDateDesc(a.date, b.date));
 
-          if (item.image) {
-            article.classList.add('timeline-item--with-image');
-            const imageLink = document.createElement('a');
-            imageLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
-            imageLink.className = 'timeline-image-link';
+      if (summary) {
+        const noun = filteredNews.length === 1 ? 'news item' : 'news items';
+        summary.textContent = selected === 'all'
+          ? `Showing ${filteredNews.length} ${noun}.`
+          : `Showing ${filteredNews.length} ${noun} from ${selected}.`;
+      }
 
-            const image = document.createElement('img');
-            image.src = item.image;
-            image.alt = item.imageAlt ?? '';
-            image.loading = 'lazy';
-            image.className = 'timeline-image';
+      filteredNews.forEach((item) => {
+        const slug = item.slug ?? '';
+        const article = document.createElement('article');
+        article.className = 'timeline-item';
 
-            imageLink.appendChild(image);
-            article.appendChild(imageLink);
-          }
+        if (item.image) {
+          article.classList.add('timeline-item--with-image');
+          const imageLink = document.createElement('a');
+          imageLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
+          imageLink.className = 'timeline-image-link';
 
-          const body = document.createElement('div');
-          body.className = 'timeline-body';
+          const image = document.createElement('img');
+          image.src = item.image;
+          image.alt = item.imageAlt ?? '';
+          image.loading = 'lazy';
+          image.className = 'timeline-image';
 
-          const header = document.createElement('header');
-          const titleWrap = document.createElement('div');
+          imageLink.appendChild(image);
+          article.appendChild(imageLink);
+        }
 
-          const titleLink = document.createElement('a');
-          titleLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
-          titleLink.className = 'timeline-title';
-          const title = document.createElement('h3');
-          title.textContent = item.title;
-          titleLink.appendChild(title);
+        const body = document.createElement('div');
+        body.className = 'timeline-body';
 
-          const summary = document.createElement('p');
-          summary.textContent = item.description;
+        const header = document.createElement('header');
+        const titleWrap = document.createElement('div');
 
-          titleWrap.appendChild(titleLink);
-          titleWrap.appendChild(summary);
+        const titleLink = document.createElement('a');
+        titleLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
+        titleLink.className = 'timeline-title';
+        const title = document.createElement('h3');
+        title.textContent = item.title;
+        titleLink.appendChild(title);
 
-          const time = document.createElement('time');
-          time.dateTime = item.date;
-          time.textContent = formatDateOnly(item.date);
+        const itemSummary = document.createElement('p');
+        itemSummary.textContent = item.description;
 
-          header.appendChild(titleWrap);
-          header.appendChild(time);
-          body.appendChild(header);
+        titleWrap.appendChild(titleLink);
+        titleWrap.appendChild(itemSummary);
 
-          const moreLink = document.createElement('a');
-          moreLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
-          moreLink.className = 'inline-link';
-          moreLink.textContent = 'Read more';
-          body.appendChild(moreLink);
-          article.appendChild(body);
+        const time = document.createElement('time');
+        time.dateTime = item.date;
+        time.textContent = formatDateOnly(item.date);
 
-          fragment.appendChild(article);
-        });
+        header.appendChild(titleWrap);
+        header.appendChild(time);
+        body.appendChild(header);
+
+        const moreLink = document.createElement('a');
+        moreLink.href = slug ? `news-detail.html?slug=${encodeURIComponent(slug)}` : '#';
+        moreLink.className = 'inline-link';
+        moreLink.textContent = 'Read more';
+        body.appendChild(moreLink);
+        article.appendChild(body);
+
+        fragment.appendChild(article);
+      });
 
       timeline.innerHTML = '';
       if (!fragment.childNodes.length) {
@@ -98,6 +108,7 @@ async function loadNews() {
     renderNews();
   } catch (error) {
     timeline.innerHTML = '<p>Unable to load news items at this time.</p>';
+    if (summary) summary.textContent = '';
     console.error(error);
   }
 }
