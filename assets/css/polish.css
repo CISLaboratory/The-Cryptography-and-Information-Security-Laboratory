@@ -192,17 +192,19 @@ body[data-page="seminars"] .seminar-controls select:focus-visible {
 /* Publication archive: flatter, more editorial hierarchy */
 .publication-year {
   margin-bottom: 2.3rem;
+  padding: 0 1.4rem 1.3rem;
 }
 
 .publication-year__title {
   display: block;
   margin: 0;
-  padding: 0 0 0.75rem;
+  padding: 1rem 0 0.8rem;
   border-bottom: 2px solid var(--navy);
   border-radius: 0;
   background: transparent;
   color: var(--navy);
   font-size: 1.12rem;
+  line-height: 1.25;
   letter-spacing: -0.01em;
 }
 
@@ -462,6 +464,14 @@ body[data-page$="-detail"] .detail-card h2 {
 
   .home-publication-entry {
     padding: 1.25rem 0 1.35rem;
+  }
+
+  .publication-year {
+    padding-inline: 1rem;
+  }
+
+  .publication-year__title {
+    padding-top: 0.8rem;
   }
 
   .home-publication-venue::before {
