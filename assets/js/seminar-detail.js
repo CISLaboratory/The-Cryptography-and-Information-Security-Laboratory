@@ -1,16 +1,9 @@
 import './main.js';
+import { formatDateOnly } from './date-utils.js';
 
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
-}
-
-function formatDateTime(value) {
-  return new Date(value).toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
 }
 
 function getSeminarDataUrl() {
@@ -52,9 +45,9 @@ async function loadSeminarDetail() {
     metaList.className = 'detail-meta';
 
     const dateTerm = document.createElement('dt');
-    dateTerm.textContent = 'Date & Time';
+    dateTerm.textContent = 'Date';
     const dateValue = document.createElement('dd');
-    dateValue.textContent = formatDateTime(seminar.datetime);
+    dateValue.textContent = formatDateOnly(seminar.date);
 
     metaList.append(dateTerm, dateValue);
 
@@ -63,7 +56,6 @@ async function loadSeminarDetail() {
       locationTerm.textContent = 'Location';
       const locationValue = document.createElement('dd');
       locationValue.textContent = seminar.location;
-
       metaList.append(locationTerm, locationValue);
     }
     fragment.appendChild(metaList);
