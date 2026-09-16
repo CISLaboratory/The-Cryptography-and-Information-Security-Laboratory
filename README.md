@@ -26,6 +26,7 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - `scripts/validate_content.py` — repository content validator used locally and by CI.
 - `scripts/generate_sitemap.py` — deterministic sitemap generator/checker.
 - `docs/REPOSITORY_GOVERNANCE.md` — repository-owner/admin settings and handover checklist.
+- `docs/ARCHITECTURE_V2.md` — deferred Jekyll/static-detail migration decision, triggers, and compatibility requirements.
 
 ## Content policy
 
@@ -69,7 +70,7 @@ The current static site provides:
 - dynamically generated NewsArticle, Event, and ScholarlyArticle metadata on detail pages;
 - `robots.txt`, generated `sitemap.xml`, and a `404.html` page.
 
-The current detail routes still use `?slug=...` and client-side rendering. This is a known architectural limitation for crawlers/social preview systems that do not execute JavaScript; a future static-page/Jekyll migration should address it while preserving URL compatibility.
+The current detail routes still use `?slug=...` and client-side rendering. This is a known architectural limitation for crawlers/social preview systems that do not execute JavaScript; a future static-page/Jekyll migration should address it while preserving URL compatibility. The migration decision and trigger conditions are documented in [`docs/ARCHITECTURE_V2.md`](docs/ARCHITECTURE_V2.md).
 
 ## Automated validation
 
