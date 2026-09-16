@@ -104,6 +104,15 @@ test('home hero preserves restrained academic visual hierarchy', async ({ page }
   }
 });
 
+test('Home Latest News heading stays concise without redundant kicker or description', async ({ page }) => {
+  await page.goto('/index.html', { waitUntil: 'networkidle' });
+
+  const newsSection = page.locator('#news');
+  await expect(newsSection.locator('.section-heading h2')).toHaveText('Latest News');
+  await expect(newsSection.locator('.section-kicker')).toHaveCount(0);
+  await expect(newsSection.getByText('Recent updates published by CIS-Lab.', { exact: true })).toHaveCount(0);
+});
+
 test('home publications use flat academic-list styling', async ({ page }) => {
   await page.goto('/index.html', { waitUntil: 'networkidle' });
 
@@ -141,13 +150,30 @@ test('publication archive keeps clean editorial year headings without count badg
     return {
       backgroundColor: styles.backgroundColor,
       borderBottomStyle: styles.borderBottomStyle,
-      borderBottomWidth: styles.borderBottomWidth
+      borderBottomWidth: styles.borderBottomWidth,
+      paddingTop: styles.paddingTop,
+      paddingBottom: styles.paddingBottom,
+      lineHeight: styles.lineHeight
     };
   });
 
   expect(yearStyles.backgroundColor).toBe('rgba(0, 0, 0, 0)');
   expect(yearStyles.borderBottomStyle).toBe('solid');
   expect(yearStyles.borderBottomWidth).toBe('2px');
+  expect(parseFloat(yearStyles.paddingTop)).toBeGreaterThan(10);
+  expect(parseFloat(yearStyles.paddingBottom)).toBeGreaterThan(10);
+  expect(parseFloat(yearStyles.lineHeight)).toBeGreaterThan(20);
+
+  const sectionStyles = await page.locator('.publication-year').first().evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      paddingLeft: styles.paddingLeft,
+      paddingRight: styles.paddingRight
+    };
+  });
+
+  expect(parseFloat(sectionStyles.paddingLeft)).toBeGreaterThanOrEqual(16);
+  expect(parseFloat(sectionStyles.paddingRight)).toBeGreaterThanOrEqual(16);
 });
 
 test('archive filters share one restrained visual language', async ({ page }) => {
