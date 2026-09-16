@@ -19,13 +19,16 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - `404.html` — GitHub Pages not-found page.
 - `robots.txt` / `sitemap.xml` — crawler discovery files.
 - `assets/css/styles.css` — shared site styles.
+- `assets/css/home.css` — home-page-only hero layout rules.
 - `assets/js/*.js` — shared and page-specific JavaScript modules.
+- `assets/js/author-utils.js` — shared helpers for identifying and emphasizing current student authors.
 - `assets/js/site-meta.js` — canonical URL, Open Graph, and structured-data helpers for data-driven detail pages.
 - `assets/images/` — site images and favicon.
 - `data/*.json` — canonical content data.
 - `scripts/validate_content.py` — repository content validator used locally and by CI.
 - `scripts/validate_publication_scope.py` — checks that every publication includes at least one current CIS-Lab student author.
 - `scripts/generate_sitemap.py` — deterministic sitemap generator/checker.
+- `tests/site-smoke.spec.js` — Playwright desktop/mobile smoke tests for core pages and navigation.
 - `docs/REPOSITORY_GOVERNANCE.md` — repository-owner/admin settings and handover checklist.
 - `docs/ARCHITECTURE_V2.md` — deferred Jekyll/static-detail migration decision, triggers, and compatibility requirements.
 
@@ -48,7 +51,7 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
    python scripts/generate_sitemap.py
    ```
 
-4. Run the local checks:
+4. Run the lightweight local checks:
 
    ```bash
    python scripts/validate_content.py
@@ -57,8 +60,16 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
    for file in assets/js/*.js; do node --check "$file"; done
    ```
 
-5. Open a pull request and review the diff before merging.
-6. Merge only after the `Validate site content` GitHub Actions workflow passes.
+5. For browser-level verification, install the pinned Playwright dependency and Chromium, then run:
+
+   ```bash
+   npm install --no-package-lock
+   npx playwright install chromium
+   npm run test:smoke
+   ```
+
+6. Open a pull request and review the diff before merging.
+7. Merge only after the `Validate site content` GitHub Actions workflow passes.
 
 Repository administrators should also complete and periodically review [`docs/REPOSITORY_GOVERNANCE.md`](docs/REPOSITORY_GOVERNANCE.md).
 
@@ -86,6 +97,10 @@ The current detail routes still use `?slug=...` and client-side rendering. This 
 - structured publication authors;
 - the student-authored Publications inclusion rule;
 - generated sitemap freshness;
-- basic JavaScript syntax.
+- basic JavaScript syntax;
+- desktop and mobile rendering of core pages;
+- mobile navigation open/close behavior;
+- horizontal overflow on the tested viewports;
+- visible emphasis of current student authors in the Publications list.
 
-The validation and sitemap tooling intentionally use only the Python standard library so the maintenance workflow has no package-install dependency.
+The content and sitemap validators use only the Python standard library. Browser smoke tests use a pinned Playwright development dependency and run in Chromium in CI.
