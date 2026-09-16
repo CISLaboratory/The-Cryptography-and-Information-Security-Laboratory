@@ -22,6 +22,8 @@ for (const entry of corePages) {
     await expect(page.locator('main')).toHaveAttribute('id', 'main-content');
     await expect(page.locator('.skip-link')).toHaveAttribute('href', '#main-content');
     await expect(page.locator('.top-nav')).toHaveAttribute('aria-label', 'Primary navigation');
+    await expect(page.locator('link[data-professional-styles]')).toHaveCount(1);
+    await expect(page.locator('.footer[data-enhanced="true"]')).toHaveCount(1);
 
     const overflow = await page.evaluate(() =>
       Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth)
@@ -29,6 +31,19 @@ for (const entry of corePages) {
     expect(overflow).toBeLessThanOrEqual(1);
   });
 }
+
+test('home page presents existing content as a lab portal without unconfirmed research-focus copy', async ({ page }) => {
+  await page.goto('/index.html', { waitUntil: 'networkidle' });
+
+  await expect(page.locator('.hero-title--single-line')).toHaveText(
+    'The Cryptography and Information Security Laboratory'
+  );
+  await expect(page.locator('.explore-grid .explore-item')).toHaveCount(3);
+  await expect(page.locator('.explore-grid')).toContainText('People');
+  await expect(page.locator('.explore-grid')).toContainText('Seminars');
+  await expect(page.locator('.explore-grid')).toContainText('Contact');
+  await expect(page.getByText('Research Focus', { exact: true })).toHaveCount(0);
+});
 
 test('skip link becomes keyboard-accessible on focus', async ({ page }) => {
   await page.goto('/index.html', { waitUntil: 'networkidle' });
