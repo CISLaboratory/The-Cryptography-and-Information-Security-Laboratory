@@ -85,7 +85,7 @@ A v2 migration is not complete unless all of the following are handled:
 - Preserve publication authors, current-member flags, DOI/resource links, venue/year/month metadata, abstracts, and keywords.
 - Preserve seminar speaker/date/resource information using the existing day-precision date policy.
 - Preserve news dates, images, alt text, captions, and body paragraphs.
-- Preserve the Publications inclusion rule: at least one current CIS-Lab member must be an author.
+- Preserve the Publications inclusion rule: at least one current CIS-Lab student must be an author; supervisor/faculty-only papers are excluded.
 
 ### 2. Preserve old URLs
 
