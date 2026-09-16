@@ -24,6 +24,9 @@ jobs:
       - name: Validate JSON content
         run: python scripts/validate_content.py
 
+      - name: Validate publication scope
+        run: python scripts/validate_publication_scope.py
+
       - name: Verify sitemap is current
         run: python scripts/generate_sitemap.py --check
 
