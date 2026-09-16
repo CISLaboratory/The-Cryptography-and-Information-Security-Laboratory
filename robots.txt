@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cislaboratory.github.io/The-Cryptography-and-Information-Security-Laboratory/sitemap.xml
