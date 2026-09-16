@@ -24,6 +24,9 @@ jobs:
       - name: Validate JSON content
         run: python scripts/validate_content.py
 
+      - name: Verify sitemap is current
+        run: python scripts/generate_sitemap.py --check
+
       - name: Check JavaScript syntax
         run: |
           for file in assets/js/*.js; do

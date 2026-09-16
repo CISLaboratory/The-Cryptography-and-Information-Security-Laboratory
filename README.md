@@ -1,6 +1,12 @@
 # CIS-Lab Website
 
-Static website for the Cryptography and Information Security Laboratory (CIS-Lab).
+Static website for the Cryptography and Information Security Laboratory (CIS-Lab), School of Cryptology, University of Chinese Academy of Sciences (UCAS).
+
+Current GitHub Pages base URL:
+
+`https://cislaboratory.github.io/The-Cryptography-and-Information-Security-Laboratory/`
+
+If a custom domain is introduced later, update the canonical/OG base URL, `robots.txt`, sitemap generator, and 404 asset paths together.
 
 ## Site structure
 
@@ -10,11 +16,15 @@ Static website for the Cryptography and Information Security Laboratory (CIS-Lab
 - `seminars.html` / `seminar-detail.html` — seminar archive and slug-based detail view backed by `data/seminars.json`.
 - `publications.html` / `publication-detail.html` — publication archive and slug-based detail view backed by `data/publications.json`.
 - `contact.html` — laboratory contact page.
+- `404.html` — GitHub Pages not-found page.
+- `robots.txt` / `sitemap.xml` — crawler discovery files.
 - `assets/css/styles.css` — shared site styles.
 - `assets/js/*.js` — shared and page-specific JavaScript modules.
-- `assets/images/` — site images.
+- `assets/js/site-meta.js` — canonical URL, Open Graph, and structured-data helpers for data-driven detail pages.
+- `assets/images/` — site images and favicon.
 - `data/*.json` — canonical content data.
 - `scripts/validate_content.py` — repository content validator used locally and by CI.
+- `scripts/generate_sitemap.py` — deterministic sitemap generator/checker.
 - `docs/REPOSITORY_GOVERNANCE.md` — repository-owner/admin settings and handover checklist.
 
 ## Content policy
@@ -30,17 +40,36 @@ Static website for the Cryptography and Information Security Laboratory (CIS-Lab
 
 1. Create a topic branch from `main`; do not make routine content changes directly on `main`.
 2. Edit the relevant `data/*.json` file or site code.
-3. Run the local checks:
+3. When news, seminar, or publication records change, regenerate the sitemap:
+
+   ```bash
+   python scripts/generate_sitemap.py
+   ```
+
+4. Run the local checks:
 
    ```bash
    python scripts/validate_content.py
+   python scripts/generate_sitemap.py --check
    for file in assets/js/*.js; do node --check "$file"; done
    ```
 
-4. Open a pull request and review the diff before merging.
-5. Merge only after the `Validate site content` GitHub Actions workflow passes.
+5. Open a pull request and review the diff before merging.
+6. Merge only after the `Validate site content` GitHub Actions workflow passes.
 
 Repository administrators should also complete and periodically review [`docs/REPOSITORY_GOVERNANCE.md`](docs/REPOSITORY_GOVERNANCE.md).
+
+## SEO baseline
+
+The current static site provides:
+
+- explicit UCAS / School of Cryptology identity;
+- per-page titles, descriptions, canonical URLs, Open Graph metadata, and favicon;
+- JSON-LD organization/site data on the home page;
+- dynamically generated NewsArticle, Event, and ScholarlyArticle metadata on detail pages;
+- `robots.txt`, generated `sitemap.xml`, and a `404.html` page.
+
+The current detail routes still use `?slug=...` and client-side rendering. This is a known architectural limitation for crawlers/social preview systems that do not execute JavaScript; a future static-page/Jekyll migration should address it while preserving URL compatibility.
 
 ## Automated validation
 
@@ -52,6 +81,7 @@ Repository administrators should also complete and periodically review [`docs/RE
 - seminar `date`/`year` consistency;
 - local image/resource existence;
 - structured publication authors and the current-member inclusion rule;
+- generated sitemap freshness;
 - basic JavaScript syntax.
 
-The validator intentionally uses only the Python standard library so the maintenance workflow has no package-install dependency.
+The validation and sitemap tooling intentionally use only the Python standard library so the maintenance workflow has no package-install dependency.
