@@ -9,6 +9,13 @@ function installPageContext() {
   document.body.dataset.page = pageName.replace(/\.html$/, '') || 'index';
 }
 
+function installFavicon() {
+  const icon = document.querySelector('link[rel~="icon"]');
+  if (!icon) return;
+  icon.href = 'assets/images/favicon-cas.svg';
+  icon.type = 'image/svg+xml';
+}
+
 function installAccessibilityScaffolding() {
   const main = document.querySelector('main');
   if (main) {
@@ -80,6 +87,7 @@ function enhanceFooter() {
 }
 
 installPageContext();
+installFavicon();
 installAccessibilityScaffolding();
 enhanceFooter();
 
