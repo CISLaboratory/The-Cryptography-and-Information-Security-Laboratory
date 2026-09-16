@@ -3,7 +3,7 @@
     "slug": "sok-cryptanalysis-sha3-standard",
     "title": "SoK: The Cryptanalysis of SHA-3 Standard",
     "authors": [
-      { "name": "Hailun Yan", "laboratoryMember": true },
+      { "name": "Hailun Yan", "laboratoryMember": true, "correspondingAuthor": true },
       { "name": "Anze Sun", "laboratoryMember": true },
       { "name": "Jiahao Wang", "laboratoryMember": false },
       { "name": "Zheng Li", "laboratoryMember": false }
@@ -35,7 +35,7 @@
     "slug": "mds-diffusion-layers-rotational-add-construction",
     "title": "MDS Diffusion Layers for Arithmetization-Oriented Symmetric Ciphers: The Rotational-Add Construction",
     "authors": [
-      { "name": "Baofeng Wu", "laboratoryMember": false },
+      { "name": "Baofeng Wu", "laboratoryMember": false, "correspondingAuthor": true },
       { "name": "Wen Kong", "laboratoryMember": true },
       { "name": "Dewei Kong", "laboratoryMember": false },
       { "name": "Hailun Yan", "laboratoryMember": true }
