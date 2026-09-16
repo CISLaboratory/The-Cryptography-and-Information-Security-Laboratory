@@ -1,4 +1,11 @@
 import './main.js';
+import {
+  setCanonicalUrl,
+  setMetaName,
+  setMetaProperty,
+  setStructuredData,
+  toSiteUrl
+} from './site-meta.js';
 
 function getQueryParam(name) {
   return new URLSearchParams(window.location.search).get(name);
@@ -49,6 +56,15 @@ function createAuthors(authors) {
   return wrapper;
 }
 
+function authorNames(authors) {
+  if (typeof authors === 'string') return authors;
+  if (!Array.isArray(authors)) return '';
+  return authors
+    .map((author) => (typeof author === 'string' ? author : author?.name))
+    .filter(Boolean)
+    .join(', ');
+}
+
 async function loadPublicationDetail() {
   const slug = getQueryParam('slug');
   const container = document.getElementById('publication-detail');
@@ -72,9 +88,42 @@ async function loadPublicationDetail() {
       return;
     }
 
+    const canonicalUrl = toSiteUrl(`publication-detail.html?slug=${encodeURIComponent(slug)}`);
+    const names = authorNames(publication.authors);
+    const abstractText = publication.abstract ?? publication.summary;
+    const descriptionText = abstractText || `${publication.title} by ${names}. Published in ${publication.venue} (${publication.year}).`;
+
     if (titleEl) titleEl.textContent = publication.title;
     if (subtitleEl) subtitleEl.hidden = true;
-    document.title = `${publication.title} | CIS-Lab`;
+    document.title = `${publication.title} | CIS-Lab | UCAS`;
+    setCanonicalUrl(canonicalUrl);
+    setMetaName('description', descriptionText);
+    setMetaProperty('og:title', publication.title);
+    setMetaProperty('og:description', descriptionText);
+    setMetaProperty('og:type', 'article');
+    setMetaProperty('og:url', canonicalUrl);
+    setMetaProperty('og:site_name', 'CIS-Lab | UCAS');
+    setStructuredData({
+      '@context': 'https://schema.org',
+      '@type': 'ScholarlyArticle',
+      headline: publication.title,
+      name: publication.title,
+      author: Array.isArray(publication.authors)
+        ? publication.authors
+            .map((author) => (typeof author === 'string' ? author : author?.name))
+            .filter(Boolean)
+            .map((name) => ({ '@type': 'Person', name }))
+        : undefined,
+      datePublished: String(publication.year),
+      isPartOf: publication.venue
+        ? { '@type': 'CreativeWork', name: publication.venue }
+        : undefined,
+      identifier: publication.doi || undefined,
+      sameAs: publication.doiUrl || publication.links?.[0]?.url || undefined,
+      abstract: abstractText || undefined,
+      url: canonicalUrl,
+      mainEntityOfPage: canonicalUrl
+    });
 
     const fragment = document.createDocumentFragment();
 
@@ -104,7 +153,6 @@ async function loadPublicationDetail() {
     appendDefinition(metaList, 'DOI', publication.doi, publication.doiUrl);
     fragment.appendChild(metaList);
 
-    const abstractText = publication.abstract ?? publication.summary;
     if (abstractText) {
       const abstractHeading = document.createElement('h2');
       abstractHeading.textContent = 'Abstract';
