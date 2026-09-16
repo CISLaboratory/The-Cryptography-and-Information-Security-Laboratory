@@ -1,4 +1,5 @@
 import './main.js';
+import { ensureResultsSummary } from './polish.js';
 
 function getRoleCategory(person) {
   const role = String(person?.role ?? person?.position ?? '').toLowerCase();
@@ -20,6 +21,8 @@ async function loadPeople() {
   const filter = document.getElementById('people-filter');
   if (!tableBody || !filter) return;
 
+  const summary = ensureResultsSummary(filter.closest('.table-controls'), 'people-summary');
+
   try {
     const response = await fetch('data/people.json');
     if (!response.ok) throw new Error(`Failed to load people: ${response.status}`);
@@ -33,6 +36,7 @@ async function loadPeople() {
           .map((category) => [category.key, category])
       ).values()
     );
+    const categoriesByKey = new Map(categories.map((category) => [category.key, category]));
 
     categories.forEach((category) => {
       const option = document.createElement('option');
@@ -48,50 +52,93 @@ async function loadPeople() {
         cell.appendChild(value);
       } else {
         cell.textContent = value || '—';
+        if (!value) cell.classList.add('muted-placeholder');
       }
       return cell;
     };
 
     const createEmailLink = (email) => {
-      if (!email) return '—';
+      if (!email) return '';
       const link = document.createElement('a');
       link.href = `mailto:${email}`;
       link.textContent = email;
       return link;
     };
 
-    const createWebsiteLink = (website) => {
-      if (!website) return '—';
+    const createWebsiteLink = (person) => {
+      if (!person.website) return '';
       const link = document.createElement('a');
-      link.href = website;
+      link.href = person.website;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
-      link.textContent = website;
+      link.className = 'website-link';
+      link.textContent = 'Website ↗';
+      link.setAttribute('aria-label', `Open ${person.name} website in a new tab`);
       return link;
     };
 
-    const sortedPeople = [...people].sort(
-      (a, b) => getRoleCategory(a).rank - getRoleCategory(b).rank
-    );
+    const sortedPeople = [...people].sort((a, b) => {
+      const rankDiff = getRoleCategory(a).rank - getRoleCategory(b).rank;
+      if (rankDiff !== 0) return rankDiff;
+      return String(a.name ?? '').localeCompare(String(b.name ?? ''));
+    });
+
+    const createGroupRow = (category, count) => {
+      const row = document.createElement('tr');
+      row.className = 'people-group-row';
+
+      const cell = document.createElement('td');
+      cell.colSpan = 4;
+      cell.textContent = category.label;
+
+      const countText = document.createElement('span');
+      countText.className = 'people-group-row__count';
+      countText.textContent = `${count} ${count === 1 ? 'member' : 'members'}`;
+      cell.appendChild(countText);
+
+      row.appendChild(cell);
+      return row;
+    };
 
     const renderRows = () => {
       const selectedRole = filter.value;
-      const fragment = document.createDocumentFragment();
+      const filteredPeople = sortedPeople.filter(
+        (person) => selectedRole === 'all' || getRoleCategory(person).key === selectedRole
+      );
 
-      sortedPeople
-        .filter(
-          (person) => selectedRole === 'all' || getRoleCategory(person).key === selectedRole
-        )
-        .forEach((person) => {
+      if (summary) {
+        const categoryLabel = categoriesByKey.get(selectedRole)?.label;
+        summary.textContent = selectedRole === 'all'
+          ? `Showing ${filteredPeople.length} current members.`
+          : `Showing ${filteredPeople.length} ${categoryLabel ?? 'members'}.`;
+      }
+
+      const fragment = document.createDocumentFragment();
+      const grouped = new Map();
+
+      filteredPeople.forEach((person) => {
+        const category = getRoleCategory(person);
+        if (!grouped.has(category.key)) grouped.set(category.key, []);
+        grouped.get(category.key).push(person);
+      });
+
+      categories.forEach((category) => {
+        const group = grouped.get(category.key);
+        if (!group?.length) return;
+
+        fragment.appendChild(createGroupRow(category, group.length));
+
+        group.forEach((person) => {
           const row = document.createElement('tr');
           row.append(
             createCell('Name', person.name),
             createCell('Position', person.position),
             createCell('Email', createEmailLink(person.email)),
-            createCell('Website', createWebsiteLink(person.website))
+            createCell('Website', createWebsiteLink(person))
           );
           fragment.appendChild(row);
         });
+      });
 
       tableBody.replaceChildren(fragment);
     };
@@ -100,6 +147,7 @@ async function loadPeople() {
     renderRows();
   } catch (error) {
     tableBody.innerHTML = '<tr><td colspan="4">Unable to load people data at this time.</td></tr>';
+    if (summary) summary.textContent = '';
     console.error(error);
   }
 }
