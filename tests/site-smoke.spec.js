@@ -23,6 +23,7 @@ for (const entry of corePages) {
     await expect(page.locator('.skip-link')).toHaveAttribute('href', '#main-content');
     await expect(page.locator('.top-nav')).toHaveAttribute('aria-label', 'Primary navigation');
     await expect(page.locator('link[data-professional-styles]')).toHaveCount(1);
+    await expect(page.locator('link[data-polish-styles]')).toHaveCount(1);
     await expect(page.locator('.footer[data-enhanced="true"]')).toHaveCount(1);
 
     const overflow = await page.evaluate(() =>
@@ -70,18 +71,38 @@ test('mobile navigation opens and closes accessibly', async ({ page }, testInfo)
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   await expect(nav.locator('a', { hasText: 'Publications' })).toBeVisible();
 
+  await page.locator('.hero-content').click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
+  await toggle.click();
   await page.keyboard.press('Escape');
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('people filter uses Mentor terminology', async ({ page }) => {
+test('people directory uses academic grouping and live filter feedback', async ({ page }) => {
   await page.goto('/people.html', { waitUntil: 'networkidle' });
+
   await expect(page.locator('#people-filter option')).toHaveText([
     'All',
     'Mentor',
     'Ph.D. Students',
     "Master's Students"
   ]);
+  await expect(page.locator('.people-group-row')).toHaveCount(3);
+  await expect(page.locator('#people-summary')).toContainText('current members');
+
+  await page.locator('#people-filter').selectOption('mentor');
+  await expect(page.locator('.people-group-row')).toHaveCount(1);
+  await expect(page.locator('#people-summary')).toContainText('Mentor');
+  await expect(page.locator('.website-link').first()).toHaveText('Website ↗');
+});
+
+test('news and seminar archives expose result feedback', async ({ page }) => {
+  await page.goto('/news.html', { waitUntil: 'networkidle' });
+  await expect(page.locator('#news-summary')).toContainText('news item');
+
+  await page.goto('/seminars.html', { waitUntil: 'networkidle' });
+  await expect(page.locator('#seminar-summary')).toContainText('seminar');
 });
 
 test('publication lists emphasize current lab authors and mark corresponding authors', async ({ page }) => {
@@ -89,12 +110,17 @@ test('publication lists emphasize current lab authors and mark corresponding aut
   await expect(page.locator('.publication-meta strong')).toHaveCount(4);
   await expect(page.locator('.publication-meta .corresponding-author-marker')).toHaveCount(2);
   await expect(page.locator('.publication-meta strong').first()).toContainText('Hailun Yan');
+  await expect(page.locator('.publication-year__count').first()).toContainText('publication');
 });
 
-test('publication detail preserves corresponding-author markers', async ({ page }) => {
+test('publication detail preserves author markers and provides breadcrumb navigation', async ({ page }) => {
   await page.goto('/publication-detail.html?slug=sok-cryptanalysis-sha3-standard', {
     waitUntil: 'networkidle'
   });
   await expect(page.locator('.publication-authors strong').first()).toContainText('Hailun Yan');
   await expect(page.locator('.publication-authors .corresponding-author-marker')).toHaveCount(1);
+  await expect(page.locator('.detail-breadcrumbs')).toContainText('Home');
+  await expect(page.locator('.detail-breadcrumbs')).toContainText('Publications');
+  await expect(page.locator('.detail-breadcrumbs [aria-current="page"]')).toHaveText('Publication details');
+  await expect(page.locator('.footer-nav a[aria-current="page"]')).toHaveText('Publications');
 });
