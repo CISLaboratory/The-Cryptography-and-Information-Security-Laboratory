@@ -2,28 +2,14 @@ import './polish.js';
 import { compareDateDesc, formatDateOnly } from './date-utils.js';
 import { appendAuthors, getCurrentMemberNames } from './author-utils.js';
 
-function installProfessionalStyling() {
-  if (!document.querySelector('link[data-professional-styles]')) {
-    const stylesheet = document.createElement('link');
-    stylesheet.rel = 'stylesheet';
-    stylesheet.href = new URL('../css/professional.css', import.meta.url).href;
-    stylesheet.dataset.professionalStyles = 'true';
-    document.head.appendChild(stylesheet);
-  }
+function installPageContext() {
+  if (document.body.dataset.page) return;
 
   const pageName = window.location.pathname.split('/').pop() || 'index.html';
-  document.body.dataset.page = pageName.replace(/\.html$/, '') || 'home';
+  document.body.dataset.page = pageName.replace(/\.html$/, '') || 'index';
 }
 
 function installAccessibilityScaffolding() {
-  if (!document.querySelector('link[data-accessibility-styles]')) {
-    const stylesheet = document.createElement('link');
-    stylesheet.rel = 'stylesheet';
-    stylesheet.href = new URL('../css/accessibility.css', import.meta.url).href;
-    stylesheet.dataset.accessibilityStyles = 'true';
-    document.head.appendChild(stylesheet);
-  }
-
   const main = document.querySelector('main');
   if (main) {
     if (!main.id) main.id = 'main-content';
@@ -93,7 +79,7 @@ function enhanceFooter() {
   footer.dataset.enhanced = 'true';
 }
 
-installProfessionalStyling();
+installPageContext();
 installAccessibilityScaffolding();
 enhanceFooter();
 
