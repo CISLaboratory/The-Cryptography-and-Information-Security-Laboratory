@@ -198,6 +198,9 @@ def validate_publications() -> None:
                 member = author.get("laboratoryMember")
                 if not isinstance(member, bool):
                     fail(f"{actx}: laboratoryMember must be boolean")
+                corresponding = author.get("correspondingAuthor")
+                if corresponding is not None and not isinstance(corresponding, bool):
+                    fail(f"{actx}: correspondingAuthor must be boolean when present")
                 has_current_member = has_current_member or member is True
             if not has_current_member:
                 fail(f"{context}: publication must include at least one current CIS-Lab member")
