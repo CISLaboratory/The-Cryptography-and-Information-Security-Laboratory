@@ -42,8 +42,19 @@ function createAuthors(authors) {
   (Array.isArray(authors) ? authors : []).forEach((author, index) => {
     if (index) wrapper.append(', ');
     const isMember = typeof author === 'object' && author?.laboratoryMember;
+    const isCorresponding = typeof author === 'object' && author?.correspondingAuthor;
     const name = document.createElement(isMember ? 'strong' : 'span');
     name.textContent = typeof author === 'string' ? author : author?.name ?? '';
+
+    if (isCorresponding) {
+      const marker = document.createElement('sup');
+      marker.className = 'corresponding-author-marker';
+      marker.title = 'Corresponding author';
+      marker.setAttribute('aria-label', ' corresponding author');
+      marker.textContent = '*';
+      name.appendChild(marker);
+    }
+
     wrapper.appendChild(name);
 
     if (isMember) {
