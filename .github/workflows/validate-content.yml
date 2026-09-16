@@ -52,5 +52,5 @@ jobs:
           npm install --no-package-lock
           npx playwright install --with-deps chromium
 
-      - name: Run desktop and mobile smoke tests
+      - name: Run browser smoke and visual-contract tests
         run: npm run test:smoke
