@@ -5,6 +5,6 @@
 .hero-content .hero-title--single-line {
   margin-bottom: 1rem;
   white-space: nowrap;
-  font-size: clamp(0.72rem, 3.35vw, 3rem);
+  font-size: clamp(0.7rem, 2.85vw, 2.4rem);
   letter-spacing: -0.04em;
 }
