@@ -199,7 +199,7 @@ test('People presents member rows as compact cards on mobile', async ({ page }, 
   test.skip(testInfo.project.name !== 'mobile');
   await page.goto('/people.html', { waitUntil: 'networkidle' });
 
-  const row = page.locator('.people-table tr:not(.people-group-row)').first();
+  const row = page.locator('.people-table tbody tr:not(.people-group-row)').first();
   const rowStyles = await row.evaluate((element) => {
     const styles = getComputedStyle(element);
     return {
