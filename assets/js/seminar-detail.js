@@ -1,5 +1,13 @@
 import './main.js';
 import { formatDateOnly } from './date-utils.js';
+import {
+  LAB_ORGANIZATION,
+  setCanonicalUrl,
+  setMetaName,
+  setMetaProperty,
+  setStructuredData,
+  toSiteUrl
+} from './site-meta.js';
 
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
@@ -36,8 +44,37 @@ async function loadSeminarDetail() {
       return;
     }
 
+    const canonicalUrl = toSiteUrl(`seminar-detail.html?slug=${encodeURIComponent(slug)}`);
+    const descriptionText = seminar.description || `${seminar.title}, presented by ${seminar.speaker} in the CIS-Lab seminar series at UCAS.`;
+
     if (titleEl) titleEl.textContent = seminar.title;
     if (subtitleEl) subtitleEl.textContent = seminar.speaker;
+
+    document.title = `${seminar.title} | CIS-Lab Seminar | UCAS`;
+    setCanonicalUrl(canonicalUrl);
+    setMetaName('description', descriptionText);
+    setMetaProperty('og:title', seminar.title);
+    setMetaProperty('og:description', descriptionText);
+    setMetaProperty('og:type', 'article');
+    setMetaProperty('og:url', canonicalUrl);
+    setMetaProperty('og:site_name', 'CIS-Lab | UCAS');
+    setStructuredData({
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: seminar.title,
+      description: descriptionText,
+      startDate: seminar.date,
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      url: canonicalUrl,
+      performer: {
+        '@type': 'Person',
+        name: seminar.speaker
+      },
+      organizer: LAB_ORGANIZATION,
+      sameAs: Array.isArray(seminar.resources)
+        ? seminar.resources.map((resource) => resource.url).filter(Boolean)
+        : undefined
+    });
 
     const fragment = document.createDocumentFragment();
 
