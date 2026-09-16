@@ -1,5 +1,13 @@
 import './main.js';
 import { formatDateOnly } from './date-utils.js';
+import {
+  LAB_ORGANIZATION,
+  setCanonicalUrl,
+  setMetaName,
+  setMetaProperty,
+  setStructuredData,
+  toSiteUrl
+} from './site-meta.js';
 
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
@@ -31,8 +39,34 @@ async function loadNewsDetail() {
     }
 
     const displayDate = formatDateOnly(news.date);
+    const canonicalUrl = toSiteUrl(`news-detail.html?slug=${encodeURIComponent(slug)}`);
+    const descriptionText = news.description || `News from CIS-Lab at UCAS: ${news.title}`;
+
     if (titleEl) titleEl.textContent = news.title;
     if (subtitleEl) subtitleEl.textContent = displayDate;
+
+    document.title = `${news.title} | CIS-Lab | UCAS`;
+    setCanonicalUrl(canonicalUrl);
+    setMetaName('description', descriptionText);
+    setMetaProperty('og:title', news.title);
+    setMetaProperty('og:description', descriptionText);
+    setMetaProperty('og:type', 'article');
+    setMetaProperty('og:url', canonicalUrl);
+    setMetaProperty('og:site_name', 'CIS-Lab | UCAS');
+    if (news.image) {
+      setMetaProperty('og:image', toSiteUrl(news.image));
+    }
+    setStructuredData({
+      '@context': 'https://schema.org',
+      '@type': 'NewsArticle',
+      headline: news.title,
+      description: descriptionText,
+      datePublished: news.date,
+      url: canonicalUrl,
+      mainEntityOfPage: canonicalUrl,
+      image: news.image ? [toSiteUrl(news.image)] : undefined,
+      publisher: LAB_ORGANIZATION
+    });
 
     const fragment = document.createDocumentFragment();
 
