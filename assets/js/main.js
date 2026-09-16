@@ -1,3 +1,4 @@
+import './polish.js';
 import { compareDateDesc, formatDateOnly } from './date-utils.js';
 import { appendAuthors, getCurrentMemberNames } from './author-utils.js';
 
