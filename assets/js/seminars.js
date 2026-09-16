@@ -1,4 +1,5 @@
 import './main.js';
+import { ensureResultsSummary } from './polish.js';
 import { compareDateDesc, formatDateOnly } from './date-utils.js';
 
 function getSeminarDataUrl() {
@@ -11,6 +12,8 @@ async function loadSeminars() {
   const timeline = document.getElementById('seminar-timeline');
   const yearFilter = document.getElementById('seminar-year');
   if (!timeline || !yearFilter) return;
+
+  const summary = ensureResultsSummary(yearFilter.closest('.seminar-controls'), 'seminar-summary');
 
   try {
     const response = await fetch(getSeminarDataUrl(), { cache: 'no-store' });
@@ -34,69 +37,76 @@ async function loadSeminars() {
     const renderSeminars = () => {
       const selected = yearFilter.value;
       const fragment = document.createDocumentFragment();
-
-      seminars
+      const filteredSeminars = seminars
         .filter((item) => selected === 'all' || String(item.year) === selected)
-        .sort((a, b) => compareDateDesc(a.date, b.date))
-        .forEach((item) => {
-          const slug = item.slug ?? '';
-          const article = document.createElement('article');
-          article.className = 'timeline-item';
+        .sort((a, b) => compareDateDesc(a.date, b.date));
 
-          const header = document.createElement('header');
-          const heading = document.createElement('div');
-          heading.className = 'timeline-heading';
-          const titleLink = document.createElement('a');
-          titleLink.href = slug ? `seminar-detail.html?slug=${encodeURIComponent(slug)}` : '#';
-          titleLink.className = 'timeline-title';
+      if (summary) {
+        const noun = filteredSeminars.length === 1 ? 'seminar' : 'seminars';
+        summary.textContent = selected === 'all'
+          ? `Showing ${filteredSeminars.length} ${noun}.`
+          : `Showing ${filteredSeminars.length} ${noun} from ${selected}.`;
+      }
 
-          const title = document.createElement('h3');
-          title.textContent = item.title;
-          titleLink.appendChild(title);
+      filteredSeminars.forEach((item) => {
+        const slug = item.slug ?? '';
+        const article = document.createElement('article');
+        article.className = 'timeline-item';
 
-          const speaker = document.createElement('p');
-          speaker.textContent = item.speaker;
+        const header = document.createElement('header');
+        const heading = document.createElement('div');
+        heading.className = 'timeline-heading';
+        const titleLink = document.createElement('a');
+        titleLink.href = slug ? `seminar-detail.html?slug=${encodeURIComponent(slug)}` : '#';
+        titleLink.className = 'timeline-title';
 
-          const time = document.createElement('time');
-          time.dateTime = item.date;
-          time.textContent = formatDateOnly(item.date);
+        const title = document.createElement('h3');
+        title.textContent = item.title;
+        titleLink.appendChild(title);
 
-          heading.appendChild(titleLink);
-          heading.appendChild(time);
-          header.appendChild(heading);
-          header.appendChild(speaker);
-          article.appendChild(header);
+        const speaker = document.createElement('p');
+        speaker.textContent = item.speaker;
 
-          if (item.location) {
-            const location = document.createElement('p');
-            const label = document.createElement('strong');
-            label.textContent = 'Location: ';
-            location.append(label, document.createTextNode(item.location));
-            article.appendChild(location);
-          }
+        const time = document.createElement('time');
+        time.dateTime = item.date;
+        time.textContent = formatDateOnly(item.date);
 
-          if (Array.isArray(item.resources) && item.resources.length) {
-            const resources = document.createElement('div');
-            resources.className = 'resource-links';
-            item.resources.forEach((resource) => {
-              const link = document.createElement('a');
-              link.href = resource.url;
-              link.target = resource.url.startsWith('http') ? '_blank' : '_self';
-              link.rel = resource.url.startsWith('http') ? 'noopener noreferrer' : '';
-              link.textContent = resource.label;
-              resources.appendChild(link);
-            });
-            article.appendChild(resources);
-          }
+        heading.appendChild(titleLink);
+        heading.appendChild(time);
+        header.appendChild(heading);
+        header.appendChild(speaker);
+        article.appendChild(header);
 
-          const moreLink = document.createElement('a');
-          moreLink.href = slug ? `seminar-detail.html?slug=${encodeURIComponent(slug)}` : '#';
-          moreLink.className = 'inline-link';
-          moreLink.textContent = 'View seminar details';
-          article.appendChild(moreLink);
+        if (item.location) {
+          const location = document.createElement('p');
+          const label = document.createElement('strong');
+          label.textContent = 'Location: ';
+          location.append(label, document.createTextNode(item.location));
+          article.appendChild(location);
+        }
 
-          fragment.appendChild(article);
-        });
+        if (Array.isArray(item.resources) && item.resources.length) {
+          const resources = document.createElement('div');
+          resources.className = 'resource-links';
+          item.resources.forEach((resource) => {
+            const link = document.createElement('a');
+            link.href = resource.url;
+            link.target = resource.url.startsWith('http') ? '_blank' : '_self';
+            link.rel = resource.url.startsWith('http') ? 'noopener noreferrer' : '';
+            link.textContent = resource.label;
+            resources.appendChild(link);
+          });
+          article.appendChild(resources);
+        }
+
+        const moreLink = document.createElement('a');
+        moreLink.href = slug ? `seminar-detail.html?slug=${encodeURIComponent(slug)}` : '#';
+        moreLink.className = 'inline-link';
+        moreLink.textContent = 'View seminar details';
+        article.appendChild(moreLink);
+
+        fragment.appendChild(article);
+      });
 
       timeline.innerHTML = '';
       if (!fragment.childNodes.length) {
@@ -112,6 +122,7 @@ async function loadSeminars() {
     renderSeminars();
   } catch (error) {
     timeline.innerHTML = '<p>Unable to load seminar information at this time.</p>';
+    if (summary) summary.textContent = '';
     console.error(error);
   }
 }
