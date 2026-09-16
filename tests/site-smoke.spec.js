@@ -67,14 +67,20 @@ test('mobile navigation opens and closes accessibly', async ({ page }, testInfo)
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('people directory uses academic grouping and live filter feedback', async ({ page }) => {
+test('people directory uses academic grouping without member counts', async ({ page }) => {
   await page.goto('/people.html', { waitUntil: 'networkidle' });
-  await expect(page.locator('#people-filter option')).toHaveText(['All', 'Mentor', 'Ph.D. Students', "Master's Students"]);
+  const filter = page.locator('#people-filter');
+
+  await expect(filter.locator('option')).toHaveText(['All', 'Mentor', 'Ph.D. Students', "Master's Students"]);
   await expect(page.locator('.people-group-row')).toHaveCount(3);
-  await expect(page.locator('#people-summary')).toContainText('current members');
-  await page.locator('#people-filter').selectOption('mentor');
+  await expect(page.locator('.people-group-row__count')).toHaveCount(0);
+  await expect(page.locator('#people-summary')).toHaveCount(0);
+
+  const appearance = await filter.evaluate((element) => getComputedStyle(element).appearance);
+  expect(appearance).toBe('none');
+
+  await filter.selectOption('mentor');
   await expect(page.locator('.people-group-row')).toHaveCount(1);
-  await expect(page.locator('#people-summary')).toContainText('Mentor');
   await expect(page.locator('.website-link').first()).toHaveText('Website ↗');
 });
 
