@@ -87,7 +87,14 @@ a:focus {
   gap: 0.3rem;
   background: none;
   border: none;
+  border-radius: 0.4rem;
   cursor: pointer;
+  padding: 0.45rem;
+}
+
+.nav-toggle:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 3px;
 }
 
 .nav-toggle span {
@@ -95,6 +102,11 @@ a:focus {
   height: 2px;
   background: var(--text);
   display: block;
+}
+
+.hero .nav-toggle span,
+.subpage-header .nav-toggle span {
+  background: #ffffff;
 }
 
 .hero {
@@ -132,7 +144,7 @@ a:focus {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
-.section { 
+.section {
   padding: clamp(3rem, 8vw, 5rem) 0;
 }
 
@@ -211,7 +223,7 @@ a:focus {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
-.feature { 
+.feature {
   padding: 1.75rem;
   border-radius: 1rem;
   background: #fff;
@@ -580,21 +592,31 @@ a:focus {
   .nav-links {
     position: absolute;
     inset: 70px 1rem auto 1rem;
+    z-index: 1000;
     flex-direction: column;
     background: #ffffff;
+    color: var(--text);
     padding: 1.5rem;
     border-radius: 1rem;
     box-shadow: 0 20px 40px rgba(39, 70, 144, 0.14);
     transform: translateY(-120%);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: transform 0.25s ease, opacity 0.25s ease;
+    transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s linear 0.25s;
+  }
+
+  .nav-links a,
+  .subpage-header .nav-links a {
+    color: var(--text);
   }
 
   .nav-links.open {
     transform: translateY(0);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
+    transition-delay: 0s;
   }
 
   .hero {
