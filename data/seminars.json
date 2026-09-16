@@ -152,5 +152,20 @@
         "url": "https://eprint.iacr.org/2026/913"
       }
     ]
+  },
+  {
+    "slug": "alzette-64-bit-arx-box-design-analysis-2026-09-16",
+    "title": "[Paper Reading] 64-bit ARX-box Alzette: Design and Analysis",
+    "speaker": "Zhenyu Zhao",
+    "datetime": "2026-09-16T14:00:00+08:00",
+    "year": 2026,
+    "location": "Teaching Building 317",
+    "description": "Introduction to the 64-bit ARX-box Alzette and its design and analysis.",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2019/1378.pdf"
+      }
+    ]
   }
 ]
