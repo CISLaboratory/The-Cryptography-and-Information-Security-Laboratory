@@ -10,7 +10,7 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 
 ## Site structure
 
-- `index.html` — home page with recent news and featured publications.
+- `index.html` — home page with recent news, selected publications, and links into the existing lab sections.
 - `people.html` — team directory backed by `data/people.json`.
 - `news.html` / `news-detail.html` — news archive and slug-based detail view backed by `data/news.json`.
 - `seminars.html` / `seminar-detail.html` — seminar archive and slug-based detail view backed by `data/seminars.json`.
@@ -18,7 +18,8 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - `contact.html` — laboratory contact page.
 - `404.html` — GitHub Pages not-found page.
 - `robots.txt` / `sitemap.xml` — crawler discovery files.
-- `assets/css/styles.css` — shared site styles.
+- `assets/css/styles.css` — legacy/shared structural site styles.
+- `assets/css/professional.css` — restrained professional visual system layered over the shared styles.
 - `assets/css/home.css` — home-page-only hero layout rules.
 - `assets/css/accessibility.css` — shared keyboard-accessibility styles, including the skip link.
 - `assets/js/*.js` — shared and page-specific JavaScript modules.
@@ -40,8 +41,13 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - **Seminars:** record the speaker, calendar date at **day precision (`YYYY-MM-DD`)**, title/description, and authoritative paper/resource links. Do not record meeting time or room unless explicitly requested.
 - **News:** use a stable slug, an ISO calendar date (`YYYY-MM-DD`), a concise description, and optional article paragraphs/images.
 - **People:** keep names, positions, roles, email addresses, and personal websites in `data/people.json`. The public role filter is ordered as **Mentor → Ph.D. Students → Master's Students**.
+- **Unconfirmed laboratory scope:** do not add or infer research-focus statements, recruitment claims, laboratory positioning, or other institutional claims from publications, seminars, or individual interests. Add such copy only after an authoritative lab source or explicit mentor confirmation is available.
 - Prefer authoritative resource links such as IACR ePrint, conference/journal pages, DOI links, or publisher pages.
 - Slugs are public identifiers: keep them unique and do not change an existing slug without a migration plan.
+
+## Visual direction
+
+The site should look like a professional academic laboratory website rather than a product/marketing landing page. Keep the interface restrained: strong typography and information hierarchy, consistent spacing, subtle borders and hover states, limited animation, and no decorative claims or effects that are not serving the content. The professional visual layer is intentionally separated in `assets/css/professional.css` so it can evolve without destabilizing the underlying content structure.
 
 ## Maintenance workflow
 
@@ -107,6 +113,8 @@ The current detail routes still use `?slug=...` and client-side rendering. This 
 - mobile navigation open/close behavior;
 - horizontal overflow on the tested viewports;
 - skip-to-content and primary-navigation accessibility hooks;
+- loading of the professional visual layer and enhanced footer;
+- the home portal links and absence of an unconfirmed `Research Focus` section;
 - visible emphasis of current lab authors and corresponding-author markers in Publications.
 
 The content and sitemap validators use only the Python standard library. Browser smoke tests use a pinned Playwright development dependency and run in Chromium in CI.

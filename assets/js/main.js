@@ -1,6 +1,19 @@
 import { compareDateDesc, formatDateOnly } from './date-utils.js';
 import { appendAuthors, getCurrentMemberNames } from './author-utils.js';
 
+function installProfessionalStyling() {
+  if (!document.querySelector('link[data-professional-styles]')) {
+    const stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.href = new URL('../css/professional.css', import.meta.url).href;
+    stylesheet.dataset.professionalStyles = 'true';
+    document.head.appendChild(stylesheet);
+  }
+
+  const pageName = window.location.pathname.split('/').pop() || 'index.html';
+  document.body.dataset.page = pageName.replace(/\.html$/, '') || 'home';
+}
+
 function installAccessibilityScaffolding() {
   if (!document.querySelector('link[data-accessibility-styles]')) {
     const stylesheet = document.createElement('link');
@@ -29,7 +42,59 @@ function installAccessibilityScaffolding() {
   }
 }
 
+function enhanceFooter() {
+  const footer = document.querySelector('.footer');
+  if (!footer || footer.dataset.enhanced === 'true') return;
+
+  const container = footer.querySelector('.container');
+  if (!container) return;
+
+  const layout = document.createElement('div');
+  layout.className = 'footer-layout';
+
+  const brand = document.createElement('div');
+  brand.className = 'footer-brand';
+
+  const brandName = document.createElement('strong');
+  brandName.textContent = 'CIS-Lab';
+
+  const institution = document.createElement('span');
+  institution.textContent = 'School of Cryptology · University of Chinese Academy of Sciences (UCAS)';
+
+  brand.append(brandName, institution);
+
+  const nav = document.createElement('nav');
+  nav.className = 'footer-nav';
+  nav.setAttribute('aria-label', 'Footer navigation');
+
+  [
+    ['People', 'people.html'],
+    ['News', 'news.html'],
+    ['Seminars', 'seminars.html'],
+    ['Publications', 'publications.html'],
+    ['Contact', 'contact.html']
+  ].forEach(([label, href]) => {
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = label;
+    nav.appendChild(link);
+  });
+
+  layout.append(brand, nav);
+
+  const meta = document.createElement('div');
+  meta.className = 'footer-meta';
+  const copyright = document.createElement('p');
+  copyright.textContent = `© ${new Date().getFullYear()} CIS-Lab. All rights reserved.`;
+  meta.appendChild(copyright);
+
+  container.replaceChildren(layout, meta);
+  footer.dataset.enhanced = 'true';
+}
+
+installProfessionalStyling();
 installAccessibilityScaffolding();
+enhanceFooter();
 
 const yearTarget = document.getElementById('year');
 if (yearTarget) {

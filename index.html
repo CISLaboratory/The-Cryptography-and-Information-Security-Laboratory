@@ -78,8 +78,13 @@
         </ul>
       </nav>
       <div class="hero-content hero-content--wide">
+        <p class="hero-eyebrow">CIS-Lab · UCAS</p>
         <h1 class="hero-title--single-line">The Cryptography and Information Security Laboratory</h1>
         <p>School of Cryptology · University of Chinese Academy of Sciences (UCAS)</p>
+        <div class="hero-actions" aria-label="Primary site links">
+          <a class="hero-action hero-action--primary" href="publications.html">Publications</a>
+          <a class="hero-action" href="seminars.html">Seminars</a>
+        </div>
       </div>
     </div>
   </header>
@@ -87,20 +92,53 @@
   <main>
     <section id="news" class="section">
       <div class="container">
-        <h2>News</h2>
-        <div class="card-grid" id="news-list"></div>
-        <div class="section-cta">
-          <a class="cta" href="news.html">Browse All News</a>
+        <div class="section-heading">
+          <div class="section-heading__copy">
+            <p class="section-kicker">Updates</p>
+            <h2>Latest News</h2>
+            <p>Recent updates published by CIS-Lab.</p>
+          </div>
+          <a class="section-link" href="news.html">View all news</a>
         </div>
+        <div class="card-grid" id="news-list"></div>
       </div>
     </section>
 
-    <section id="publications" class="section">
+    <section id="publications" class="section section--muted">
       <div class="container">
-        <h2>Publications</h2>
+        <div class="section-heading">
+          <div class="section-heading__copy">
+            <p class="section-kicker">Research Outputs</p>
+            <h2>Selected Publications</h2>
+            <p>Recent publications involving current CIS-Lab students.</p>
+          </div>
+          <a class="section-link" href="publications.html">View all publications</a>
+        </div>
         <div class="card-grid" id="home-publications-list"></div>
-        <div class="section-cta">
-          <a class="cta" href="publications.html">Browse All Publications</a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="explore-title">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-heading__copy">
+            <p class="section-kicker">Directory</p>
+            <h2 id="explore-title">Explore CIS-Lab</h2>
+          </div>
+        </div>
+        <div class="explore-grid">
+          <a class="explore-item" href="people.html">
+            <strong>People</strong>
+            <span>Mentor and student directory.</span>
+          </a>
+          <a class="explore-item" href="seminars.html">
+            <strong>Seminars</strong>
+            <span>Seminar and paper-reading archive.</span>
+          </a>
+          <a class="explore-item" href="contact.html">
+            <strong>Contact</strong>
+            <span>Laboratory address and contact information.</span>
+          </a>
         </div>
       </div>
     </section>
