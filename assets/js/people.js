@@ -10,7 +10,7 @@ function getRoleCategory(person) {
     return { key: 'phd', label: 'Ph.D. Students', rank: 1 };
   }
   if (role.includes('master')) {
-    return { key: 'master', label: 'Master Students', rank: 2 };
+    return { key: 'master', label: "Master's Students", rank: 2 };
   }
   return { key: 'other', label: 'Other', rank: 3 };
 }
