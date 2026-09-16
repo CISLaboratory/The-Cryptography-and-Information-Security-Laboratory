@@ -15,6 +15,7 @@ Static website for the Cryptography and Information Security Laboratory (CIS-Lab
 - `assets/images/` — site images.
 - `data/*.json` — canonical content data.
 - `scripts/validate_content.py` — repository content validator used locally and by CI.
+- `docs/REPOSITORY_GOVERNANCE.md` — repository-owner/admin settings and handover checklist.
 
 ## Content policy
 
@@ -38,6 +39,8 @@ Static website for the Cryptography and Information Security Laboratory (CIS-Lab
 
 4. Open a pull request and review the diff before merging.
 5. Merge only after the `Validate site content` GitHub Actions workflow passes.
+
+Repository administrators should also complete and periodically review [`docs/REPOSITORY_GOVERNANCE.md`](docs/REPOSITORY_GOVERNANCE.md).
 
 ## Automated validation
 
