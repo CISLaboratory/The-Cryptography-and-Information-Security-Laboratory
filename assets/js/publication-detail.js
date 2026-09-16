@@ -91,7 +91,7 @@ async function loadPublicationDetail() {
     const metaList = document.createElement('dl');
     metaList.className = 'detail-meta';
     const details = publication.publicationDetails ?? {};
-    appendDefinition(metaList, 'Conference', details.conference ?? publication.venue);
+    appendDefinition(metaList, 'Venue', details.conference ?? publication.venue);
     appendDefinition(metaList, 'Proceedings', details.proceedings);
     const series = details.series && details.volume
       ? `${details.series}, Vol. ${details.volume}`
