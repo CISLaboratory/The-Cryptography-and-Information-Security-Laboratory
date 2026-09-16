@@ -20,9 +20,11 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - `robots.txt` / `sitemap.xml` — crawler discovery files.
 - `assets/css/styles.css` — legacy/shared structural site styles.
 - `assets/css/professional.css` — restrained professional visual system layered over the shared styles.
+- `assets/css/polish.css` — second-pass hierarchy, archive feedback, breadcrumb, and detail-reading refinements.
 - `assets/css/home.css` — home-page-only hero layout rules.
 - `assets/css/accessibility.css` — shared keyboard-accessibility styles, including the skip link.
 - `assets/js/*.js` — shared and page-specific JavaScript modules.
+- `assets/js/polish.js` — shared result-summary, breadcrumb, footer-current-state, and navigation refinements.
 - `assets/js/author-utils.js` — shared helpers for emphasizing current lab authors and marking corresponding authors.
 - `assets/js/site-meta.js` — canonical URL, Open Graph, and structured-data helpers for data-driven detail pages.
 - `assets/images/` — site images and favicon.
@@ -47,7 +49,7 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 
 ## Visual direction
 
-The site should look like a professional academic laboratory website rather than a product/marketing landing page. Keep the interface restrained: strong typography and information hierarchy, consistent spacing, subtle borders and hover states, limited animation, and no decorative claims or effects that are not serving the content. The professional visual layer is intentionally separated in `assets/css/professional.css` so it can evolve without destabilizing the underlying content structure.
+The site should look like a professional academic laboratory website rather than a product/marketing landing page. Keep the interface restrained: strong typography and information hierarchy, consistent spacing, subtle borders and hover states, limited animation, and no decorative claims or effects that are not serving the content. The visual system is layered so structural styles, professional presentation, and later polish can evolve without destabilizing canonical content or page semantics.
 
 ## Maintenance workflow
 
@@ -110,10 +112,14 @@ The current detail routes still use `?slug=...` and client-side rendering. This 
 - generated sitemap freshness;
 - basic JavaScript syntax;
 - desktop and mobile rendering of core pages;
-- mobile navigation open/close behavior;
+- mobile navigation open/close behavior, including outside-click close;
 - horizontal overflow on the tested viewports;
 - skip-to-content and primary-navigation accessibility hooks;
-- loading of the professional visual layer and enhanced footer;
+- loading of the professional/polish visual layers and enhanced footer;
+- People role grouping and live filter feedback;
+- News/Seminar archive result feedback;
+- detail-page breadcrumb navigation and footer current-section state;
+- publication-year counts;
 - the home portal links and absence of an unconfirmed `Research Focus` section;
 - visible emphasis of current lab authors and corresponding-author markers in Publications.
 
