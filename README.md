@@ -17,5 +17,5 @@
 ## Content policy
 
 - **Publications:** include research outputs with at least one **current CIS-Lab member** among the authors. This is the default inclusion rule for the Publications page.
-- **Seminars:** record the speaker, date/time, location when known, and authoritative paper/resource links. Use unique, stable slugs so detail-page URLs remain valid.
+- **Seminars:** record the speaker and calendar date (day precision), together with authoritative paper/resource links. Do not record the specific meeting time or room unless explicitly requested. Use unique, stable slugs so detail-page URLs remain valid.
 - Prefer authoritative publication links such as IACR ePrint, conference/journal pages, or DOI/publisher pages.
