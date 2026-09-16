@@ -21,7 +21,7 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - `assets/css/styles.css` — shared site styles.
 - `assets/css/home.css` — home-page-only hero layout rules.
 - `assets/js/*.js` — shared and page-specific JavaScript modules.
-- `assets/js/author-utils.js` — shared helpers for identifying and emphasizing current student authors.
+- `assets/js/author-utils.js` — shared helpers for emphasizing current lab authors and marking corresponding authors.
 - `assets/js/site-meta.js` — canonical URL, Open Graph, and structured-data helpers for data-driven detail pages.
 - `assets/images/` — site images and favicon.
 - `data/*.json` — canonical content data.
@@ -34,10 +34,10 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 
 ## Content policy
 
-- **Publications:** include only research outputs with at least one **current CIS-Lab student** among the authors. A paper authored by the supervisor/faculty member but by no current lab student is not included. Authors should use structured objects with `name` and `laboratoryMember` fields so the policy can be checked automatically against `data/people.json`.
+- **Publications:** include only research outputs with at least one **current CIS-Lab student** among the authors. A paper authored by the supervisor/mentor but by no current lab student is not included. Authors use structured objects with `name` and `laboratoryMember`; add `correspondingAuthor: true` when correspondence is confirmed. Current lab authors are emphasized in the UI, and corresponding authors receive a superscript `*`.
 - **Seminars:** record the speaker, calendar date at **day precision (`YYYY-MM-DD`)**, title/description, and authoritative paper/resource links. Do not record meeting time or room unless explicitly requested.
 - **News:** use a stable slug, an ISO calendar date (`YYYY-MM-DD`), a concise description, and optional article paragraphs/images.
-- **People:** keep names, positions, roles, email addresses, and personal websites in `data/people.json`.
+- **People:** keep names, positions, roles, email addresses, and personal websites in `data/people.json`. The public role filter is ordered as **Mentor → Ph.D. Students → Master Students**.
 - Prefer authoritative resource links such as IACR ePrint, conference/journal pages, DOI links, or publisher pages.
 - Slugs are public identifiers: keep them unique and do not change an existing slug without a migration plan.
 
@@ -94,13 +94,13 @@ The current detail routes still use `?slug=...` and client-side rendering. This 
 - valid calendar dates;
 - seminar `date`/`year` consistency;
 - local image/resource existence;
-- structured publication authors;
+- structured publication authors and optional corresponding-author flags;
 - the student-authored Publications inclusion rule;
 - generated sitemap freshness;
 - basic JavaScript syntax;
 - desktop and mobile rendering of core pages;
 - mobile navigation open/close behavior;
 - horizontal overflow on the tested viewports;
-- visible emphasis of current student authors in the Publications list.
+- visible emphasis of current lab authors and corresponding-author markers in Publications.
 
 The content and sitemap validators use only the Python standard library. Browser smoke tests use a pinned Playwright development dependency and run in Chromium in CI.
