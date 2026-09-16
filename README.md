@@ -24,7 +24,7 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - `assets/css/home.css` — home-page-only hero layout rules.
 - `assets/css/accessibility.css` — shared keyboard-accessibility styles, including the skip link.
 - `assets/js/*.js` — shared and page-specific JavaScript modules.
-- `assets/js/polish.js` — shared result-summary, breadcrumb, footer-current-state, and navigation refinements.
+- `assets/js/polish.js` — shared breadcrumb, footer-current-state, result-summary, and navigation refinements.
 - `assets/js/author-utils.js` — shared helpers for emphasizing current lab authors and marking corresponding authors.
 - `assets/js/site-meta.js` — canonical URL, Open Graph, and structured-data helpers for data-driven detail pages.
 - `assets/images/` — site images and favicon.
@@ -34,6 +34,7 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - `scripts/generate_sitemap.py` — deterministic sitemap generator/checker.
 - `scripts/check_external_links.py` — scans public HTML/JSON URLs and reports external-link health.
 - `tests/site-smoke.spec.js` — Playwright desktop/mobile smoke tests for core pages and navigation.
+- `tests/visual-contract.spec.js` — deterministic visual-regression guards for stylesheet order, key component styles, and JavaScript-independent presentation.
 - `docs/REPOSITORY_GOVERNANCE.md` — repository-owner/admin settings and handover checklist.
 - `docs/ARCHITECTURE_V2.md` — deferred Jekyll/static-detail migration decision, triggers, and compatibility requirements.
 
@@ -49,7 +50,9 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 
 ## Visual direction
 
-The site should look like a professional academic laboratory website rather than a product/marketing landing page. Keep the interface restrained: strong typography and information hierarchy, consistent spacing, subtle borders and hover states, limited animation, and no decorative claims or effects that are not serving the content. The visual system is layered so structural styles, professional presentation, and later polish can evolve without destabilizing canonical content or page semantics.
+The site should look like a professional academic laboratory website rather than a product/marketing landing page. Keep the interface restrained: strong typography and information hierarchy, consistent spacing, subtle borders and hover states, limited animation, and no decorative claims or effects that are not serving the content.
+
+The visual layers are declared directly in each page `<head>` in this order: structural styles, page-specific styles where applicable, professional styles, polish styles, then accessibility styles. Core presentation must not depend on JavaScript injection. JavaScript may enhance navigation, breadcrumbs, footer state, and data-driven content, but a delayed or failed script load should not cause the site to fall back to an unfinished visual state.
 
 ## Maintenance workflow
 
@@ -115,14 +118,15 @@ The current detail routes still use `?slug=...` and client-side rendering. This 
 - mobile navigation open/close behavior, including outside-click close;
 - horizontal overflow on the tested viewports;
 - skip-to-content and primary-navigation accessibility hooks;
-- loading of the professional/polish visual layers and enhanced footer;
-- People role grouping and live filter feedback;
+- static loading and ordering of the professional, polish, and accessibility visual layers;
+- key visual contracts for the Home hero, People filter, and Publications archive, including a JavaScript-disabled People-page check;
+- People academic role grouping without member-count labels;
 - News/Seminar archive result feedback;
 - detail-page breadcrumb navigation and footer current-section state;
-- publication-year counts;
+- clean publication-year headings without count badges;
 - the home portal links and absence of an unconfirmed `Research Focus` section;
 - visible emphasis of current lab authors and corresponding-author markers in Publications.
 
-The content and sitemap validators use only the Python standard library. Browser smoke tests use a pinned Playwright development dependency and run in Chromium in CI.
+The content and sitemap validators use only the Python standard library. Browser smoke and visual-contract tests use a pinned Playwright development dependency and run in Chromium in CI.
 
 `.github/workflows/check-links.yml` runs weekly and can also be started manually. It checks external URLs discovered from root HTML pages and canonical JSON data. Only definitive `404`/`410` responses fail the workflow; access-control, rate-limit, server, and transient network failures are surfaced as warnings to reduce false positives from bot blocking or temporary outages.
