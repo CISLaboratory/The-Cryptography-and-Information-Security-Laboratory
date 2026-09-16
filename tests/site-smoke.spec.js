@@ -22,6 +22,7 @@ for (const entry of corePages) {
     await expect(page.locator('.top-nav')).toHaveAttribute('aria-label', 'Primary navigation');
     await expect(page.locator('link[data-professional-styles]')).toHaveCount(1);
     await expect(page.locator('link[data-polish-styles]')).toHaveCount(1);
+    await expect(page.locator('link[data-accessibility-styles]')).toHaveCount(1);
     await expect(page.locator('.footer[data-enhanced="true"]')).toHaveCount(1);
     const overflow = await page.evaluate(() =>
       Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth)
