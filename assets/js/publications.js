@@ -54,16 +54,7 @@ async function loadPublications() {
 
       const heading = document.createElement('h2');
       heading.className = 'publication-year__title';
-
-      const yearLabel = document.createElement('span');
-      yearLabel.textContent = year;
-
-      const count = grouped[year].length;
-      const countLabel = document.createElement('span');
-      countLabel.className = 'publication-year__count';
-      countLabel.textContent = `${count} ${count === 1 ? 'publication' : 'publications'}`;
-
-      heading.append(yearLabel, countLabel);
+      heading.textContent = year;
       yearSection.appendChild(heading);
 
       const itemsList = document.createElement('ul');
