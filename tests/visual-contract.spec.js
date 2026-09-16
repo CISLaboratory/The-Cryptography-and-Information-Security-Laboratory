@@ -104,13 +104,24 @@ test('home hero preserves restrained academic visual hierarchy', async ({ page }
   }
 });
 
-test('Home Latest News heading stays concise without redundant kicker or description', async ({ page }) => {
+test('Home section headings stay concise without redundant labels or helper copy', async ({ page }) => {
   await page.goto('/index.html', { waitUntil: 'networkidle' });
 
   const newsSection = page.locator('#news');
   await expect(newsSection.locator('.section-heading h2')).toHaveText('Latest News');
   await expect(newsSection.locator('.section-kicker')).toHaveCount(0);
   await expect(newsSection.getByText('Recent updates published by CIS-Lab.', { exact: true })).toHaveCount(0);
+
+  const publicationsSection = page.locator('#publications');
+  await expect(publicationsSection.locator('.section-heading h2')).toHaveText('Selected Publications');
+  await expect(publicationsSection.locator('.section-kicker')).toHaveCount(0);
+  await expect(
+    publicationsSection.getByText('Recent publications involving current CIS-Lab students.', { exact: true })
+  ).toHaveCount(0);
+
+  const exploreSection = page.locator('section[aria-labelledby="explore-title"]');
+  await expect(exploreSection.locator('#explore-title')).toHaveText('Explore CIS-Lab');
+  await expect(exploreSection.locator('.section-kicker')).toHaveCount(0);
 });
 
 test('home publications use flat academic-list styling', async ({ page }) => {
