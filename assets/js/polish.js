@@ -1,13 +1,3 @@
-function installPolishStyles() {
-  if (document.querySelector('link[data-polish-styles]')) return;
-
-  const stylesheet = document.createElement('link');
-  stylesheet.rel = 'stylesheet';
-  stylesheet.href = new URL('../css/polish.css', import.meta.url).href;
-  stylesheet.dataset.polishStyles = 'true';
-  document.head.appendChild(stylesheet);
-}
-
 export function ensureResultsSummary(controlElement, id) {
   if (!controlElement) return null;
 
@@ -116,8 +106,6 @@ function markFooterCurrentPage() {
     if (href === activeFile) link.setAttribute('aria-current', 'page');
   });
 }
-
-installPolishStyles();
 
 document.addEventListener('DOMContentLoaded', () => {
   installDetailBreadcrumbs();
