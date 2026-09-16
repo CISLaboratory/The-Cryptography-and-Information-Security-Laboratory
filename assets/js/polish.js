@@ -1,17 +1,3 @@
-export function ensureResultsSummary(controlElement, id) {
-  if (!controlElement) return null;
-
-  let summary = document.getElementById(id);
-  if (!summary) {
-    summary = document.createElement('p');
-    summary.id = id;
-    summary.className = 'results-summary';
-    summary.setAttribute('aria-live', 'polite');
-    controlElement.insertAdjacentElement('afterend', summary);
-  }
-  return summary;
-}
-
 function getPageKey() {
   const page = window.location.pathname.split('/').pop() || 'index.html';
   return page.replace(/\.html$/, '') || 'index';
