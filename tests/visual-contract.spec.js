@@ -71,7 +71,7 @@ test('People keeps its visual hierarchy even when JavaScript is disabled', async
   });
 
   expect(controlsStyles.backgroundColor).toBe('rgb(248, 250, 252)');
-  expect(controlsStyles.borderRadius).toBe('12px');
+  expect(controlsStyles.borderRadius).toBe('8px');
   expect(controlsStyles.borderStyle).toBe('solid');
 
   await context.close();
@@ -104,7 +104,33 @@ test('home hero preserves restrained academic visual hierarchy', async ({ page }
   }
 });
 
-test('publication archive keeps clean year headings without count badges', async ({ page }) => {
+test('home publications use flat academic-list styling', async ({ page }) => {
+  await page.goto('/index.html', { waitUntil: 'networkidle' });
+
+  const listStyles = await page.locator('#home-publications-list').evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      display: styles.display,
+      borderTopStyle: styles.borderTopStyle
+    };
+  });
+  expect(listStyles.display).toBe('block');
+  expect(listStyles.borderTopStyle).toBe('solid');
+
+  const entryStyles = await page.locator('.home-publication-entry').first().evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      borderBottomStyle: styles.borderBottomStyle,
+      borderRadius: styles.borderRadius,
+      boxShadow: styles.boxShadow
+    };
+  });
+  expect(entryStyles.borderBottomStyle).toBe('solid');
+  expect(entryStyles.borderRadius).toBe('0px');
+  expect(entryStyles.boxShadow).toBe('none');
+});
+
+test('publication archive keeps clean editorial year headings without count badges', async ({ page }) => {
   await page.goto('/publications.html', { waitUntil: 'networkidle' });
 
   await expect(page.locator('.publication-year__count')).toHaveCount(0);
@@ -114,10 +140,88 @@ test('publication archive keeps clean year headings without count badges', async
     const styles = getComputedStyle(element);
     return {
       backgroundColor: styles.backgroundColor,
-      borderBottomStyle: styles.borderBottomStyle
+      borderBottomStyle: styles.borderBottomStyle,
+      borderBottomWidth: styles.borderBottomWidth
     };
   });
 
-  expect(yearStyles.backgroundColor).toBe('rgb(241, 244, 248)');
+  expect(yearStyles.backgroundColor).toBe('rgba(0, 0, 0, 0)');
   expect(yearStyles.borderBottomStyle).toBe('solid');
+  expect(yearStyles.borderBottomWidth).toBe('2px');
+});
+
+test('archive filters share one restrained visual language', async ({ page }) => {
+  for (const [path, selector] of [
+    ['/people.html', '#people-filter'],
+    ['/news.html', '#news-year'],
+    ['/seminars.html', '#seminar-year']
+  ]) {
+    await page.goto(path, { waitUntil: 'networkidle' });
+    const styles = await page.locator(selector).evaluate((element) => {
+      const computed = getComputedStyle(element);
+      return {
+        appearance: computed.appearance,
+        minHeight: computed.minHeight,
+        borderRadius: computed.borderRadius,
+        backgroundImage: computed.backgroundImage
+      };
+    });
+
+    expect(styles.appearance).toBe('none');
+    expect(styles.minHeight).toBe('42px');
+    expect(styles.borderRadius).toBe('8px');
+    expect(styles.backgroundImage).toContain('data:image/svg+xml');
+  }
+});
+
+test('desktop navigation uses a text-first current-page treatment', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop');
+  await page.goto('/people.html', { waitUntil: 'networkidle' });
+  const activeLink = page.locator('.nav-links a[aria-current="page"]');
+  const styles = await activeLink.evaluate((element) => {
+    const computed = getComputedStyle(element);
+    const marker = getComputedStyle(element, '::after');
+    return {
+      borderRadius: computed.borderRadius,
+      backgroundColor: computed.backgroundColor,
+      markerDisplay: marker.display,
+      markerHeight: marker.height
+    };
+  });
+
+  expect(styles.borderRadius).toBe('0px');
+  expect(styles.backgroundColor).toBe('rgba(0, 0, 0, 0)');
+  expect(styles.markerDisplay).toBe('block');
+  expect(styles.markerHeight).toBe('2px');
+});
+
+test('People presents member rows as compact cards on mobile', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile');
+  await page.goto('/people.html', { waitUntil: 'networkidle' });
+
+  const row = page.locator('.people-table tr:not(.people-group-row)').first();
+  const rowStyles = await row.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      display: styles.display,
+      borderStyle: styles.borderStyle,
+      borderRadius: styles.borderRadius
+    };
+  });
+
+  expect(rowStyles.display).toBe('block');
+  expect(rowStyles.borderStyle).toBe('solid');
+  expect(rowStyles.borderRadius).toBe('8px');
+
+  const firstCell = row.locator('td').first();
+  const firstCellStyles = await firstCell.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      display: styles.display,
+      backgroundColor: styles.backgroundColor
+    };
+  });
+
+  expect(firstCellStyles.display).toBe('block');
+  expect(firstCellStyles.backgroundColor).toBe('rgb(251, 252, 254)');
 });
