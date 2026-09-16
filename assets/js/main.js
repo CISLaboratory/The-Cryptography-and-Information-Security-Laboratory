@@ -1,6 +1,36 @@
 import { compareDateDesc, formatDateOnly } from './date-utils.js';
 import { appendAuthors, getCurrentMemberNames } from './author-utils.js';
 
+function installAccessibilityScaffolding() {
+  if (!document.querySelector('link[data-accessibility-styles]')) {
+    const stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.href = new URL('../css/accessibility.css', import.meta.url).href;
+    stylesheet.dataset.accessibilityStyles = 'true';
+    document.head.appendChild(stylesheet);
+  }
+
+  const main = document.querySelector('main');
+  if (main) {
+    if (!main.id) main.id = 'main-content';
+
+    if (!document.querySelector('.skip-link')) {
+      const skipLink = document.createElement('a');
+      skipLink.className = 'skip-link';
+      skipLink.href = `#${main.id}`;
+      skipLink.textContent = 'Skip to main content';
+      document.body.prepend(skipLink);
+    }
+  }
+
+  const primaryNavigation = document.querySelector('.top-nav');
+  if (primaryNavigation && !primaryNavigation.hasAttribute('aria-label')) {
+    primaryNavigation.setAttribute('aria-label', 'Primary navigation');
+  }
+}
+
+installAccessibilityScaffolding();
+
 const yearTarget = document.getElementById('year');
 if (yearTarget) {
   yearTarget.textContent = new Date().getFullYear();

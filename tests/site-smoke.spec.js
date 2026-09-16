@@ -19,12 +19,27 @@ for (const entry of corePages) {
     await expect(page.locator(entry.locator).first()).toBeVisible();
     expect(pageErrors).toEqual([]);
 
+    await expect(page.locator('main')).toHaveAttribute('id', 'main-content');
+    await expect(page.locator('.skip-link')).toHaveAttribute('href', '#main-content');
+    await expect(page.locator('.top-nav')).toHaveAttribute('aria-label', 'Primary navigation');
+
     const overflow = await page.evaluate(() =>
       Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth)
     );
     expect(overflow).toBeLessThanOrEqual(1);
   });
 }
+
+test('skip link becomes keyboard-accessible on focus', async ({ page }) => {
+  await page.goto('/index.html', { waitUntil: 'networkidle' });
+  const skipLink = page.locator('.skip-link');
+  await skipLink.focus();
+  await expect(skipLink).toBeFocused();
+
+  const box = await skipLink.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box.y).toBeGreaterThanOrEqual(0);
+});
 
 test('mobile navigation opens and closes accessibly', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile');
@@ -44,13 +59,13 @@ test('mobile navigation opens and closes accessibly', async ({ page }, testInfo)
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('people filter uses Mentor instead of Faculty', async ({ page }) => {
+test('people filter uses Mentor terminology', async ({ page }) => {
   await page.goto('/people.html', { waitUntil: 'networkidle' });
   await expect(page.locator('#people-filter option')).toHaveText([
     'All',
     'Mentor',
     'Ph.D. Students',
-    'Master Students'
+    "Master's Students"
   ]);
 });
 
