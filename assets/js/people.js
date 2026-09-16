@@ -51,7 +51,7 @@ async function loadPeople() {
       if (value instanceof Node) {
         cell.appendChild(value);
       } else {
-        cell.textContent = value || '—';
+        cell.textContent = value || '–';
         if (!value) cell.classList.add('muted-placeholder');
       }
       return cell;
