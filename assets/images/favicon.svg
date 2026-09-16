@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="CIS-Lab">
+  <rect width="64" height="64" rx="14" fill="#0b1d51"/>
+  <circle cx="32" cy="27" r="14" fill="none" stroke="#ffffff" stroke-width="5"/>
+  <path d="M32 40v13M25 53h14" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="32" cy="27" r="3" fill="#ffffff"/>
+</svg>
