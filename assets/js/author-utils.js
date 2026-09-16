@@ -1,16 +1,12 @@
-export function getCurrentStudentNames(people) {
+export function getCurrentMemberNames(people) {
   return new Set(
     (Array.isArray(people) ? people : [])
-      .filter((person) => {
-        const role = String(person?.role ?? person?.position ?? '').toLowerCase();
-        return role.includes('student');
-      })
       .map((person) => person?.name)
       .filter(Boolean)
   );
 }
 
-export function appendAuthors(container, authors, currentStudentNames) {
+export function appendAuthors(container, authors, currentMemberNames) {
   if (!container) return;
 
   if (typeof authors === 'string') {
@@ -24,8 +20,19 @@ export function appendAuthors(container, authors, currentStudentNames) {
     if (index > 0) container.append(', ');
 
     const name = typeof author === 'string' ? author : author?.name ?? '';
-    const element = document.createElement(currentStudentNames.has(name) ? 'strong' : 'span');
+    const isCurrentMember = currentMemberNames.has(name);
+    const element = document.createElement(isCurrentMember ? 'strong' : 'span');
     element.textContent = name;
+
+    if (typeof author === 'object' && author?.correspondingAuthor) {
+      const marker = document.createElement('sup');
+      marker.className = 'corresponding-author-marker';
+      marker.title = 'Corresponding author';
+      marker.setAttribute('aria-label', ' corresponding author');
+      marker.textContent = '*';
+      element.appendChild(marker);
+    }
+
     container.appendChild(element);
   });
 }

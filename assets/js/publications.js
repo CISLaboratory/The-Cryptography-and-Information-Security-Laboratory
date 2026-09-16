@@ -1,5 +1,5 @@
 import './main.js';
-import { appendAuthors, getCurrentStudentNames } from './author-utils.js';
+import { appendAuthors, getCurrentMemberNames } from './author-utils.js';
 
 async function loadPublications() {
   const publicationsList = document.getElementById('publications-list');
@@ -20,7 +20,7 @@ async function loadPublications() {
 
     const publications = await publicationsResponse.json();
     const people = await peopleResponse.json();
-    const currentStudentNames = getCurrentStudentNames(people);
+    const currentMemberNames = getCurrentMemberNames(people);
 
     if (!Array.isArray(publications) || publications.length === 0) {
       publicationsList.innerHTML = '<p>No publications available at this time.</p>';
@@ -87,7 +87,7 @@ async function loadPublications() {
             metaEl.className = 'publication-meta';
 
             if (item.authors) {
-              appendAuthors(metaEl, item.authors, currentStudentNames);
+              appendAuthors(metaEl, item.authors, currentMemberNames);
             }
             if (item.venue) {
               if (metaEl.childNodes.length) metaEl.append(' · ');

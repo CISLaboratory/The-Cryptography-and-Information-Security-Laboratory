@@ -44,7 +44,27 @@ test('mobile navigation opens and closes accessibly', async ({ page }, testInfo)
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('publication lists emphasize current student authors', async ({ page }) => {
+test('people filter uses Mentor instead of Faculty', async ({ page }) => {
+  await page.goto('/people.html', { waitUntil: 'networkidle' });
+  await expect(page.locator('#people-filter option')).toHaveText([
+    'All',
+    'Mentor',
+    'Ph.D. Students',
+    'Master Students'
+  ]);
+});
+
+test('publication lists emphasize current lab authors and mark corresponding authors', async ({ page }) => {
   await page.goto('/publications.html', { waitUntil: 'networkidle' });
-  await expect(page.locator('.publication-meta strong')).toHaveCount(2);
+  await expect(page.locator('.publication-meta strong')).toHaveCount(4);
+  await expect(page.locator('.publication-meta .corresponding-author-marker')).toHaveCount(2);
+  await expect(page.locator('.publication-meta strong').first()).toContainText('Hailun Yan');
+});
+
+test('publication detail preserves corresponding-author markers', async ({ page }) => {
+  await page.goto('/publication-detail.html?slug=sok-cryptanalysis-sha3-standard', {
+    waitUntil: 'networkidle'
+  });
+  await expect(page.locator('.publication-authors strong').first()).toContainText('Hailun Yan');
+  await expect(page.locator('.publication-authors .corresponding-author-marker')).toHaveCount(1);
 });

@@ -3,8 +3,8 @@ import './main.js';
 function getRoleCategory(person) {
   const role = String(person?.role ?? person?.position ?? '').toLowerCase();
 
-  if (role.includes('professor')) {
-    return { key: 'faculty', label: 'Faculty', rank: 0 };
+  if (role.includes('professor') || role.includes('mentor')) {
+    return { key: 'mentor', label: 'Mentor', rank: 0 };
   }
   if (role.includes('ph.d')) {
     return { key: 'phd', label: 'Ph.D. Students', rank: 1 };

@@ -1,5 +1,5 @@
 import { compareDateDesc, formatDateOnly } from './date-utils.js';
-import { appendAuthors, getCurrentStudentNames } from './author-utils.js';
+import { appendAuthors, getCurrentMemberNames } from './author-utils.js';
 
 const yearTarget = document.getElementById('year');
 if (yearTarget) {
@@ -109,7 +109,7 @@ async function loadHomePublications() {
 
     const publications = await publicationsResponse.json();
     const people = await peopleResponse.json();
-    const currentStudentNames = getCurrentStudentNames(people);
+    const currentMemberNames = getCurrentMemberNames(people);
 
     const sorted = [...publications].sort((a, b) => {
       const yearDiff = (b.year ?? 0) - (a.year ?? 0);
@@ -155,7 +155,7 @@ async function loadHomePublications() {
       if (item.authors) {
         const authors = document.createElement('p');
         authors.className = 'card-authors';
-        appendAuthors(authors, item.authors, currentStudentNames);
+        appendAuthors(authors, item.authors, currentMemberNames);
         article.appendChild(authors);
       }
 
