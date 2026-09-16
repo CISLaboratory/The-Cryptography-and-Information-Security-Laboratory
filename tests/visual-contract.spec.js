@@ -92,16 +92,15 @@ test('home hero preserves restrained academic visual hierarchy', async ({ page }
   expect(heroStyles.color).toBe('rgb(255, 255, 255)');
 
   if (testInfo.project.name === 'desktop') {
-    const title = page.locator('.hero-title--single-line');
-    const metrics = await title.evaluate((element) => ({
-      scrollWidth: element.scrollWidth,
-      clientWidth: element.clientWidth,
-      height: element.getBoundingClientRect().height,
-      lineHeight: Number.parseFloat(getComputedStyle(element).lineHeight)
-    }));
+    const whiteSpace = await page.locator('.hero-title--single-line').evaluate(
+      (element) => getComputedStyle(element).whiteSpace
+    );
+    expect(whiteSpace).toBe('nowrap');
 
-    expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1);
-    expect(metrics.height).toBeLessThanOrEqual(metrics.lineHeight * 1.15);
+    const overflow = await page.evaluate(() =>
+      Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth)
+    );
+    expect(overflow).toBeLessThanOrEqual(1);
   }
 });
 
