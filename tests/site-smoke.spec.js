@@ -41,6 +41,16 @@ test('home page presents existing content as a lab portal without unconfirmed re
   await expect(page.getByText('Research Focus', { exact: true })).toHaveCount(0);
 });
 
+test('home publications use an academic list with direct resources', async ({ page }) => {
+  await page.goto('/index.html', { waitUntil: 'networkidle' });
+  await expect(page.locator('#home-publications-list .home-publication-entry')).toHaveCount(2);
+  await expect(page.locator('#home-publications-list .card--publication')).toHaveCount(0);
+  await expect(page.locator('.home-publication-year').first()).toHaveText(/^\d{4}$/);
+  await expect(page.locator('.home-publication-authors strong')).toHaveCount(4);
+  await expect(page.locator('.home-publication-resources').first()).toContainText('Details');
+  await expect(page.locator('.home-publication-resources').first()).toContainText('Publisher / DOI');
+});
+
 test('skip link becomes keyboard-accessible on focus', async ({ page }) => {
   await page.goto('/index.html', { waitUntil: 'networkidle' });
   const skipLink = page.locator('.skip-link');
@@ -85,11 +95,20 @@ test('people directory uses academic grouping without member counts', async ({ p
   await expect(page.locator('.website-link').first()).toHaveText('Website ↗');
 });
 
-test('news and seminar archives expose result feedback', async ({ page }) => {
+test('news and seminar archives keep filtering quiet and count-free', async ({ page }) => {
   await page.goto('/news.html', { waitUntil: 'networkidle' });
-  await expect(page.locator('#news-summary')).toContainText('news item');
+  await expect(page.locator('#news-summary')).toHaveCount(0);
+  const newsFilter = page.locator('#news-year');
+  expect(await newsFilter.evaluate((element) => getComputedStyle(element).appearance)).toBe('none');
+  await newsFilter.selectOption('2026');
+  await expect(page.locator('#news-timeline .timeline-item')).toHaveCount(1);
+
   await page.goto('/seminars.html', { waitUntil: 'networkidle' });
-  await expect(page.locator('#seminar-summary')).toContainText('seminar');
+  await expect(page.locator('#seminar-summary')).toHaveCount(0);
+  const seminarFilter = page.locator('#seminar-year');
+  expect(await seminarFilter.evaluate((element) => getComputedStyle(element).appearance)).toBe('none');
+  await seminarFilter.selectOption('2026');
+  await expect(page.locator('#seminar-timeline .timeline-item').first()).toBeVisible();
 });
 
 test('publication lists emphasize current lab authors and mark corresponding authors', async ({ page }) => {

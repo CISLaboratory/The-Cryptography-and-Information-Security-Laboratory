@@ -1,13 +1,10 @@
 import './main.js';
-import { ensureResultsSummary } from './polish.js';
 import { compareDateDesc, formatDateOnly, getYearFromDate } from './date-utils.js';
 
 async function loadNews() {
   const timeline = document.getElementById('news-timeline');
   const yearFilter = document.getElementById('news-year');
   if (!timeline || !yearFilter) return;
-
-  const summary = ensureResultsSummary(yearFilter.closest('.seminar-controls'), 'news-summary');
 
   try {
     const response = await fetch('data/news.json');
@@ -28,13 +25,6 @@ async function loadNews() {
       const filteredNews = newsItems
         .filter((item) => selected === 'all' || String(getYearFromDate(item.date)) === selected)
         .sort((a, b) => compareDateDesc(a.date, b.date));
-
-      if (summary) {
-        const noun = filteredNews.length === 1 ? 'news item' : 'news items';
-        summary.textContent = selected === 'all'
-          ? `Showing ${filteredNews.length} ${noun}.`
-          : `Showing ${filteredNews.length} ${noun} from ${selected}.`;
-      }
 
       filteredNews.forEach((item) => {
         const slug = item.slug ?? '';
@@ -108,7 +98,6 @@ async function loadNews() {
     renderNews();
   } catch (error) {
     timeline.innerHTML = '<p>Unable to load news items at this time.</p>';
-    if (summary) summary.textContent = '';
     console.error(error);
   }
 }

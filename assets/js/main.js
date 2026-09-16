@@ -202,23 +202,30 @@ async function loadHomePublications() {
     });
 
     const featured = sorted.slice(0, 3);
-
-    if (!featured.length) {
-      return;
-    }
+    if (!featured.length) return;
 
     const fragment = document.createDocumentFragment();
 
     featured.forEach((item) => {
       const slug = item.slug ?? '';
       const article = document.createElement('article');
-      article.className = 'card card--publication';
+      article.className = 'home-publication-entry';
+
+      const meta = document.createElement('div');
+      meta.className = 'home-publication-meta';
+
+      if (item.year) {
+        const year = document.createElement('span');
+        year.className = 'home-publication-year';
+        year.textContent = item.year;
+        meta.appendChild(year);
+      }
 
       if (item.venue) {
-        const meta = document.createElement('p');
-        meta.className = 'card-meta';
-        meta.textContent = item.venue;
-        article.appendChild(meta);
+        const venue = document.createElement('span');
+        venue.className = 'home-publication-venue';
+        venue.textContent = item.venue;
+        meta.appendChild(venue);
       }
 
       const title = document.createElement('h3');
@@ -227,34 +234,39 @@ async function loadHomePublications() {
       titleLink.textContent = item.title;
       title.appendChild(titleLink);
 
-      const cta = document.createElement('a');
-      cta.href = slug ? `publication-detail.html?slug=${encodeURIComponent(slug)}` : '#';
-      cta.className = 'inline-link';
-      cta.textContent = 'Read more';
-
-      article.appendChild(title);
+      article.append(meta, title);
 
       if (item.authors) {
         const authors = document.createElement('p');
-        authors.className = 'card-authors';
+        authors.className = 'home-publication-authors';
         appendAuthors(authors, item.authors, currentMemberNames);
         article.appendChild(authors);
       }
 
-      if (item.summary) {
-        const summary = document.createElement('p');
-        summary.className = 'card-summary';
-        summary.textContent = item.summary;
-        article.appendChild(summary);
-      }
+      const resources = document.createElement('div');
+      resources.className = 'home-publication-resources';
 
-      article.appendChild(cta);
+      const detailLink = document.createElement('a');
+      detailLink.href = slug ? `publication-detail.html?slug=${encodeURIComponent(slug)}` : '#';
+      detailLink.textContent = 'Details';
+      resources.appendChild(detailLink);
 
+      const links = Array.isArray(item.links) ? item.links : [];
+      links.forEach((link) => {
+        if (!link?.url) return;
+        const anchor = document.createElement('a');
+        anchor.href = link.url;
+        anchor.target = link.target ?? '_blank';
+        anchor.rel = 'noopener noreferrer';
+        anchor.textContent = link.label ?? 'Resource';
+        resources.appendChild(anchor);
+      });
+
+      article.appendChild(resources);
       fragment.appendChild(article);
     });
 
-    publicationsList.innerHTML = '';
-    publicationsList.appendChild(fragment);
+    publicationsList.replaceChildren(fragment);
   } catch (error) {
     console.error(error);
   }

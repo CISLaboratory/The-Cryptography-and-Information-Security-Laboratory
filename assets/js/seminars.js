@@ -1,5 +1,4 @@
 import './main.js';
-import { ensureResultsSummary } from './polish.js';
 import { compareDateDesc, formatDateOnly } from './date-utils.js';
 
 function getSeminarDataUrl() {
@@ -12,8 +11,6 @@ async function loadSeminars() {
   const timeline = document.getElementById('seminar-timeline');
   const yearFilter = document.getElementById('seminar-year');
   if (!timeline || !yearFilter) return;
-
-  const summary = ensureResultsSummary(yearFilter.closest('.seminar-controls'), 'seminar-summary');
 
   try {
     const response = await fetch(getSeminarDataUrl(), { cache: 'no-store' });
@@ -40,13 +37,6 @@ async function loadSeminars() {
       const filteredSeminars = seminars
         .filter((item) => selected === 'all' || String(item.year) === selected)
         .sort((a, b) => compareDateDesc(a.date, b.date));
-
-      if (summary) {
-        const noun = filteredSeminars.length === 1 ? 'seminar' : 'seminars';
-        summary.textContent = selected === 'all'
-          ? `Showing ${filteredSeminars.length} ${noun}.`
-          : `Showing ${filteredSeminars.length} ${noun} from ${selected}.`;
-      }
 
       filteredSeminars.forEach((item) => {
         const slug = item.slug ?? '';
@@ -122,7 +112,6 @@ async function loadSeminars() {
     renderSeminars();
   } catch (error) {
     timeline.innerHTML = '<p>Unable to load seminar information at this time.</p>';
-    if (summary) summary.textContent = '';
     console.error(error);
   }
 }

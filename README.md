@@ -20,11 +20,11 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - `robots.txt` / `sitemap.xml` — crawler discovery files.
 - `assets/css/styles.css` — legacy/shared structural site styles.
 - `assets/css/professional.css` — restrained professional visual system layered over the shared styles.
-- `assets/css/polish.css` — second-pass hierarchy, archive feedback, breadcrumb, and detail-reading refinements.
+- `assets/css/polish.css` — academic-list hierarchy, unified archive filters, responsive People presentation, breadcrumb, detail-reading, and navigation refinements.
 - `assets/css/home.css` — home-page-only hero layout rules.
 - `assets/css/accessibility.css` — shared keyboard-accessibility styles, including the skip link.
 - `assets/js/*.js` — shared and page-specific JavaScript modules.
-- `assets/js/polish.js` — shared breadcrumb, footer-current-state, result-summary, and navigation refinements.
+- `assets/js/polish.js` — shared breadcrumb, footer-current-state, and navigation refinements.
 - `assets/js/author-utils.js` — shared helpers for emphasizing current lab authors and marking corresponding authors.
 - `assets/js/site-meta.js` — canonical URL, Open Graph, and structured-data helpers for data-driven detail pages.
 - `assets/images/` — site images and favicon.
@@ -51,6 +51,8 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 ## Visual direction
 
 The site should look like a professional academic laboratory website rather than a product/marketing landing page. Keep the interface restrained: strong typography and information hierarchy, consistent spacing, subtle borders and hover states, limited animation, and no decorative claims or effects that are not serving the content.
+
+Different content types should use the visual form that best matches their function rather than being forced into one generic card system. Publications use flatter academic lists with direct resource links, News may retain editorial cards/timeline treatment, People use a table on wider screens and compact member records on mobile, and archive filters share one quiet control language without visible result counters.
 
 The visual layers are declared directly in each page `<head>` in this order: structural styles, page-specific styles where applicable, professional styles, polish styles, then accessibility styles. Core presentation must not depend on JavaScript injection. JavaScript may enhance navigation, breadcrumbs, footer state, and data-driven content, but a delayed or failed script load should not cause the site to fall back to an unfinished visual state.
 
@@ -119,9 +121,9 @@ The current detail routes still use `?slug=...` and client-side rendering. This 
 - horizontal overflow on the tested viewports;
 - skip-to-content and primary-navigation accessibility hooks;
 - static loading and ordering of the professional, polish, and accessibility visual layers;
-- key visual contracts for the Home hero, People filter, and Publications archive, including a JavaScript-disabled People-page check;
+- key visual contracts for the Home hero, academic home-publication list, unified archive filters, restrained desktop navigation, People mobile records, and Publications archive, including a JavaScript-disabled People-page check;
 - People academic role grouping without member-count labels;
-- News/Seminar archive result feedback;
+- News/Seminar year filtering without visible result counters;
 - detail-page breadcrumb navigation and footer current-section state;
 - clean publication-year headings without count badges;
 - the home portal links and absence of an unconfirmed `Research Focus` section;
