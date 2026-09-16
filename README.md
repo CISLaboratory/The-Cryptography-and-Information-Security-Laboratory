@@ -24,13 +24,14 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 - `assets/images/` — site images and favicon.
 - `data/*.json` — canonical content data.
 - `scripts/validate_content.py` — repository content validator used locally and by CI.
+- `scripts/validate_publication_scope.py` — checks that every publication includes at least one current CIS-Lab student author.
 - `scripts/generate_sitemap.py` — deterministic sitemap generator/checker.
 - `docs/REPOSITORY_GOVERNANCE.md` — repository-owner/admin settings and handover checklist.
 - `docs/ARCHITECTURE_V2.md` — deferred Jekyll/static-detail migration decision, triggers, and compatibility requirements.
 
 ## Content policy
 
-- **Publications:** include research outputs with at least one **current CIS-Lab member** among the authors. Authors should use structured objects with `name` and `laboratoryMember` fields so this policy can be checked automatically.
+- **Publications:** include only research outputs with at least one **current CIS-Lab student** among the authors. A paper authored by the supervisor/faculty member but by no current lab student is not included. Authors should use structured objects with `name` and `laboratoryMember` fields so the policy can be checked automatically against `data/people.json`.
 - **Seminars:** record the speaker, calendar date at **day precision (`YYYY-MM-DD`)**, title/description, and authoritative paper/resource links. Do not record meeting time or room unless explicitly requested.
 - **News:** use a stable slug, an ISO calendar date (`YYYY-MM-DD`), a concise description, and optional article paragraphs/images.
 - **People:** keep names, positions, roles, email addresses, and personal websites in `data/people.json`.
@@ -51,6 +52,7 @@ If a custom domain is introduced later, update the canonical/OG base URL, `robot
 
    ```bash
    python scripts/validate_content.py
+   python scripts/validate_publication_scope.py
    python scripts/generate_sitemap.py --check
    for file in assets/js/*.js; do node --check "$file"; done
    ```
@@ -81,7 +83,8 @@ The current detail routes still use `?slug=...` and client-side rendering. This 
 - valid calendar dates;
 - seminar `date`/`year` consistency;
 - local image/resource existence;
-- structured publication authors and the current-member inclusion rule;
+- structured publication authors;
+- the student-authored Publications inclusion rule;
 - generated sitemap freshness;
 - basic JavaScript syntax.
 
