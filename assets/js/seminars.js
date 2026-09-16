@@ -1,12 +1,5 @@
 import './main.js';
-
-function formatDateTime(value) {
-  return new Date(value).toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-}
+import { compareDateDesc, formatDateOnly } from './date-utils.js';
 
 function getSeminarDataUrl() {
   const url = new URL('data/seminars.json', window.location.href);
@@ -44,7 +37,7 @@ async function loadSeminars() {
 
       seminars
         .filter((item) => selected === 'all' || String(item.year) === selected)
-        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
+        .sort((a, b) => compareDateDesc(a.date, b.date))
         .forEach((item) => {
           const slug = item.slug ?? '';
           const article = document.createElement('article');
@@ -65,8 +58,8 @@ async function loadSeminars() {
           speaker.textContent = item.speaker;
 
           const time = document.createElement('time');
-          time.dateTime = item.datetime;
-          time.textContent = formatDateTime(item.datetime);
+          time.dateTime = item.date;
+          time.textContent = formatDateOnly(item.date);
 
           heading.appendChild(titleLink);
           heading.appendChild(time);
@@ -76,7 +69,9 @@ async function loadSeminars() {
 
           if (item.location) {
             const location = document.createElement('p');
-            location.innerHTML = `<strong>Location:</strong> ${item.location}`;
+            const label = document.createElement('strong');
+            label.textContent = 'Location: ';
+            location.append(label, document.createTextNode(item.location));
             article.appendChild(location);
           }
 
@@ -87,7 +82,7 @@ async function loadSeminars() {
               const link = document.createElement('a');
               link.href = resource.url;
               link.target = resource.url.startsWith('http') ? '_blank' : '_self';
-              link.rel = resource.url.startsWith('http') ? 'noopener' : '';
+              link.rel = resource.url.startsWith('http') ? 'noopener noreferrer' : '';
               link.textContent = resource.label;
               resources.appendChild(link);
             });
