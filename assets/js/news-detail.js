@@ -1,16 +1,9 @@
 import './main.js';
+import { formatDateOnly } from './date-utils.js';
 
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
-}
-
-function formatDate(value) {
-  return new Date(value).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
 }
 
 async function loadNewsDetail() {
@@ -37,8 +30,9 @@ async function loadNewsDetail() {
       return;
     }
 
+    const displayDate = formatDateOnly(news.date);
     if (titleEl) titleEl.textContent = news.title;
-    if (subtitleEl) subtitleEl.textContent = formatDate(news.date);
+    if (subtitleEl) subtitleEl.textContent = displayDate;
 
     const fragment = document.createDocumentFragment();
 
@@ -48,7 +42,7 @@ async function loadNewsDetail() {
     const dateTerm = document.createElement('dt');
     dateTerm.textContent = 'Published';
     const dateValue = document.createElement('dd');
-    dateValue.textContent = formatDate(news.date);
+    dateValue.textContent = displayDate;
 
     metaList.append(dateTerm, dateValue);
     fragment.appendChild(metaList);

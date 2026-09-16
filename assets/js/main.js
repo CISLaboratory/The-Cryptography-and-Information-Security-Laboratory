@@ -1,3 +1,5 @@
+import { compareDateDesc, formatDateOnly } from './date-utils.js';
+
 const yearTarget = document.getElementById('year');
 if (yearTarget) {
   yearTarget.textContent = new Date().getFullYear();
@@ -7,8 +9,28 @@ const navToggle = document.getElementById('nav-toggle');
 const navLinks = document.getElementById('nav-links');
 
 if (navToggle && navLinks) {
+  const closeNavigation = () => {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  };
+
+  navToggle.setAttribute('aria-controls', navLinks.id || 'nav-links');
+  navToggle.setAttribute('aria-expanded', 'false');
+
   navToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  navLinks.addEventListener('click', (event) => {
+    if (event.target.closest('a')) closeNavigation();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeNavigation();
+      navToggle.focus();
+    }
   });
 }
 
@@ -21,19 +43,19 @@ async function loadNews() {
     if (!response.ok) throw new Error(`Failed to load news: ${response.status}`);
     const newsItems = await response.json();
 
+    const featured = [...newsItems]
+      .sort((a, b) => compareDateDesc(a.date, b.date))
+      .slice(0, 3);
+
     const fragment = document.createDocumentFragment();
-    newsItems.forEach((item) => {
+    featured.forEach((item) => {
       const slug = item.slug ?? '';
       const article = document.createElement('article');
       article.className = 'card';
 
       const date = document.createElement('time');
       date.dateTime = item.date;
-      date.textContent = new Date(item.date).toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
+      date.textContent = formatDateOnly(item.date);
 
       const title = document.createElement('h3');
       const titleLink = document.createElement('a');

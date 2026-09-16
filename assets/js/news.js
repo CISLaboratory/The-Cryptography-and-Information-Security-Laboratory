@@ -1,12 +1,5 @@
 import './main.js';
-
-function formatDate(value) {
-  return new Date(value).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-}
+import { compareDateDesc, formatDateOnly, getYearFromDate } from './date-utils.js';
 
 async function loadNews() {
   const timeline = document.getElementById('news-timeline');
@@ -18,7 +11,7 @@ async function loadNews() {
     if (!response.ok) throw new Error(`Failed to load news: ${response.status}`);
     const newsItems = await response.json();
 
-    const years = Array.from(new Set(newsItems.map((item) => new Date(item.date).getFullYear()))).sort((a, b) => b - a);
+    const years = Array.from(new Set(newsItems.map((item) => getYearFromDate(item.date)))).sort((a, b) => b - a);
     years.forEach((year) => {
       const option = document.createElement('option');
       option.value = String(year);
@@ -31,8 +24,8 @@ async function loadNews() {
       const fragment = document.createDocumentFragment();
 
       newsItems
-        .filter((item) => selected === 'all' || String(new Date(item.date).getFullYear()) === selected)
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .filter((item) => selected === 'all' || String(getYearFromDate(item.date)) === selected)
+        .sort((a, b) => compareDateDesc(a.date, b.date))
         .forEach((item) => {
           const slug = item.slug ?? '';
           const article = document.createElement('article');
@@ -75,7 +68,7 @@ async function loadNews() {
 
           const time = document.createElement('time');
           time.dateTime = item.date;
-          time.textContent = formatDate(item.date);
+          time.textContent = formatDateOnly(item.date);
 
           header.appendChild(titleWrap);
           header.appendChild(time);

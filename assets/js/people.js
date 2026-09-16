@@ -18,9 +18,34 @@ async function loadPeople() {
       filter.appendChild(option);
     });
 
-    const formatEmail = (email) => (email ? `<a href="mailto:${email}">${email}</a>` : '');
-    const formatWebsite = (website) =>
-      website ? `<a href="${website}" target="_blank" rel="noopener">${website}</a>` : '';
+    const createCell = (label, value) => {
+      const cell = document.createElement('td');
+      cell.dataset.label = label;
+      if (value instanceof Node) {
+        cell.appendChild(value);
+      } else {
+        cell.textContent = value ?? '';
+      }
+      return cell;
+    };
+
+    const createEmailLink = (email) => {
+      if (!email) return '';
+      const link = document.createElement('a');
+      link.href = `mailto:${email}`;
+      link.textContent = email;
+      return link;
+    };
+
+    const createWebsiteLink = (website) => {
+      if (!website) return '';
+      const link = document.createElement('a');
+      link.href = website;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = website;
+      return link;
+    };
 
     const renderRows = () => {
       const selectedRole = filter.value;
@@ -30,17 +55,16 @@ async function loadPeople() {
         .filter((person) => selectedRole === 'all' || person.role === selectedRole)
         .forEach((person) => {
           const row = document.createElement('tr');
-          row.innerHTML = `
-            <td data-label="Name">${person.name}</td>
-            <td data-label="Job Position">${person.position}</td>
-            <td data-label="Email">${formatEmail(person.email)}</td>
-            <td data-label="Personal Website">${formatWebsite(person.website)}</td>
-          `;
+          row.append(
+            createCell('Name', person.name),
+            createCell('Job Position', person.position),
+            createCell('Email', createEmailLink(person.email)),
+            createCell('Personal Website', createWebsiteLink(person.website))
+          );
           fragment.appendChild(row);
         });
 
-      tableBody.innerHTML = '';
-      tableBody.appendChild(fragment);
+      tableBody.replaceChildren(fragment);
     };
 
     filter.addEventListener('change', renderRows);

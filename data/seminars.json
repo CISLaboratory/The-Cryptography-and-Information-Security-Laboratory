@@ -3,7 +3,7 @@
     "slug": "new-general-mds-matrix-construction",
     "title": "[Paper Reading] New General MDS Matrix Construction Method Towards Low Area (ToSC2025)",
     "speaker": "Zhenyu Zhao",
-    "datetime": "2025-12-24T20:00:00",
+    "date": "2025-12-24",
     "year": 2025,
     "description": "",
     "resources": [
@@ -17,7 +17,7 @@
     "slug": "rebound-attack-whirlpool-groestl",
     "title": "[Paper Reading] The Rebound Attack: Cryptanalysis of Reduced Whirlpool and Grøstl (FSE2009)",
     "speaker": "Yuan Gao",
-    "datetime": "2025-12-09T20:00:00",
+    "date": "2025-12-09",
     "year": 2025,
     "description": "",
     "resources": [
@@ -31,7 +31,7 @@
     "slug": "addendum-how-small-can-s-boxes-be",
     "title": "[Paper Reading] Addendum to How Small Can S-boxes Be? / How Small Can S-boxes Be? (ToSC2025)",
     "speaker": "Zhenyu Zhao",
-    "datetime": "2025-11-05T20:00:00",
+    "date": "2025-11-05",
     "year": 2025,
     "description": "",
     "resources": [
@@ -45,7 +45,7 @@
     "slug": "finding-hash-collisions-quantum-computers-2025-01-20",
     "title": "[Paper Reading] Finding Hash Collisions with Quantum Computers by Using Differential Trails with Smaller Probability than Birthday Bound (EUROCRYPT2020)",
     "speaker": "Yuan Gao",
-    "datetime": "2025-01-20T20:00:00",
+    "date": "2025-01-20",
     "year": 2025,
     "description": "",
     "resources": [
@@ -59,7 +59,7 @@
     "slug": "finding-hash-collisions-quantum-computers-2025-01-27",
     "title": "[Paper Reading] Finding Hash Collisions with Quantum Computers by Using Differential Trails with Smaller Probability than Birthday Bound (EUROCRYPT2020)",
     "speaker": "Yuan Gao",
-    "datetime": "2025-01-27T20:00:00",
+    "date": "2025-01-27",
     "year": 2025,
     "description": "",
     "resources": [
@@ -73,7 +73,7 @@
     "slug": "permutation-based-hashing-stronger-preimage-resistance",
     "title": "[Paper Reading] Permutation-Based Hashing With Stronger (Second) Preimage Resistance",
     "speaker": "Anze Sun",
-    "datetime": "2026-02-12T20:00:00",
+    "date": "2026-02-12",
     "year": 2026,
     "description": "",
     "resources": [
@@ -87,7 +87,7 @@
     "slug": "improved-resultant-attack-arithmetization-oriented-primitives",
     "title": "[Paper Reading] Improved Resultant Attack against Arithmetization-Oriented Primitives (CRYPTO2025)",
     "speaker": "Yuexing Yue",
-    "datetime": "2026-03-10T20:00:00",
+    "date": "2026-03-10",
     "year": 2026,
     "description": "",
     "resources": [
@@ -101,7 +101,7 @@
     "slug": "new-general-mds-matrix-construction-2026-04-07",
     "title": "[Paper Reading] New General MDS Matrix Construction Method Towards Low Area (ToSC2025)",
     "speaker": "Zhenyu Zhao",
-    "datetime": "2026-04-07T20:00:00",
+    "date": "2026-04-07",
     "year": 2026,
     "description": "",
     "resources": [
@@ -115,7 +115,7 @@
     "slug": "linear-cancellations-mitm-attacks-sponge-functions",
     "title": "[Paper Reading] Linear Cancellations in the MitM Attacks on Sponge Functions (ToSC2025)",
     "speaker": "Anze Sun",
-    "datetime": "2026-05-12T20:00:00",
+    "date": "2026-05-12",
     "year": 2026,
     "description": "",
     "resources": [
@@ -129,7 +129,7 @@
     "slug": "poseidon-neptune-groebner-basis-cryptanalysis-subspace-trails",
     "title": "[Paper Reading] Poseidon and Neptune: Gröbner Basis Cryptanalysis Exploiting Subspace Trails (ToSC2025)",
     "speaker": "Yuexing Yue",
-    "datetime": "2026-06-09T20:00:00",
+    "date": "2026-06-09",
     "year": 2026,
     "description": "",
     "resources": [
@@ -143,7 +143,7 @@
     "slug": "algorithmic-toolkit-linearization-s-boxes",
     "title": "[Paper Reading] Algorithmic Toolkit for Linearization of S-boxes⋆",
     "speaker": "Zhenyu Zhao",
-    "datetime": "2026-07-07",
+    "date": "2026-07-07",
     "year": 2026,
     "description": "",
     "resources": [
@@ -157,7 +157,7 @@
     "slug": "alzette-64-bit-arx-box-design-analysis-2026-09-16",
     "title": "[Paper Reading] 64-bit ARX-box Alzette: Design and Analysis",
     "speaker": "Zhenyu Zhao",
-    "datetime": "2026-09-16",
+    "date": "2026-09-16",
     "year": 2026,
     "description": "Introduction to the 64-bit ARX-box Alzette and its design and analysis.",
     "resources": [

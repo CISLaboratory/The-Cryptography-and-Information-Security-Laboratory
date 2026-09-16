@@ -1,21 +1,54 @@
 # CIS-Lab Website
 
-## Structure
+Static website for the Cryptography and Information Security Laboratory (CIS-Lab).
 
-- `index.html` – Home page with hero, recent news, featured publications, and links to the main site sections.
-- `people.html` – Team directory rendered from `data/people.json` into a sortable table with name, job position, email, and personal website columns.
-- `news.html` – News archive sourced from `data/news.json` with year filtering and links to item detail pages.
-- `seminars.html` – Seminar timeline rendered from `data/seminars.json`, supporting links to papers and other resources plus detail pages for each session.
-- `publications.html` – Publication archive grouped by year and hydrated from `data/publications.json` with optional resource links and dedicated detail pages.
-- `contact.html` – Standalone laboratory contact page.
-- `news-detail.html`, `seminar-detail.html`, `publication-detail.html` – Shared detail layouts that load content by `slug` query parameters.
-- `assets/css/styles.css` – Shared styling.
-- `assets/js/*.js` – JavaScript modules that hydrate each page.
-- `data/*.json` – Content data files for easy editing.
-- `assets/resources/` – Optional PDF or multimedia assets referenced from seminars.
+## Site structure
+
+- `index.html` — home page with recent news and featured publications.
+- `people.html` — team directory backed by `data/people.json`.
+- `news.html` / `news-detail.html` — news archive and slug-based detail view backed by `data/news.json`.
+- `seminars.html` / `seminar-detail.html` — seminar archive and slug-based detail view backed by `data/seminars.json`.
+- `publications.html` / `publication-detail.html` — publication archive and slug-based detail view backed by `data/publications.json`.
+- `contact.html` — laboratory contact page.
+- `assets/css/styles.css` — shared site styles.
+- `assets/js/*.js` — shared and page-specific JavaScript modules.
+- `assets/images/` — site images.
+- `data/*.json` — canonical content data.
+- `scripts/validate_content.py` — repository content validator used locally and by CI.
 
 ## Content policy
 
-- **Publications:** include research outputs with at least one **current CIS-Lab member** among the authors. This is the default inclusion rule for the Publications page.
-- **Seminars:** record the speaker and calendar date (day precision), together with authoritative paper/resource links. Do not record the specific meeting time or room unless explicitly requested. Use unique, stable slugs so detail-page URLs remain valid.
-- Prefer authoritative publication links such as IACR ePrint, conference/journal pages, or DOI/publisher pages.
+- **Publications:** include research outputs with at least one **current CIS-Lab member** among the authors. Authors should use structured objects with `name` and `laboratoryMember` fields so this policy can be checked automatically.
+- **Seminars:** record the speaker, calendar date at **day precision (`YYYY-MM-DD`)**, title/description, and authoritative paper/resource links. Do not record meeting time or room unless explicitly requested.
+- **News:** use a stable slug, an ISO calendar date (`YYYY-MM-DD`), a concise description, and optional article paragraphs/images.
+- **People:** keep names, positions, roles, email addresses, and personal websites in `data/people.json`.
+- Prefer authoritative resource links such as IACR ePrint, conference/journal pages, DOI links, or publisher pages.
+- Slugs are public identifiers: keep them unique and do not change an existing slug without a migration plan.
+
+## Maintenance workflow
+
+1. Create a topic branch from `main`; do not make routine content changes directly on `main`.
+2. Edit the relevant `data/*.json` file or site code.
+3. Run the local checks:
+
+   ```bash
+   python scripts/validate_content.py
+   for file in assets/js/*.js; do node --check "$file"; done
+   ```
+
+4. Open a pull request and review the diff before merging.
+5. Merge only after the `Validate site content` GitHub Actions workflow passes.
+
+## Automated validation
+
+`.github/workflows/validate-content.yml` runs on every pull request and on pushes to `main`. It validates:
+
+- JSON syntax and top-level data shape;
+- unique and well-formed slugs;
+- valid calendar dates;
+- seminar `date`/`year` consistency;
+- local image/resource existence;
+- structured publication authors and the current-member inclusion rule;
+- basic JavaScript syntax.
+
+The validator intentionally uses only the Python standard library so the maintenance workflow has no package-install dependency.
