@@ -14,6 +14,13 @@
     "role": "Ph.D. student (direct-entry)"
   },
   {
+    "name": "Wen Kong",
+    "position": "Ph.D. student (regular-entry)",
+    "email": "",
+    "website": "",
+    "role": "Ph.D. student (regular-entry)"
+  },
+  {
     "name": "Zhenyu Zhao",
     "position": "Master student",
     "email": "",
@@ -22,6 +29,27 @@
   },
   {
     "name": "Anze Sun",
+    "position": "Master student",
+    "email": "",
+    "website": "",
+    "role": "Master student"
+  },
+  {
+    "name": "Jizhou Li",
+    "position": "Master student",
+    "email": "",
+    "website": "",
+    "role": "Master student"
+  },
+  {
+    "name": "Yuan Gao",
+    "position": "Master student",
+    "email": "",
+    "website": "",
+    "role": "Master student"
+  },
+  {
+    "name": "Wenxin Yu",
     "position": "Master student",
     "email": "",
     "website": "",
