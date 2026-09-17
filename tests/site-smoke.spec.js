@@ -78,36 +78,60 @@ test('mobile navigation opens and closes accessibly', async ({ page }, testInfo)
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('people directory uses academic grouping without member counts', async ({ page }) => {
+test('people directory uses academic grouping with a custom role dropdown', async ({ page }) => {
   await page.goto('/people.html', { waitUntil: 'networkidle' });
   const filter = page.locator('#people-filter');
+  const dropdown = page.locator('.filter-dropdown[data-filter-for="people-filter"]');
+  const trigger = dropdown.locator('.filter-dropdown__trigger');
 
   await expect(filter.locator('option')).toHaveText(['All', 'Mentor', 'Ph.D. Students', "Master's Students"]);
+  await expect(filter).toHaveClass(/native-filter-select/);
+  await expect(dropdown).toHaveAttribute('data-open', 'false');
+  await expect(trigger).toHaveText(/All/);
   await expect(page.locator('.people-group-row')).toHaveCount(3);
   await expect(page.locator('.people-group-row__count')).toHaveCount(0);
   await expect(page.locator('#people-summary')).toHaveCount(0);
 
-  const appearance = await filter.evaluate((element) => getComputedStyle(element).appearance);
-  expect(appearance).toBe('none');
-
-  await filter.selectOption('mentor');
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  await dropdown.getByRole('option', { name: 'Mentor', exact: true }).click();
+  await expect(filter).toHaveValue('mentor');
+  await expect(trigger).toHaveText(/Mentor/);
   await expect(page.locator('.people-group-row')).toHaveCount(1);
   await expect(page.locator('.website-link').first()).toHaveText('Website ↗');
 });
 
-test('news and seminar archives keep filtering quiet and count-free', async ({ page }) => {
+test('custom archive dropdown supports keyboard navigation and Escape', async ({ page }) => {
+  await page.goto('/people.html', { waitUntil: 'networkidle' });
+  const dropdown = page.locator('.filter-dropdown[data-filter-for="people-filter"]');
+  const trigger = dropdown.locator('.filter-dropdown__trigger');
+
+  await trigger.focus();
+  await trigger.press('ArrowDown');
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(dropdown.getByRole('option', { name: 'All', exact: true })).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(dropdown.getByRole('option', { name: 'Mentor', exact: true })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(trigger).toBeFocused();
+});
+
+test('news and seminar archives use the shared custom year dropdown', async ({ page }) => {
   await page.goto('/news.html', { waitUntil: 'networkidle' });
   await expect(page.locator('#news-summary')).toHaveCount(0);
-  const newsFilter = page.locator('#news-year');
-  expect(await newsFilter.evaluate((element) => getComputedStyle(element).appearance)).toBe('none');
-  await newsFilter.selectOption('2026');
+  const newsDropdown = page.locator('.filter-dropdown[data-filter-for="news-year"]');
+  await newsDropdown.locator('.filter-dropdown__trigger').click();
+  await newsDropdown.getByRole('option', { name: '2026', exact: true }).click();
+  await expect(page.locator('#news-year')).toHaveValue('2026');
   await expect(page.locator('#news-timeline .timeline-item')).toHaveCount(1);
 
   await page.goto('/seminars.html', { waitUntil: 'networkidle' });
   await expect(page.locator('#seminar-summary')).toHaveCount(0);
-  const seminarFilter = page.locator('#seminar-year');
-  expect(await seminarFilter.evaluate((element) => getComputedStyle(element).appearance)).toBe('none');
-  await seminarFilter.selectOption('2026');
+  const seminarDropdown = page.locator('.filter-dropdown[data-filter-for="seminar-year"]');
+  await seminarDropdown.locator('.filter-dropdown__trigger').click();
+  await seminarDropdown.getByRole('option', { name: '2026', exact: true }).click();
+  await expect(page.locator('#seminar-year')).toHaveValue('2026');
   await expect(page.locator('#seminar-timeline .timeline-item').first()).toBeVisible();
 });
 
