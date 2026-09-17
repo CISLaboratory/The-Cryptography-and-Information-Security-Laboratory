@@ -1,4 +1,5 @@
 import './main.js';
+import { enhanceFilterSelect } from './filter-dropdown.js';
 
 function getRoleCategory(person) {
   const role = String(person?.role ?? person?.position ?? '').toLowerCase();
@@ -40,6 +41,8 @@ async function loadPeople() {
       option.textContent = category.label;
       filter.appendChild(option);
     });
+
+    enhanceFilterSelect(filter);
 
     const createCell = (label, value) => {
       const cell = document.createElement('td');
