@@ -1,5 +1,6 @@
 import './main.js';
 import { compareDateDesc, formatDateOnly, getYearFromDate } from './date-utils.js';
+import { enhanceFilterSelect } from './filter-dropdown.js';
 
 async function loadNews() {
   const timeline = document.getElementById('news-timeline');
@@ -18,6 +19,8 @@ async function loadNews() {
       option.textContent = year;
       yearFilter.appendChild(option);
     });
+
+    enhanceFilterSelect(yearFilter);
 
     const renderNews = () => {
       const selected = yearFilter.value;

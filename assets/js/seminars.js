@@ -1,5 +1,6 @@
 import './main.js';
 import { compareDateDesc, formatDateOnly } from './date-utils.js';
+import { enhanceFilterSelect } from './filter-dropdown.js';
 
 function getSeminarDataUrl() {
   const url = new URL('data/seminars.json', window.location.href);
@@ -30,6 +31,8 @@ async function loadSeminars() {
       option.textContent = year;
       yearFilter.appendChild(option);
     });
+
+    enhanceFilterSelect(yearFilter);
 
     const renderSeminars = () => {
       const selected = yearFilter.value;

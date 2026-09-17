@@ -30,6 +30,12 @@ test.describe('visual style loading contract', () => {
       expect(professionalIndex).toBeGreaterThan(structuralIndex);
       expect(polishIndex).toBeGreaterThan(professionalIndex);
       expect(accessibilityIndex).toBeGreaterThan(polishIndex);
+
+      if (['/people.html', '/news.html', '/seminars.html'].includes(path)) {
+        const dropdownIndex = styles.indexOf('assets/css/dropdown.css');
+        expect(dropdownIndex).toBeGreaterThan(polishIndex);
+        expect(dropdownIndex).toBeLessThan(accessibilityIndex);
+      }
     });
   }
 });
@@ -187,27 +193,52 @@ test('publication archive keeps clean editorial year headings without count badg
   expect(parseFloat(sectionStyles.paddingRight)).toBeGreaterThanOrEqual(16);
 });
 
-test('archive filters share one restrained visual language', async ({ page }) => {
-  for (const [path, selector] of [
-    ['/people.html', '#people-filter'],
-    ['/news.html', '#news-year'],
-    ['/seminars.html', '#seminar-year']
+test('archive filters share a restrained custom dropdown visual language', async ({ page }) => {
+  for (const [path, selectId] of [
+    ['/people.html', 'people-filter'],
+    ['/news.html', 'news-year'],
+    ['/seminars.html', 'seminar-year']
   ]) {
     await page.goto(path, { waitUntil: 'networkidle' });
-    const styles = await page.locator(selector).evaluate((element) => {
+
+    const dropdown = page.locator(`.filter-dropdown[data-filter-for="${selectId}"]`);
+    const trigger = dropdown.locator('.filter-dropdown__trigger');
+    await expect(dropdown).toBeVisible();
+    await expect(page.locator(`#${selectId}`)).toHaveClass(/native-filter-select/);
+
+    const triggerStyles = await trigger.evaluate((element) => {
       const computed = getComputedStyle(element);
       return {
-        appearance: computed.appearance,
         minHeight: computed.minHeight,
         borderRadius: computed.borderRadius,
-        backgroundImage: computed.backgroundImage
+        backgroundColor: computed.backgroundColor,
+        boxShadow: computed.boxShadow
       };
     });
 
-    expect(styles.appearance).toBe('none');
-    expect(styles.minHeight).toBe('42px');
-    expect(styles.borderRadius).toBe('8px');
-    expect(styles.backgroundImage).toContain('data:image/svg+xml');
+    expect(triggerStyles.minHeight).toBe('44px');
+    expect(triggerStyles.borderRadius).toBe('10px');
+    expect(triggerStyles.backgroundColor).toBe('rgb(255, 255, 255)');
+    expect(triggerStyles.boxShadow).not.toBe('none');
+
+    await trigger.click();
+    const menu = dropdown.locator('.filter-dropdown__menu');
+    await expect(menu).toBeVisible();
+
+    const menuStyles = await menu.evaluate((element) => {
+      const computed = getComputedStyle(element);
+      return {
+        borderRadius: computed.borderRadius,
+        backgroundColor: computed.backgroundColor,
+        position: computed.position,
+        zIndex: computed.zIndex
+      };
+    });
+
+    expect(menuStyles.borderRadius).toBe('10px');
+    expect(menuStyles.backgroundColor).toBe('rgb(255, 255, 255)');
+    expect(menuStyles.position).toBe('absolute');
+    expect(Number(menuStyles.zIndex)).toBeGreaterThanOrEqual(50);
   }
 });
 
@@ -222,7 +253,9 @@ test('desktop navigation uses a text-first current-page treatment', async ({ pag
       borderRadius: computed.borderRadius,
       backgroundColor: computed.backgroundColor,
       markerDisplay: marker.display,
-      markerHeight: marker.height
+      markerHeight: marker.height,
+      paddingLeft: computed.paddingLeft,
+      paddingRight: computed.paddingRight
     };
   });
 
@@ -230,6 +263,8 @@ test('desktop navigation uses a text-first current-page treatment', async ({ pag
   expect(styles.backgroundColor).toBe('rgba(0, 0, 0, 0)');
   expect(styles.markerDisplay).toBe('block');
   expect(styles.markerHeight).toBe('2px');
+  expect(styles.paddingLeft).toBe('0px');
+  expect(styles.paddingRight).toBe('0px');
 });
 
 test('People presents member rows as compact cards on mobile', async ({ page }, testInfo) => {
