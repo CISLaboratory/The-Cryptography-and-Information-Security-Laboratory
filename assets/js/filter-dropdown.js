@@ -71,6 +71,10 @@ export function enhanceFilterSelect(select) {
     }
   };
 
+  const restoreTriggerFocus = () => {
+    requestAnimationFrame(() => trigger.focus({ preventScroll: true }));
+  };
+
   const syncSelectedState = () => {
     const selectedOption = select.options[select.selectedIndex] ?? select.options[0];
     value.textContent = selectedOption?.textContent ?? '';
@@ -89,8 +93,8 @@ export function enhanceFilterSelect(select) {
     select.value = option.value;
     select.dispatchEvent(new Event('change', { bubbles: true }));
     syncSelectedState();
-    trigger.focus({ preventScroll: true });
     setOpen(false);
+    restoreTriggerFocus();
   };
 
   const renderOptions = () => {
@@ -141,8 +145,8 @@ export function enhanceFilterSelect(select) {
           selectIndex(currentIndex);
         } else if (event.key === 'Escape') {
           event.preventDefault();
-          trigger.focus({ preventScroll: true });
           setOpen(false);
+          restoreTriggerFocus();
         } else if (event.key === 'Tab') {
           setOpen(false);
         }
