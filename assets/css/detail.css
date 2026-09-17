@@ -134,6 +134,15 @@ body[data-page$="-detail"] .detail-card h2 {
   border-top: 1px solid var(--border);
 }
 
+.detail-back-link::before {
+  content: "←";
+  margin-right: 0.35rem;
+}
+
+.detail-back-link::after {
+  content: none;
+}
+
 /* Contact: formal information block without a generic card treatment. */
 .contact-section {
   background: #ffffff;
@@ -142,14 +151,6 @@ body[data-page$="-detail"] .detail-card h2 {
 .contact-panel {
   max-width: 860px;
   margin-inline: auto;
-}
-
-.contact-panel h2 {
-  margin: 0 0 1.2rem;
-  color: var(--navy);
-  font-size: clamp(1.45rem, 3vw, 1.8rem);
-  line-height: 1.25;
-  letter-spacing: -0.02em;
 }
 
 .contact-details {
