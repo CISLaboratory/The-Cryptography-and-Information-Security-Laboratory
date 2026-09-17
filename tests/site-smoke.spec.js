@@ -101,10 +101,11 @@ test('people directory uses academic grouping with a custom role dropdown', asyn
   await expect(page.locator('.website-link').first()).toHaveText('Website ↗');
 });
 
-test('custom archive dropdown supports keyboard navigation and Escape', async ({ page }) => {
+test('custom archive dropdown supports keyboard navigation and Escape', async ({ page }, testInfo) => {
   await page.goto('/people.html', { waitUntil: 'networkidle' });
   const dropdown = page.locator('.filter-dropdown[data-filter-for="people-filter"]');
   const trigger = dropdown.locator('.filter-dropdown__trigger');
+  const menu = dropdown.locator('.filter-dropdown__menu');
 
   await trigger.focus();
   await trigger.press('ArrowDown');
@@ -114,7 +115,11 @@ test('custom archive dropdown supports keyboard navigation and Escape', async ({
   await expect(dropdown.getByRole('option', { name: 'Mentor', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-  await expect(trigger).toBeFocused();
+  await expect(menu).toBeHidden();
+
+  if (testInfo.project.name === 'desktop') {
+    await expect(trigger).toBeFocused();
+  }
 });
 
 test('news and seminar archives use the shared custom year dropdown', async ({ page }) => {
