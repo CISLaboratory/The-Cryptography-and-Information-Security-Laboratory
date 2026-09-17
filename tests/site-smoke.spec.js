@@ -6,7 +6,7 @@ const corePages = [
   { path: '/news.html', locator: '#news-timeline .timeline-item' },
   { path: '/seminars.html', locator: '#seminar-timeline .timeline-item' },
   { path: '/publications.html', locator: '#publications-list .publication-item' },
-  { path: '/contact.html', locator: '.contact-card' }
+  { path: '/contact.html', locator: '.contact-panel' }
 ];
 
 for (const entry of corePages) {
@@ -161,12 +161,40 @@ test('publication lists emphasize current lab authors and mark corresponding aut
   await expect(page.locator('.publication-year__title').first()).toHaveText('2026');
 });
 
-test('publication detail preserves author markers and provides breadcrumb navigation', async ({ page }) => {
+test('publication detail uses an academic reading hierarchy', async ({ page }) => {
   await page.goto('/publication-detail.html?slug=sok-cryptanalysis-sha3-standard', { waitUntil: 'networkidle' });
   await expect(page.locator('.publication-authors strong').first()).toContainText('Hailun Yan');
   await expect(page.locator('.publication-authors .corresponding-author-marker')).toHaveCount(1);
+  await expect(page.locator('.member-label')).toHaveCount(0);
+  await expect(page.locator('.publication-summary-meta')).toContainText('ACISP 2026');
+  await expect(page.locator('.detail-resource-row')).toContainText('Publisher / DOI');
+  await expect(page.locator('#publication-detail h2')).toHaveText(['Abstract', 'Keywords', 'Bibliographic Details']);
   await expect(page.locator('.detail-breadcrumbs')).toContainText('Home');
   await expect(page.locator('.detail-breadcrumbs')).toContainText('Publications');
   await expect(page.locator('.detail-breadcrumbs [aria-current="page"]')).toHaveText('Publication details');
   await expect(page.locator('.footer-nav a[aria-current="page"]')).toHaveText('Publications');
+});
+
+test('news and seminar detail pages share the same reading structure', async ({ page }) => {
+  await page.goto('/news-detail.html?slug=anze-sun-presents-research-at-acisp-2026', { waitUntil: 'networkidle' });
+  await expect(page.locator('#news-subtitle')).toBeHidden();
+  await expect(page.locator('#news-detail .detail-summary-meta')).toBeVisible();
+  await expect(page.locator('#news-detail .detail-prose')).toBeVisible();
+  await expect(page.locator('#news-detail .detail-back-link')).toHaveText('Back to news');
+
+  await page.goto('/seminar-detail.html?slug=alzette-64-bit-arx-box-design-analysis-2026-09-16', { waitUntil: 'networkidle' });
+  await expect(page.locator('#seminar-subtitle')).toBeHidden();
+  await expect(page.locator('#seminar-detail .detail-summary-meta')).toContainText('Zhenyu Zhao');
+  await expect(page.locator('#seminar-detail .detail-prose')).toBeVisible();
+  await expect(page.locator('#seminar-detail .detail-resource-row')).toBeVisible();
+  await expect(page.locator('#seminar-detail .detail-back-link')).toHaveText('Back to seminars');
+});
+
+test('contact page uses a formal information block without adding unconfirmed content', async ({ page }) => {
+  await page.goto('/contact.html', { waitUntil: 'networkidle' });
+  await expect(page.locator('.contact-panel h2')).toHaveText('Laboratory Contact');
+  await expect(page.locator('.contact-detail-label')).toHaveText(['Address', 'Email']);
+  await expect(page.locator('.contact-details')).toContainText('19 (A) Yuquan Road');
+  await expect(page.locator('.contact-details')).toContainText('hailun.yan@ucas.ac.cn');
+  await expect(page.locator('.contact-detail-row')).toHaveCount(2);
 });
