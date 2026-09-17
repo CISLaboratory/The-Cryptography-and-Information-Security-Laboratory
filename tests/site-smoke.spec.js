@@ -43,10 +43,10 @@ test('home page presents existing content as a lab portal without unconfirmed re
 
 test('home publications use an academic list with direct resources', async ({ page }) => {
   await page.goto('/index.html', { waitUntil: 'networkidle' });
-  await expect(page.locator('#home-publications-list .home-publication-entry')).toHaveCount(2);
+  await expect(page.locator('#home-publications-list .home-publication-entry')).toHaveCount(1);
   await expect(page.locator('#home-publications-list .card--publication')).toHaveCount(0);
   await expect(page.locator('.home-publication-year').first()).toHaveText(/^\d{4}$/);
-  await expect(page.locator('.home-publication-authors strong')).toHaveCount(4);
+  await expect(page.locator('.home-publication-authors strong')).toHaveCount(2);
   await expect(page.locator('.home-publication-resources').first()).toContainText('Details');
   await expect(page.locator('.home-publication-resources').first()).toContainText('Publisher / DOI');
 });
@@ -154,11 +154,17 @@ test('news and seminar archives use the shared custom year dropdown', async ({ p
 
 test('publication lists emphasize current lab authors and mark corresponding authors', async ({ page }) => {
   await page.goto('/publications.html', { waitUntil: 'networkidle' });
-  await expect(page.locator('.publication-meta strong')).toHaveCount(4);
-  await expect(page.locator('.publication-meta .corresponding-author-marker')).toHaveCount(2);
+  await expect(page.locator('.publication-meta strong')).toHaveCount(2);
+  await expect(page.locator('.publication-meta .corresponding-author-marker')).toHaveCount(1);
   await expect(page.locator('.publication-meta strong').first()).toContainText('Hailun Yan');
   await expect(page.locator('.publication-year__count')).toHaveCount(0);
   await expect(page.locator('.publication-year__title').first()).toHaveText('2026');
+  await expect(page.getByText('MDS Diffusion Layers for Arithmetization-Oriented Symmetric Ciphers: The Rotational-Add Construction', { exact: true })).toHaveCount(0);
+});
+
+test('removed publication slug no longer resolves', async ({ page }) => {
+  await page.goto('/publication-detail.html?slug=mds-diffusion-layers-rotational-add-construction', { waitUntil: 'networkidle' });
+  await expect(page.locator('#publication-detail')).toContainText('Publication not found.');
 });
 
 test('publication detail uses an academic reading hierarchy', async ({ page }) => {

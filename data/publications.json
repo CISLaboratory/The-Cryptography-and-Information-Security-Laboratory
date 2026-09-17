@@ -30,33 +30,5 @@
         "url": "https://doi.org/10.1007/978-981-92-3018-1_5"
       }
     ]
-  },
-  {
-    "slug": "mds-diffusion-layers-rotational-add-construction",
-    "title": "MDS Diffusion Layers for Arithmetization-Oriented Symmetric Ciphers: The Rotational-Add Construction",
-    "authors": [
-      { "name": "Baofeng Wu", "laboratoryMember": false, "correspondingAuthor": true },
-      { "name": "Wen Kong", "laboratoryMember": true },
-      { "name": "Dewei Kong", "laboratoryMember": false },
-      { "name": "Hailun Yan", "laboratoryMember": true }
-    ],
-    "venue": "ToSC 2025 Issue 3 / FSE 2026",
-    "year": 2025,
-    "month": 9,
-    "publicationDetails": {
-      "pages": "827–867"
-    },
-    "doi": "10.46586/tosc.v2025.i3.827-867",
-    "doiUrl": "https://doi.org/10.46586/tosc.v2025.i3.827-867",
-    "links": [
-      {
-        "label": "Publisher / DOI",
-        "url": "https://doi.org/10.46586/tosc.v2025.i3.827-867"
-      },
-      {
-        "label": "IACR ePrint",
-        "url": "https://eprint.iacr.org/2025/1544"
-      }
-    ]
   }
 ]
