@@ -113,6 +113,10 @@
   user-select: none;
 }
 
+.filter-dropdown__option-label {
+  min-width: 0;
+}
+
 .filter-dropdown__option:hover,
 .filter-dropdown__option[data-active="true"] {
   background: #f3f6f9;
@@ -124,12 +128,17 @@
   font-weight: 680;
 }
 
-.filter-dropdown__option[aria-selected="true"]::after {
-  content: "✓";
+.filter-dropdown__check {
+  flex: 0 0 auto;
   margin-left: 0.9rem;
   color: #557898;
   font-size: 0.82rem;
   font-weight: 700;
+  opacity: 0;
+}
+
+.filter-dropdown__option[aria-selected="true"] .filter-dropdown__check {
+  opacity: 1;
 }
 
 .filter-dropdown__option:focus-visible {
