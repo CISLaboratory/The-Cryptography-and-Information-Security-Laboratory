@@ -89,8 +89,8 @@ export function enhanceFilterSelect(select) {
     select.value = option.value;
     select.dispatchEvent(new Event('change', { bubbles: true }));
     syncSelectedState();
+    trigger.focus({ preventScroll: true });
     setOpen(false);
-    trigger.focus();
   };
 
   const renderOptions = () => {
@@ -141,8 +141,8 @@ export function enhanceFilterSelect(select) {
           selectIndex(currentIndex);
         } else if (event.key === 'Escape') {
           event.preventDefault();
+          trigger.focus({ preventScroll: true });
           setOpen(false);
-          trigger.focus();
         } else if (event.key === 'Tab') {
           setOpen(false);
         }
