@@ -43,7 +43,7 @@ async function loadNewsDetail() {
     const descriptionText = news.description || `News from CIS-Lab at UCAS: ${news.title}`;
 
     if (titleEl) titleEl.textContent = news.title;
-    if (subtitleEl) subtitleEl.textContent = displayDate;
+    if (subtitleEl) subtitleEl.hidden = true;
 
     document.title = `${news.title} | CIS-Lab | UCAS`;
     setCanonicalUrl(canonicalUrl);
@@ -70,32 +70,32 @@ async function loadNewsDetail() {
 
     const fragment = document.createDocumentFragment();
 
-    const metaList = document.createElement('dl');
-    metaList.className = 'detail-meta';
+    const meta = document.createElement('div');
+    meta.className = 'detail-summary-meta';
+    const date = document.createElement('time');
+    date.dateTime = news.date;
+    date.textContent = displayDate;
+    meta.appendChild(date);
+    fragment.appendChild(meta);
 
-    const dateTerm = document.createElement('dt');
-    dateTerm.textContent = 'Published';
-    const dateValue = document.createElement('dd');
-    dateValue.textContent = displayDate;
-
-    metaList.append(dateTerm, dateValue);
-    fragment.appendChild(metaList);
-
+    const body = document.createElement('div');
+    body.className = 'detail-prose';
     if (Array.isArray(news.content) && news.content.length) {
       news.content.forEach((paragraph) => {
         const p = document.createElement('p');
         p.textContent = paragraph;
-        fragment.appendChild(p);
+        body.appendChild(p);
       });
     } else if (news.description) {
       const p = document.createElement('p');
       p.textContent = news.description;
-      fragment.appendChild(p);
+      body.appendChild(p);
     }
+    fragment.appendChild(body);
 
     if (news.image) {
       const figure = document.createElement('figure');
-      figure.className = 'news-detail-figure';
+      figure.className = 'news-detail-figure detail-media';
 
       const image = document.createElement('img');
       image.src = news.image;
@@ -114,7 +114,7 @@ async function loadNewsDetail() {
 
     const backLink = document.createElement('a');
     backLink.href = 'news.html';
-    backLink.className = 'inline-link';
+    backLink.className = 'inline-link detail-back-link';
     backLink.textContent = 'Back to news';
     fragment.appendChild(backLink);
 
