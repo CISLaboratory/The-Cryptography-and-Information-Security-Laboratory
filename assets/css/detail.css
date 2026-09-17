@@ -1,0 +1,220 @@
+/* Focused reading styles for detail and contact pages. */
+
+body[data-page$="-detail"] .detail-card {
+  display: grid;
+  gap: 1.35rem;
+  max-width: 920px;
+  margin-inline: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body[data-page$="-detail"] .detail-card h2 {
+  margin: 1.4rem 0 0;
+  color: var(--navy);
+  font-size: clamp(1.1rem, 2vw, 1.28rem);
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+}
+
+.detail-summary-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.8rem;
+  padding-bottom: 1.05rem;
+  border-bottom: 1px solid var(--border);
+  color: #5d6879;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.detail-summary-meta > * + *::before {
+  content: "·";
+  margin-right: 0.8rem;
+  color: #9aa5b2;
+}
+
+.detail-summary-primary,
+.publication-summary-meta > span:first-child {
+  color: #334155;
+  font-weight: 650;
+}
+
+.publication-authors--detail {
+  max-width: 78ch;
+  margin: 0;
+  color: #465469;
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.publication-authors--detail strong {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.detail-resource-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.9rem;
+}
+
+.detail-resource-row a {
+  color: var(--primary);
+  font-size: 0.88rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.detail-resource-row a + a::before {
+  content: "·";
+  margin-right: 0.9rem;
+  color: #9aa5b2;
+}
+
+.detail-resource-row a:hover,
+.detail-resource-row a:focus {
+  text-decoration: underline;
+}
+
+.detail-prose,
+.publication-abstract {
+  max-width: 76ch;
+  color: #334155;
+  line-height: 1.78;
+}
+
+.detail-prose {
+  display: grid;
+  gap: 1rem;
+}
+
+.detail-prose p,
+.publication-abstract {
+  margin: 0;
+}
+
+.detail-media {
+  width: min(680px, 100%);
+  max-width: 100%;
+  justify-self: start;
+}
+
+.detail-media img {
+  border-radius: var(--radius-sm);
+}
+
+.detail-meta--bibliographic {
+  max-width: 760px;
+  margin: 0;
+  padding: 1rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-meta--bibliographic dt {
+  color: #687386;
+  font-size: 0.86rem;
+  font-weight: 650;
+}
+
+.detail-meta--bibliographic dd {
+  color: #334155;
+}
+
+.detail-back-link {
+  width: fit-content;
+  margin-top: 0.45rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.detail-back-link::before {
+  content: "←";
+  margin-right: 0.35rem;
+}
+
+.detail-back-link::after {
+  content: none;
+}
+
+/* Contact: formal information block without a generic card treatment. */
+.contact-section {
+  background: #ffffff;
+}
+
+.contact-panel {
+  max-width: 860px;
+  margin-inline: auto;
+}
+
+.contact-details {
+  border-top: 1px solid var(--border-strong);
+}
+
+.contact-detail-row {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.contact-detail-label {
+  color: #687386;
+  font-size: 0.8rem;
+  font-weight: 720;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.contact-detail-row p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.7;
+}
+
+.contact-detail-row a {
+  color: var(--primary);
+  font-weight: 620;
+  text-decoration: none;
+}
+
+.contact-detail-row a:hover,
+.contact-detail-row a:focus {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .detail-summary-meta {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .detail-summary-meta > * + *::before {
+    content: none;
+  }
+
+  .detail-resource-row {
+    gap: 0.45rem 0.75rem;
+  }
+
+  .detail-resource-row a + a::before {
+    margin-right: 0.75rem;
+  }
+
+  .detail-meta--bibliographic {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-detail-row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}

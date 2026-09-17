@@ -76,11 +76,16 @@ async function loadPeople() {
       return link;
     };
 
-    const sortedPeople = [...people].sort((a, b) => {
-      const rankDiff = getRoleCategory(a).rank - getRoleCategory(b).rank;
-      if (rankDiff !== 0) return rankDiff;
-      return String(a.name ?? '').localeCompare(String(b.name ?? ''));
-    });
+    // Degree groups are ordered explicitly; within each group, preserve the
+    // order in data/people.json so the directory can reflect seniority rather
+    // than alphabetically reordering students.
+    const orderedPeople = people
+      .map((person, sourceIndex) => ({ person, sourceIndex }))
+      .sort((a, b) => {
+        const rankDiff = getRoleCategory(a.person).rank - getRoleCategory(b.person).rank;
+        return rankDiff !== 0 ? rankDiff : a.sourceIndex - b.sourceIndex;
+      })
+      .map(({ person }) => person);
 
     const createGroupRow = (category) => {
       const row = document.createElement('tr');
@@ -96,7 +101,7 @@ async function loadPeople() {
 
     const renderRows = () => {
       const selectedRole = filter.value;
-      const filteredPeople = sortedPeople.filter(
+      const filteredPeople = orderedPeople.filter(
         (person) => selectedRole === 'all' || getRoleCategory(person).key === selectedRole
       );
 

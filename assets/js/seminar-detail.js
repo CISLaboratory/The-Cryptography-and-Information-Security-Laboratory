@@ -48,7 +48,7 @@ async function loadSeminarDetail() {
     const descriptionText = seminar.description || `${seminar.title}, presented by ${seminar.speaker} in the CIS-Lab seminar series at UCAS.`;
 
     if (titleEl) titleEl.textContent = seminar.title;
-    if (subtitleEl) subtitleEl.textContent = seminar.speaker;
+    if (subtitleEl) subtitleEl.hidden = true;
 
     document.title = `${seminar.title} | CIS-Lab Seminar | UCAS`;
     setCanonicalUrl(canonicalUrl);
@@ -78,41 +78,42 @@ async function loadSeminarDetail() {
 
     const fragment = document.createDocumentFragment();
 
-    const metaList = document.createElement('dl');
-    metaList.className = 'detail-meta';
+    const meta = document.createElement('div');
+    meta.className = 'detail-summary-meta detail-summary-meta--seminar';
 
-    const dateTerm = document.createElement('dt');
-    dateTerm.textContent = 'Date';
-    const dateValue = document.createElement('dd');
-    dateValue.textContent = formatDateOnly(seminar.date);
+    const speaker = document.createElement('span');
+    speaker.className = 'detail-summary-primary';
+    speaker.textContent = seminar.speaker;
+    meta.appendChild(speaker);
 
-    metaList.append(dateTerm, dateValue);
+    const date = document.createElement('time');
+    date.dateTime = seminar.date;
+    date.textContent = formatDateOnly(seminar.date);
+    meta.appendChild(date);
 
     if (seminar.location) {
-      const locationTerm = document.createElement('dt');
-      locationTerm.textContent = 'Location';
-      const locationValue = document.createElement('dd');
-      locationValue.textContent = seminar.location;
-      metaList.append(locationTerm, locationValue);
+      const location = document.createElement('span');
+      location.textContent = seminar.location;
+      meta.appendChild(location);
     }
-    fragment.appendChild(metaList);
+    fragment.appendChild(meta);
 
     if (seminar.description) {
+      const body = document.createElement('div');
+      body.className = 'detail-prose';
       const description = document.createElement('p');
       description.textContent = seminar.description;
-      fragment.appendChild(description);
+      body.appendChild(description);
+      fragment.appendChild(body);
     }
 
     if (Array.isArray(seminar.resources) && seminar.resources.length) {
-      const resourcesHeading = document.createElement('h2');
-      resourcesHeading.textContent = 'Resources';
-      fragment.appendChild(resourcesHeading);
-
-      const resourcesList = document.createElement('ul');
-      resourcesList.className = 'link-list';
+      const resources = document.createElement('nav');
+      resources.className = 'detail-resource-row';
+      resources.setAttribute('aria-label', 'Seminar resources');
 
       seminar.resources.forEach((resource) => {
-        const item = document.createElement('li');
+        if (!resource?.url) return;
         const link = document.createElement('a');
         link.href = resource.url;
         if (resource.url.startsWith('http')) {
@@ -120,16 +121,15 @@ async function loadSeminarDetail() {
           link.rel = 'noopener noreferrer';
         }
         link.textContent = resource.label ?? 'Resource';
-        item.appendChild(link);
-        resourcesList.appendChild(item);
+        resources.appendChild(link);
       });
 
-      fragment.appendChild(resourcesList);
+      fragment.appendChild(resources);
     }
 
     const backLink = document.createElement('a');
     backLink.href = 'seminars.html';
-    backLink.className = 'inline-link';
+    backLink.className = 'inline-link detail-back-link';
     backLink.textContent = 'Back to seminars';
     fragment.appendChild(backLink);
 
