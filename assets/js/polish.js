@@ -78,6 +78,21 @@ function installNavigationRefinements() {
   });
 }
 
+function installDesktopNavigationUnderlineSizing() {
+  if (document.querySelector('style[data-nav-underline-sizing]')) return;
+
+  const style = document.createElement('style');
+  style.dataset.navUnderlineSizing = 'true';
+  style.textContent = `
+    @media (min-width: 721px) {
+      .nav-links { gap: 1.6rem; }
+      .nav-links a { padding-inline: 0; }
+      .nav-links a::after { left: 0; right: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 function markFooterCurrentPage() {
   const currentFile = window.location.pathname.split('/').pop() || 'index.html';
   const sectionFallbacks = {
@@ -96,5 +111,6 @@ function markFooterCurrentPage() {
 document.addEventListener('DOMContentLoaded', () => {
   installDetailBreadcrumbs();
   installNavigationRefinements();
+  installDesktopNavigationUnderlineSizing();
   markFooterCurrentPage();
 });
