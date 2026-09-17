@@ -106,9 +106,19 @@ export function enhanceFilterSelect(select) {
       node.id = `${baseId}-option-${index}`;
       node.setAttribute('role', 'option');
       node.tabIndex = -1;
-      node.textContent = option.textContent;
       node.dataset.value = option.value;
       node.dataset.active = 'false';
+
+      const optionLabel = document.createElement('span');
+      optionLabel.className = 'filter-dropdown__option-label';
+      optionLabel.textContent = option.textContent;
+
+      const check = document.createElement('span');
+      check.className = 'filter-dropdown__check';
+      check.setAttribute('aria-hidden', 'true');
+      check.textContent = '✓';
+
+      node.append(optionLabel, check);
 
       node.addEventListener('pointermove', () => {
         optionNodes.forEach((item) => item.dataset.active = 'false');
@@ -160,10 +170,11 @@ export function enhanceFilterSelect(select) {
       event.preventDefault();
       const selectedIndex = Math.max(0, select.selectedIndex);
       setOpen(true);
-      focusOption(event.key === 'ArrowDown' ? selectedIndex : selectedIndex);
+      focusOption(selectedIndex);
     } else if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      setOpen(root.dataset.open !== 'true', { focusSelected: root.dataset.open !== 'true' });
+      const nextOpen = root.dataset.open !== 'true';
+      setOpen(nextOpen, { focusSelected: nextOpen });
     } else if (event.key === 'Escape' && root.dataset.open === 'true') {
       event.preventDefault();
       setOpen(false);
