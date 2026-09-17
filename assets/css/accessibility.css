@@ -18,3 +18,10 @@
   outline-offset: 2px;
   text-decoration: none;
 }
+
+/* Keep the desktop navigation indicator aligned to the text content width. */
+@media (min-width: 721px) {
+  .nav-links a::after {
+    width: auto;
+  }
+}
