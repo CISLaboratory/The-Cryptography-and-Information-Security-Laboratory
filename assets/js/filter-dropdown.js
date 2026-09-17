@@ -51,6 +51,15 @@ export function enhanceFilterSelect(select) {
 
   let optionNodes = [];
 
+  const focusOption = (index) => {
+    if (!optionNodes.length) return;
+    const normalized = (index + optionNodes.length) % optionNodes.length;
+    optionNodes.forEach((node) => node.dataset.active = 'false');
+    const target = optionNodes[normalized];
+    target.dataset.active = 'true';
+    target.focus();
+  };
+
   const setOpen = (isOpen, { focusSelected = false } = {}) => {
     root.dataset.open = String(isOpen);
     trigger.setAttribute('aria-expanded', String(isOpen));
@@ -58,12 +67,7 @@ export function enhanceFilterSelect(select) {
 
     if (isOpen && focusSelected) {
       const selectedIndex = Math.max(0, select.selectedIndex);
-      const target = optionNodes[selectedIndex] ?? optionNodes[0];
-      if (target) {
-        optionNodes.forEach((node) => node.dataset.active = 'false');
-        target.dataset.active = 'true';
-        target.focus();
-      }
+      requestAnimationFrame(() => focusOption(selectedIndex));
     }
   };
 
@@ -87,15 +91,6 @@ export function enhanceFilterSelect(select) {
     syncSelectedState();
     setOpen(false);
     trigger.focus();
-  };
-
-  const focusOption = (index) => {
-    if (!optionNodes.length) return;
-    const normalized = (index + optionNodes.length) % optionNodes.length;
-    optionNodes.forEach((node) => node.dataset.active = 'false');
-    const target = optionNodes[normalized];
-    target.dataset.active = 'true';
-    target.focus();
   };
 
   const renderOptions = () => {
@@ -168,9 +163,7 @@ export function enhanceFilterSelect(select) {
   trigger.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
-      const selectedIndex = Math.max(0, select.selectedIndex);
-      setOpen(true);
-      focusOption(selectedIndex);
+      setOpen(true, { focusSelected: true });
     } else if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       const nextOpen = root.dataset.open !== 'true';
