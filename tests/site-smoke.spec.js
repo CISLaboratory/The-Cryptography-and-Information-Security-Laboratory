@@ -92,6 +92,18 @@ test('people directory uses academic grouping with a custom role dropdown', asyn
   await expect(page.locator('.people-group-row__count')).toHaveCount(0);
   await expect(page.locator('#people-summary')).toHaveCount(0);
 
+  const names = page.locator('.people-table tbody tr:not(.people-group-row) td:first-child');
+  await expect(names).toHaveText([
+    'Hailun Yan',
+    'Yuexing Yue',
+    'Wen Kong',
+    'Zhenyu Zhao',
+    'Anze Sun',
+    'Jizhou Li',
+    'Yuan Gao',
+    'Wenxin Yu'
+  ]);
+
   await trigger.click();
   await expect(trigger).toHaveAttribute('aria-expanded', 'true');
   await dropdown.getByRole('option', { name: 'Mentor', exact: true }).click();
