@@ -18,7 +18,7 @@ test.describe('visual style loading contract', () => {
       await page.goto(path, { waitUntil: 'domcontentloaded' });
 
       const styles = await page.locator('head link[rel="stylesheet"]').evaluateAll((links) =>
-        links.map((link) => link.getAttribute('href'))
+        links.map((link) => (link.getAttribute('href') ?? '').split(/[?#]/)[0])
       );
 
       const structuralIndex = styles.indexOf('assets/css/styles.css');
