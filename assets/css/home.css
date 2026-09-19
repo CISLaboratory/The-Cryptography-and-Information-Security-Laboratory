@@ -8,3 +8,15 @@
   font-size: clamp(0.7rem, 2.85vw, 2.4rem);
   letter-spacing: -0.04em;
 }
+
+@media (max-width: 720px) {
+  .hero-content .hero-title--single-line {
+    width: 100%;
+    margin: 0 auto 1rem;
+    white-space: normal;
+    font-size: clamp(1.65rem, 6.8vw, 2.1rem);
+    line-height: 1.14;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+}
