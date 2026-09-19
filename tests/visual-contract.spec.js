@@ -97,8 +97,10 @@ test('home hero preserves restrained academic visual hierarchy', async ({ page }
   expect(heroStyles.backgroundImage).toContain('linear-gradient');
   expect(heroStyles.color).toBe('rgb(255, 255, 255)');
 
+  const heroTitle = page.locator('.hero-title--single-line');
+
   if (testInfo.project.name === 'desktop') {
-    const whiteSpace = await page.locator('.hero-title--single-line').evaluate(
+    const whiteSpace = await heroTitle.evaluate(
       (element) => getComputedStyle(element).whiteSpace
     );
     expect(whiteSpace).toBe('nowrap');
@@ -107,6 +109,25 @@ test('home hero preserves restrained academic visual hierarchy', async ({ page }
       Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth)
     );
     expect(overflow).toBeLessThanOrEqual(1);
+  }
+
+  if (testInfo.project.name === 'mobile') {
+    const titleMetrics = await heroTitle.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return {
+        whiteSpace: styles.whiteSpace,
+        fontSize: parseFloat(styles.fontSize),
+        lineHeight: parseFloat(styles.lineHeight),
+        textHeight: range.getBoundingClientRect().height
+      };
+    });
+
+    expect(titleMetrics.whiteSpace).toBe('normal');
+    expect(titleMetrics.fontSize).toBeGreaterThanOrEqual(26);
+    expect(titleMetrics.lineHeight).toBeGreaterThan(titleMetrics.fontSize);
+    expect(titleMetrics.textHeight).toBeGreaterThan(titleMetrics.lineHeight * 1.5);
   }
 });
 
