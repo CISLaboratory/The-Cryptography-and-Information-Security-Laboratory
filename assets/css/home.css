@@ -20,3 +20,47 @@
     text-wrap: balance;
   }
 }
+
+/* Lab culture statement: a quiet bridge between the institutional hero and site content. */
+.lab-motto {
+  background: #ffffff;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.lab-motto__inner {
+  max-width: 900px;
+  margin-inline: auto;
+  padding: 2.35rem 0 2.2rem;
+  text-align: center;
+}
+
+.lab-motto h2 {
+  margin: 0;
+  color: var(--navy);
+  font-size: clamp(1.2rem, 2.1vw, 1.5rem);
+  font-weight: 720;
+  letter-spacing: 0.035em;
+  line-height: 1.35;
+}
+
+.lab-motto p {
+  margin: 0.55rem 0 0;
+  color: var(--muted);
+  font-size: clamp(0.92rem, 1.45vw, 1.02rem);
+  line-height: 1.8;
+}
+
+@media (max-width: 720px) {
+  .lab-motto__inner {
+    padding: 1.8rem 0 1.75rem;
+  }
+
+  .lab-motto h2 {
+    font-size: 1.22rem;
+  }
+
+  .lab-motto p {
+    max-width: 30ch;
+    margin-inline: auto;
+  }
+}
