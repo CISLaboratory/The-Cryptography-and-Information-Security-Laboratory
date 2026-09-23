@@ -131,29 +131,31 @@ test('home hero preserves restrained academic visual hierarchy', async ({ page }
   }
 });
 
-test('Home lab motto stays restrained and separate from the hero', async ({ page }) => {
+test('Home motto uses the desktop top-left slot while mobile keeps the CIS-Lab brand', async ({ page }, testInfo) => {
   await page.goto('/index.html', { waitUntil: 'networkidle' });
 
-  const motto = page.locator('.lab-motto');
-  await expect(motto.locator('h2')).toHaveText('认真工作，积极运动');
-  await expect(motto.locator('p')).toHaveText('灵魂要想走的远，身体必须在路上。好的事物往往是“正相关”的');
-  await expect(motto.locator('.card')).toHaveCount(0);
+  const motto = page.locator('.nav-motto');
+  const brand = page.locator('.hero .top-nav .brand');
 
-  const styles = await motto.evaluate((element) => {
-    const computed = getComputedStyle(element);
-    const heading = getComputedStyle(element.querySelector('h2'));
-    const copy = getComputedStyle(element.querySelector('p'));
-    return {
-      backgroundColor: computed.backgroundColor,
-      borderBottomStyle: computed.borderBottomStyle,
-      headingWeight: heading.fontWeight,
-      copyWeight: copy.fontWeight
-    };
-  });
+  await expect(motto).toContainText('认真工作，积极运动');
+  await expect(motto).toContainText('灵魂要想走的远，身体必须在路上。好的事物往往是“正相关”的');
+  await expect(page.locator('.lab-motto')).toHaveCount(0);
 
-  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)');
-  expect(styles.borderBottomStyle).toBe('solid');
-  expect(styles.headingWeight).toBe(styles.copyWeight);
+  if (testInfo.project.name === 'desktop') {
+    await expect(motto).toBeVisible();
+    await expect(brand).toBeHidden();
+
+    const weights = await motto.evaluate((element) => {
+      const lines = element.querySelectorAll('span');
+      return Array.from(lines, (line) => getComputedStyle(line).fontWeight);
+    });
+    expect(new Set(weights).size).toBe(1);
+  }
+
+  if (testInfo.project.name === 'mobile') {
+    await expect(motto).toBeHidden();
+    await expect(brand).toBeVisible();
+  }
 });
 
 test('Home section headings stay concise without redundant labels or helper copy', async ({ page }) => {
