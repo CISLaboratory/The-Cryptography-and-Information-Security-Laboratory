@@ -131,6 +131,26 @@ test('home hero preserves restrained academic visual hierarchy', async ({ page }
   }
 });
 
+test('Home lab motto stays restrained and separate from the hero', async ({ page }) => {
+  await page.goto('/index.html', { waitUntil: 'networkidle' });
+
+  const motto = page.locator('.lab-motto');
+  await expect(motto.locator('h2')).toHaveText('认真工作，积极运动');
+  await expect(motto.locator('p')).toHaveText('灵魂要想走的远，身体必须在路上。好的事物往往是“正相关”的');
+  await expect(motto.locator('.card')).toHaveCount(0);
+
+  const styles = await motto.evaluate((element) => {
+    const computed = getComputedStyle(element);
+    return {
+      backgroundColor: computed.backgroundColor,
+      borderBottomStyle: computed.borderBottomStyle
+    };
+  });
+
+  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)');
+  expect(styles.borderBottomStyle).toBe('solid');
+});
+
 test('Home section headings stay concise without redundant labels or helper copy', async ({ page }) => {
   await page.goto('/index.html', { waitUntil: 'networkidle' });
 
