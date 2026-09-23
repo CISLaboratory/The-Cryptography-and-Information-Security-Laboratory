@@ -141,14 +141,19 @@ test('Home lab motto stays restrained and separate from the hero', async ({ page
 
   const styles = await motto.evaluate((element) => {
     const computed = getComputedStyle(element);
+    const heading = getComputedStyle(element.querySelector('h2'));
+    const copy = getComputedStyle(element.querySelector('p'));
     return {
       backgroundColor: computed.backgroundColor,
-      borderBottomStyle: computed.borderBottomStyle
+      borderBottomStyle: computed.borderBottomStyle,
+      headingWeight: heading.fontWeight,
+      copyWeight: copy.fontWeight
     };
   });
 
   expect(styles.backgroundColor).toBe('rgb(255, 255, 255)');
   expect(styles.borderBottomStyle).toBe('solid');
+  expect(styles.headingWeight).toBe(styles.copyWeight);
 });
 
 test('Home section headings stay concise without redundant labels or helper copy', async ({ page }) => {
