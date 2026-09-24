@@ -141,7 +141,8 @@ test('news and seminar archives use the shared custom year dropdown', async ({ p
   await newsDropdown.locator('.filter-dropdown__trigger').click();
   await newsDropdown.getByRole('option', { name: '2026', exact: true }).click();
   await expect(page.locator('#news-year')).toHaveValue('2026');
-  await expect(page.locator('#news-timeline .timeline-item')).toHaveCount(1);
+  await expect(page.locator('#news-timeline .timeline-item')).toHaveCount(2);
+  await expect(page.locator('#news-timeline .timeline-item').first()).toContainText('Zhenyu Zhao Wins Second Prize');
 
   await page.goto('/seminars.html', { waitUntil: 'networkidle' });
   await expect(page.locator('#seminar-summary')).toHaveCount(0);
@@ -179,6 +180,12 @@ test('publication detail uses an academic reading hierarchy', async ({ page }) =
   await expect(page.locator('.detail-breadcrumbs')).toContainText('Publications');
   await expect(page.locator('.detail-breadcrumbs [aria-current="page"]')).toHaveText('Publication details');
   await expect(page.locator('.footer-nav a[aria-current="page"]')).toHaveText('Publications');
+});
+
+test('Zhenyu Zhao award news is bilingual and concise', async ({ page }) => {
+  await page.goto('/news-detail.html?slug=zhenyu-zhao-crypto-math-challenge-2026', { waitUntil: 'networkidle' });
+  await expect(page.locator('#news-detail')).toContainText('硕士生赵振宇获全国高校密码数学挑战赛华北赛区二等奖。');
+  await expect(page.locator('#news-detail')).toContainText("Master's student Zhenyu Zhao won Second Prize in the North China Division of the National Crypto-math Challenge.");
 });
 
 test('news and seminar detail pages share the same reading structure', async ({ page }) => {
