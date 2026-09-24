@@ -130,7 +130,7 @@ async function loadNews() {
   if (!newsList) return;
 
   try {
-    const response = await fetch('data/news.json');
+    const response = await fetch('data/news.json', { cache: 'no-store' });
     if (!response.ok) throw new Error(`Failed to load news: ${response.status}`);
     const newsItems = await response.json();
 
