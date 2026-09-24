@@ -31,6 +31,17 @@ for (const entry of corePages) {
   });
 }
 
+test('news entry points use versioned scripts to avoid stale browser assets', async ({ page }) => {
+  for (const [path, expectedScript] of [
+    ['/index.html', 'assets/js/main.js?v=20260924-news-1'],
+    ['/news.html', 'assets/js/news.js?v=20260924-news-1'],
+    ['/news-detail.html?slug=zhenyu-zhao-crypto-math-challenge-2026', 'assets/js/news-detail.js?v=20260924-news-1']
+  ]) {
+    await page.goto(path, { waitUntil: 'networkidle' });
+    await expect(page.locator(`script[src="${expectedScript}"]`)).toHaveCount(1);
+  }
+});
+
 test('home page presents existing content as a lab portal without unconfirmed research-focus copy', async ({ page }) => {
   await page.goto('/index.html', { waitUntil: 'networkidle' });
   await expect(page.locator('.hero-title--single-line')).toHaveText('The Cryptography and Information Security Laboratory');
