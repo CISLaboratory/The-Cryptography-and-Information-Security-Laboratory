@@ -201,6 +201,14 @@ test('Zhenyu Zhao award news is bilingual, concise, and includes the certificate
   await expect(image).toBeVisible();
   await expect(image).toHaveAttribute('src', 'assets/images/news/zhenyu-zhao-crypto-math-challenge-2026.webp');
   await expect(image).toHaveAttribute('alt', /Award certificate for Zhenyu Zhao/);
+  const imageMetrics = await image.evaluate((element) => ({
+    complete: element.complete,
+    naturalWidth: element.naturalWidth,
+    naturalHeight: element.naturalHeight
+  }));
+  expect(imageMetrics.complete).toBeTruthy();
+  expect(imageMetrics.naturalWidth).toBeGreaterThan(0);
+  expect(imageMetrics.naturalHeight).toBeGreaterThan(0);
 });
 
 test('news and seminar detail pages share the same reading structure', async ({ page }) => {
