@@ -193,10 +193,14 @@ test('publication detail uses an academic reading hierarchy', async ({ page }) =
   await expect(page.locator('.footer-nav a[aria-current="page"]')).toHaveText('Publications');
 });
 
-test('Zhenyu Zhao award news is bilingual and concise', async ({ page }) => {
+test('Zhenyu Zhao award news is bilingual, concise, and includes the certificate', async ({ page }) => {
   await page.goto('/news-detail.html?slug=zhenyu-zhao-crypto-math-challenge-2026', { waitUntil: 'networkidle' });
   await expect(page.locator('#news-detail')).toContainText('硕士生赵振宇获全国高校密码数学挑战赛华北赛区二等奖。');
   await expect(page.locator('#news-detail')).toContainText("Master's student Zhenyu Zhao won Second Prize in the North China Division of the National Crypto-math Challenge.");
+  const image = page.locator('#news-detail .news-detail-image');
+  await expect(image).toBeVisible();
+  await expect(image).toHaveAttribute('src', 'assets/images/news/zhenyu-zhao-crypto-math-challenge-2026.webp');
+  await expect(image).toHaveAttribute('alt', /Award certificate for Zhenyu Zhao/);
 });
 
 test('news and seminar detail pages share the same reading structure', async ({ page }) => {
