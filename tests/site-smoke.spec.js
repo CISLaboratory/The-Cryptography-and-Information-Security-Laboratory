@@ -209,6 +209,9 @@ test('Zhenyu Zhao award news is bilingual, concise, and includes the certificate
   expect(imageMetrics.complete).toBeTruthy();
   expect(imageMetrics.naturalWidth).toBeGreaterThanOrEqual(1800);
   expect(imageMetrics.naturalHeight).toBeGreaterThanOrEqual(1200);
+  const article = await page.locator('#news-detail').boundingBox();
+  const figure = await page.locator('#news-detail .news-detail-figure').boundingBox();
+  expect(Math.abs((figure.x + figure.width / 2) - (article.x + article.width / 2))).toBeLessThanOrEqual(1);
 });
 
 test('news and seminar detail pages share the same reading structure', async ({ page }) => {

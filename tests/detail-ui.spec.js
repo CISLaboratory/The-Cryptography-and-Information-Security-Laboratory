@@ -15,7 +15,7 @@ for (const path of detailPages) {
     );
 
     const polishIndex = styles.indexOf('assets/css/polish.css');
-    const detailIndex = styles.indexOf('assets/css/detail.css');
+    const detailIndex = styles.findIndex((href) => href.split('?')[0] === 'assets/css/detail.css');
     const accessibilityIndex = styles.indexOf('assets/css/accessibility.css');
 
     expect(detailIndex).toBeGreaterThan(polishIndex);
