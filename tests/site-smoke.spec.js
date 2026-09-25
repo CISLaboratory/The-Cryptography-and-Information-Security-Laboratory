@@ -210,8 +210,11 @@ test('Zhenyu Zhao award news is bilingual, concise, and includes the certificate
   expect(imageMetrics.naturalWidth).toBeGreaterThanOrEqual(1800);
   expect(imageMetrics.naturalHeight).toBeGreaterThanOrEqual(1200);
   const article = await page.locator('#news-detail').boundingBox();
+  const prose = await page.locator('#news-detail .detail-prose').boundingBox();
   const figure = await page.locator('#news-detail .news-detail-figure').boundingBox();
   expect(Math.abs((figure.x + figure.width / 2) - (article.x + article.width / 2))).toBeLessThanOrEqual(1);
+  expect(Math.abs(figure.x - prose.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(figure.width - prose.width)).toBeLessThanOrEqual(1);
 });
 
 test('news and seminar detail pages share the same reading structure', async ({ page }) => {
@@ -219,6 +222,10 @@ test('news and seminar detail pages share the same reading structure', async ({ 
   await expect(page.locator('#news-subtitle')).toBeHidden();
   await expect(page.locator('#news-detail .detail-summary-meta')).toBeVisible();
   await expect(page.locator('#news-detail .detail-prose')).toBeVisible();
+  const prose = await page.locator('#news-detail .detail-prose').boundingBox();
+  const figure = await page.locator('#news-detail .news-detail-figure').boundingBox();
+  expect(Math.abs(figure.x - prose.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(figure.width - prose.width)).toBeLessThanOrEqual(1);
   await expect(page.locator('#news-detail .detail-back-link')).toHaveText('Back to news');
 
   await page.goto('/seminar-detail.html?slug=alzette-64-bit-arx-box-design-analysis-2026-09-16', { waitUntil: 'networkidle' });
