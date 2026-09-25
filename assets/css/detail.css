@@ -105,6 +105,10 @@ body[data-page$="-detail"] .detail-card h2 {
   justify-self: start;
 }
 
+body[data-page="news-detail"] .news-detail-figure {
+  justify-self: center;
+}
+
 .detail-media img {
   border-radius: var(--radius-sm);
 }
