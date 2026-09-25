@@ -12,6 +12,10 @@ body[data-page$="-detail"] .detail-card {
   box-shadow: none;
 }
 
+body[data-page="news-detail"] .detail-card {
+  max-width: 680px;
+}
+
 body[data-page$="-detail"] .detail-card h2 {
   margin: 1.4rem 0 0;
   color: var(--navy);
@@ -92,6 +96,10 @@ body[data-page$="-detail"] .detail-card h2 {
 .detail-prose {
   display: grid;
   gap: 1rem;
+}
+
+body[data-page="news-detail"] .detail-prose {
+  max-width: 100%;
 }
 
 .detail-prose p,
