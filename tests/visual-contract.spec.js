@@ -22,7 +22,7 @@ test.describe('visual style loading contract', () => {
       );
 
       const structuralIndex = styles.indexOf('assets/css/styles.css');
-      const professionalIndex = styles.indexOf('assets/css/professional.css');
+      const professionalIndex = styles.findIndex((href) => href.split('?')[0] === 'assets/css/professional.css');
       const polishIndex = styles.indexOf('assets/css/polish.css');
       const accessibilityIndex = styles.indexOf('assets/css/accessibility.css');
 

@@ -164,6 +164,27 @@ test('news and seminar archives use the shared custom year dropdown', async ({ p
   await expect(page.locator('#seminar-timeline .timeline-item').first()).toBeVisible();
 });
 
+test('news thumbnails and copy share even card insets', async ({ page }, testInfo) => {
+  await page.goto('/news.html', { waitUntil: 'networkidle' });
+  const cards = page.locator('#news-timeline .timeline-item--with-image');
+  await expect(cards).toHaveCount(2);
+
+  for (const card of await cards.all()) {
+    const cardBox = await card.boundingBox();
+    const imageBox = await card.locator('.timeline-image-link').boundingBox();
+    const bodyBox = await card.locator('.timeline-body').boundingBox();
+    const leftInset = imageBox.x - cardBox.x;
+    const rightInset = cardBox.x + cardBox.width - bodyBox.x - bodyBox.width;
+    expect(Math.abs(leftInset - rightInset)).toBeLessThanOrEqual(1);
+
+    if (testInfo.project.name === 'desktop') {
+      expect(Math.abs(imageBox.y - bodyBox.y)).toBeLessThanOrEqual(1);
+    } else {
+      expect(Math.abs(imageBox.x - bodyBox.x)).toBeLessThanOrEqual(1);
+    }
+  }
+});
+
 test('publication lists emphasize current lab authors and mark corresponding authors', async ({ page }) => {
   await page.goto('/publications.html', { waitUntil: 'networkidle' });
   await expect(page.locator('.publication-meta strong')).toHaveCount(2);

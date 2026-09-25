@@ -581,6 +581,20 @@ select:focus-visible {
   padding: 1.5rem 1.7rem;
 }
 
+#news-timeline .timeline-item--with-image {
+  gap: 1.25rem;
+  padding: 1.25rem;
+}
+
+#news-timeline .timeline-image-link {
+  border-radius: var(--radius-sm);
+}
+
+#news-timeline .timeline-body {
+  align-content: start;
+  padding: 0;
+}
+
 /* Publications */
 .publication-list {
   gap: 1.5rem;
