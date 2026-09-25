@@ -236,6 +236,33 @@ test('Zhenyu Zhao award news is bilingual, concise, and includes the certificate
   expect(Math.abs((figure.x + figure.width / 2) - (article.x + article.width / 2))).toBeLessThanOrEqual(1);
   expect(Math.abs(figure.x - prose.x)).toBeLessThanOrEqual(1);
   expect(Math.abs(figure.width - prose.width)).toBeLessThanOrEqual(1);
+  const visibleFrame = await image.evaluate((element) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = element.naturalWidth;
+    canvas.height = 1;
+    const context = canvas.getContext('2d');
+    const middleRow = Math.floor(element.naturalHeight / 2);
+    context.drawImage(element, 0, middleRow, element.naturalWidth, 1, 0, 0, canvas.width, 1);
+    const pixels = context.getImageData(0, 0, canvas.width, 1).data;
+    let first = -1;
+    let last = -1;
+    for (let x = 0; x < canvas.width; x += 1) {
+      const i = x * 4;
+      if (pixels[i] - pixels[i + 1] > 35 && pixels[i] - pixels[i + 2] > 35 && pixels[i] > 70 && pixels[i + 1] < 210) {
+        if (first === -1) first = x;
+        last = x;
+      }
+    }
+    const bounds = element.getBoundingClientRect();
+    return {
+      left: bounds.left + first / canvas.width * bounds.width,
+      right: bounds.left + last / canvas.width * bounds.width,
+      found: first >= 0
+    };
+  });
+  expect(visibleFrame.found).toBeTruthy();
+  expect(Math.abs(visibleFrame.left - prose.x)).toBeLessThanOrEqual(2);
+  expect(Math.abs(visibleFrame.right - prose.x - prose.width)).toBeLessThanOrEqual(2);
 });
 
 test('news and seminar detail pages share the same reading structure', async ({ page }) => {

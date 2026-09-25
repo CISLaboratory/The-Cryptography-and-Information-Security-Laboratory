@@ -115,6 +115,12 @@ body[data-page="news-detail"] .detail-prose {
 
 body[data-page="news-detail"] .news-detail-figure {
   justify-self: center;
+  overflow: hidden;
+}
+
+/* The award JPEG has about 2% white space on each side of the certificate. */
+body[data-page="news-detail"] .news-detail-image[src$="zhenyu-zhao-crypto-math-challenge-2026.jpg"] {
+  transform: scaleX(1.0444);
 }
 
 .detail-media img {
