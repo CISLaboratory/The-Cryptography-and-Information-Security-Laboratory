@@ -185,10 +185,10 @@ test('news thumbnails and copy share even card insets', async ({ page }, testInf
   }
 });
 
-test('publication lists emphasize current lab authors and mark corresponding authors', async ({ page }) => {
+test('publication lists emphasize current lab authors without incorrect corresponding-author markers', async ({ page }) => {
   await page.goto('/publications.html', { waitUntil: 'networkidle' });
   await expect(page.locator('.publication-meta strong')).toHaveCount(2);
-  await expect(page.locator('.publication-meta .corresponding-author-marker')).toHaveCount(1);
+  await expect(page.locator('.publication-meta .corresponding-author-marker')).toHaveCount(0);
   await expect(page.locator('.publication-meta strong').first()).toContainText('Hailun Yan');
   await expect(page.locator('.publication-year__count')).toHaveCount(0);
   await expect(page.locator('.publication-year__title').first()).toHaveText('2026');
@@ -203,7 +203,7 @@ test('removed publication slug no longer resolves', async ({ page }) => {
 test('publication detail uses an academic reading hierarchy', async ({ page }) => {
   await page.goto('/publication-detail.html?slug=sok-cryptanalysis-sha3-standard', { waitUntil: 'networkidle' });
   await expect(page.locator('.publication-authors strong').first()).toContainText('Hailun Yan');
-  await expect(page.locator('.publication-authors .corresponding-author-marker')).toHaveCount(1);
+  await expect(page.locator('.publication-authors .corresponding-author-marker')).toHaveCount(0);
   await expect(page.locator('.member-label')).toHaveCount(0);
   await expect(page.locator('.publication-summary-meta')).toContainText('ACISP 2026');
   await expect(page.locator('.detail-resource-row')).toContainText('Publisher / DOI');
