@@ -3,7 +3,7 @@
     "slug": "sok-cryptanalysis-sha3-standard",
     "title": "SoK: The Cryptanalysis of SHA-3 Standard",
     "authors": [
-      { "name": "Hailun Yan", "laboratoryMember": true, "correspondingAuthor": true },
+      { "name": "Hailun Yan", "laboratoryMember": true },
       { "name": "Anze Sun", "laboratoryMember": true },
       { "name": "Jiahao Wang", "laboratoryMember": false },
       { "name": "Zheng Li", "laboratoryMember": false }
