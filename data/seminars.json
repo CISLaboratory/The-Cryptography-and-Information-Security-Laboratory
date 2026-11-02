@@ -166,5 +166,23 @@
         "url": "https://eprint.iacr.org/2019/1378.pdf"
       }
     ]
+  },
+  {
+    "slug": "geometric-approach-linear-cryptanalysis-2026-11-02",
+    "title": "[Paper Reading] A Geometric Approach to Linear Cryptanalysis (ASIACRYPT2021)",
+    "speaker": "Anze Sun",
+    "date": "2026-11-02",
+    "year": 2026,
+    "description": "Discussion of Tim Beyne's ASIACRYPT 2021 paper, corresponding to the first part of his presentation at the annual cryptology conference. Related reading: Linear Cryptanalysis by Tim Beyne and Vincent Rijmen.",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2021/1247.pdf"
+      },
+      {
+        "label": "Related book",
+        "url": "https://doi.org/10.1017/9781009607872"
+      }
+    ]
   }
 ]
