@@ -180,6 +180,10 @@
         "url": "https://eprint.iacr.org/2021/1247"
       },
       {
+        "label": "Slides",
+        "url": "assets/slides/tim-beyne-symmetry-in-symmetric-cryptography-2026-10-25.pdf"
+      },
+      {
         "label": "Related book",
         "url": "https://doi.org/10.1017/9781009607872"
       }
