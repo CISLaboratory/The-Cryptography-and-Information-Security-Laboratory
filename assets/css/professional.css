@@ -546,6 +546,23 @@ select:focus-visible {
   font-weight: 650;
 }
 
+/* Reserve the date column when long seminar titles wrap on desktop. */
+@media (min-width: 721px) {
+  #seminar-timeline .timeline-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+  }
+
+  #seminar-timeline .timeline-title {
+    min-width: 0;
+  }
+
+  #seminar-timeline time {
+    justify-self: end;
+    white-space: nowrap;
+  }
+}
+
 .timeline-item header > p {
   margin: 0;
   color: #4d596c;
