@@ -188,5 +188,19 @@
         "url": "https://doi.org/10.1017/9781009607872"
       }
     ]
+  },
+  {
+    "slug": "reinforced-concrete-collision-attacks-2026-11-11",
+    "title": "[Paper Reading] Mind Small Integers in MDS Matrix: Collision Attacks on Round-Reduced Reinforced Concrete (ASIACRYPT2026)",
+    "speaker": "Wen Kong",
+    "date": "2026-11-11",
+    "year": 2026,
+    "description": "Differential cryptanalysis of the ZK-friendly hash function Reinforced Concrete, focusing on collision attacks on round-reduced variants.",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2026/2031"
+      }
+    ]
   }
 ]
