@@ -202,5 +202,19 @@
         "url": "https://eprint.iacr.org/2026/2031"
       }
     ]
+  },
+  {
+    "slug": "circulant-structure-linear-layers-2026-11-16",
+    "title": "[Paper Reading] Utilizing Circulant Structure to Optimize the Implementations of Linear Layers (ToSC2026)",
+    "speaker": "Wenxin Yu",
+    "date": "2026-11-16",
+    "year": 2026,
+    "description": "Buji Xu and Xiaoming Sun use the structure of circulant matrices to simplify linear transformations before applying global optimization heuristics. Their approach yields implementations with fewer XOR gates or lower circuit depth for several block cipher linear layers.",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://doi.org/10.46586/tosc.an2i89ylpgf9"
+      }
+    ]
   }
 ]
