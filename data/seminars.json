@@ -216,5 +216,19 @@
         "url": "https://doi.org/10.46586/tosc.an2i89ylpgf9"
       }
     ]
+  },
+  {
+    "slug": "quasidifferential-cryptanalysis-2026-11-18",
+    "title": "[Paper Reading] Differential Cryptanalysis in the Fixed-Key Model (CRYPTO2022)",
+    "speaker": "Yuexing Yue",
+    "date": "2026-11-18",
+    "year": 2026,
+    "description": "An introduction to quasidifferential cryptanalysis based on work by Tim Beyne and Vincent Rijmen. The session focuses on how quasidifferential trails are used to evaluate differential probabilities for a fixed key.",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://eprint.iacr.org/2022/837"
+      }
+    ]
   }
 ]
