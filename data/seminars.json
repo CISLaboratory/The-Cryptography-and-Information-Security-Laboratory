@@ -230,5 +230,23 @@
         "url": "https://eprint.iacr.org/2022/837"
       }
     ]
+  },
+  {
+    "slug": "cryptanalytic-extraction-neural-network-models-2026-11-24",
+    "title": "[Paper Reading] Cryptanalytic Extraction of Neural Network Models (CRYPTO2020)",
+    "speaker": "Jizhou Li",
+    "date": "2026-11-24",
+    "year": 2026,
+    "description": "The session introduces cryptanalytic model extraction from neural networks, focusing on the principles and methods of differential analysis for recovering model parameters. It discusses the CRYPTO 2020 paper by Nicholas Carlini, Matthew Jagielski, and Ilya Mironov and briefly reviews subsequent research in the field.",
+    "resources": [
+      {
+        "label": "Paper",
+        "url": "https://iacr.org/archive/crypto2020/12171088/12171088.pdf"
+      },
+      {
+        "label": "arXiv",
+        "url": "https://arxiv.org/abs/2003.04884"
+      }
+    ]
   }
 ]
